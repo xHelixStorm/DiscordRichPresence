@@ -84,6 +84,7 @@
             this.cbxProfiles.Enabled = false;
             this.cbxProfiles.FormattingEnabled = true;
             this.cbxProfiles.Location = new System.Drawing.Point(64, 6);
+            this.cbxProfiles.MaxDropDownItems = 100;
             this.cbxProfiles.Name = "cbxProfiles";
             this.cbxProfiles.Size = new System.Drawing.Size(121, 23);
             this.cbxProfiles.TabIndex = 1;
@@ -126,7 +127,7 @@
             this.gbxOptions.Location = new System.Drawing.Point(12, 35);
             this.gbxOptions.Name = "gbxOptions";
             this.gbxOptions.Size = new System.Drawing.Size(400, 472);
-            this.gbxOptions.TabIndex = 2;
+            this.gbxOptions.TabIndex = 5;
             this.gbxOptions.TabStop = false;
             this.gbxOptions.Text = "Options";
             // 
@@ -137,7 +138,7 @@
             this.chkAudible.Location = new System.Drawing.Point(325, 413);
             this.chkAudible.Name = "chkAudible";
             this.chkAudible.Size = new System.Drawing.Size(67, 19);
-            this.chkAudible.TabIndex = 31;
+            this.chkAudible.TabIndex = 23;
             this.chkAudible.Text = "Audible";
             this.chkAudible.UseVisualStyleBackColor = true;
             // 
@@ -147,7 +148,7 @@
             this.btnCancel.Location = new System.Drawing.Point(98, 443);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnCancel.TabIndex = 30;
+            this.btnCancel.TabIndex = 25;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
@@ -158,7 +159,7 @@
             this.btnSave.Location = new System.Drawing.Point(11, 443);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
-            this.btnSave.TabIndex = 29;
+            this.btnSave.TabIndex = 24;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
@@ -171,7 +172,7 @@
             this.cbxTypes.Location = new System.Drawing.Point(119, 124);
             this.cbxTypes.Name = "cbxTypes";
             this.cbxTypes.Size = new System.Drawing.Size(200, 23);
-            this.cbxTypes.TabIndex = 28;
+            this.cbxTypes.TabIndex = 9;
             // 
             // tbxName
             // 
@@ -179,7 +180,7 @@
             this.tbxName.Location = new System.Drawing.Point(119, 160);
             this.tbxName.Name = "tbxName";
             this.tbxName.Size = new System.Drawing.Size(200, 23);
-            this.tbxName.TabIndex = 27;
+            this.tbxName.TabIndex = 10;
             // 
             // label1
             // 
@@ -206,7 +207,7 @@
             this.chkTargetSmallText.Location = new System.Drawing.Point(325, 377);
             this.chkTargetSmallText.Name = "chkTargetSmallText";
             this.chkTargetSmallText.Size = new System.Drawing.Size(58, 19);
-            this.chkTargetSmallText.TabIndex = 23;
+            this.chkTargetSmallText.TabIndex = 22;
             this.chkTargetSmallText.Text = "Target";
             this.chkTargetSmallText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.chkTargetSmallText.UseVisualStyleBackColor = true;
@@ -218,7 +219,7 @@
             this.chkTargetSmallImage.Location = new System.Drawing.Point(325, 341);
             this.chkTargetSmallImage.Name = "chkTargetSmallImage";
             this.chkTargetSmallImage.Size = new System.Drawing.Size(58, 19);
-            this.chkTargetSmallImage.TabIndex = 22;
+            this.chkTargetSmallImage.TabIndex = 20;
             this.chkTargetSmallImage.Text = "Target";
             this.chkTargetSmallImage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.chkTargetSmallImage.UseVisualStyleBackColor = true;
@@ -230,7 +231,7 @@
             this.chkTargetLargeText.Location = new System.Drawing.Point(325, 308);
             this.chkTargetLargeText.Name = "chkTargetLargeText";
             this.chkTargetLargeText.Size = new System.Drawing.Size(58, 19);
-            this.chkTargetLargeText.TabIndex = 21;
+            this.chkTargetLargeText.TabIndex = 18;
             this.chkTargetLargeText.Text = "Target";
             this.chkTargetLargeText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.chkTargetLargeText.UseVisualStyleBackColor = true;
@@ -242,7 +243,7 @@
             this.chkTargetLargeImage.Location = new System.Drawing.Point(325, 272);
             this.chkTargetLargeImage.Name = "chkTargetLargeImage";
             this.chkTargetLargeImage.Size = new System.Drawing.Size(58, 19);
-            this.chkTargetLargeImage.TabIndex = 20;
+            this.chkTargetLargeImage.TabIndex = 16;
             this.chkTargetLargeImage.Text = "Target";
             this.chkTargetLargeImage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.chkTargetLargeImage.UseVisualStyleBackColor = true;
@@ -254,7 +255,7 @@
             this.chkTargetDetails.Location = new System.Drawing.Point(325, 234);
             this.chkTargetDetails.Name = "chkTargetDetails";
             this.chkTargetDetails.Size = new System.Drawing.Size(58, 19);
-            this.chkTargetDetails.TabIndex = 19;
+            this.chkTargetDetails.TabIndex = 14;
             this.chkTargetDetails.Text = "Target";
             this.chkTargetDetails.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.chkTargetDetails.UseVisualStyleBackColor = true;
@@ -266,7 +267,7 @@
             this.chkTargetState.Location = new System.Drawing.Point(325, 198);
             this.chkTargetState.Name = "chkTargetState";
             this.chkTargetState.Size = new System.Drawing.Size(58, 19);
-            this.chkTargetState.TabIndex = 18;
+            this.chkTargetState.TabIndex = 12;
             this.chkTargetState.Text = "Target";
             this.chkTargetState.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.chkTargetState.UseVisualStyleBackColor = true;
@@ -277,7 +278,7 @@
             this.tbxDetails.Location = new System.Drawing.Point(119, 232);
             this.tbxDetails.Name = "tbxDetails";
             this.tbxDetails.Size = new System.Drawing.Size(200, 23);
-            this.tbxDetails.TabIndex = 17;
+            this.tbxDetails.TabIndex = 13;
             // 
             // tbxState
             // 
@@ -285,7 +286,7 @@
             this.tbxState.Location = new System.Drawing.Point(119, 196);
             this.tbxState.Name = "tbxState";
             this.tbxState.Size = new System.Drawing.Size(200, 23);
-            this.tbxState.TabIndex = 16;
+            this.tbxState.TabIndex = 11;
             // 
             // lblDetails
             // 
@@ -311,7 +312,7 @@
             this.tbxSmallText.Location = new System.Drawing.Point(119, 375);
             this.tbxSmallText.Name = "tbxSmallText";
             this.tbxSmallText.Size = new System.Drawing.Size(200, 23);
-            this.tbxSmallText.TabIndex = 13;
+            this.tbxSmallText.TabIndex = 21;
             // 
             // tbxSmallImage
             // 
@@ -319,7 +320,7 @@
             this.tbxSmallImage.Location = new System.Drawing.Point(119, 339);
             this.tbxSmallImage.Name = "tbxSmallImage";
             this.tbxSmallImage.Size = new System.Drawing.Size(200, 23);
-            this.tbxSmallImage.TabIndex = 12;
+            this.tbxSmallImage.TabIndex = 19;
             // 
             // tbxLargeText
             // 
@@ -327,7 +328,7 @@
             this.tbxLargeText.Location = new System.Drawing.Point(119, 306);
             this.tbxLargeText.Name = "tbxLargeText";
             this.tbxLargeText.Size = new System.Drawing.Size(200, 23);
-            this.tbxLargeText.TabIndex = 11;
+            this.tbxLargeText.TabIndex = 17;
             // 
             // tbxLargeImage
             // 
@@ -335,7 +336,7 @@
             this.tbxLargeImage.Location = new System.Drawing.Point(119, 270);
             this.tbxLargeImage.Name = "tbxLargeImage";
             this.tbxLargeImage.Size = new System.Drawing.Size(200, 23);
-            this.tbxLargeImage.TabIndex = 10;
+            this.tbxLargeImage.TabIndex = 15;
             // 
             // tbxTargetDomain
             // 
@@ -343,7 +344,7 @@
             this.tbxTargetDomain.Location = new System.Drawing.Point(119, 88);
             this.tbxTargetDomain.Name = "tbxTargetDomain";
             this.tbxTargetDomain.Size = new System.Drawing.Size(200, 23);
-            this.tbxTargetDomain.TabIndex = 9;
+            this.tbxTargetDomain.TabIndex = 8;
             // 
             // tbxSourceDomain
             // 
@@ -351,7 +352,7 @@
             this.tbxSourceDomain.Location = new System.Drawing.Point(119, 52);
             this.tbxSourceDomain.Name = "tbxSourceDomain";
             this.tbxSourceDomain.Size = new System.Drawing.Size(200, 23);
-            this.tbxSourceDomain.TabIndex = 8;
+            this.tbxSourceDomain.TabIndex = 7;
             // 
             // lblSmallText
             // 
@@ -413,7 +414,7 @@
             this.tbxProfileName.Location = new System.Drawing.Point(119, 16);
             this.tbxProfileName.Name = "tbxProfileName";
             this.tbxProfileName.Size = new System.Drawing.Size(200, 23);
-            this.tbxProfileName.TabIndex = 1;
+            this.tbxProfileName.TabIndex = 6;
             // 
             // lblProfileName
             // 
@@ -429,27 +430,29 @@
             this.btnAdd.Location = new System.Drawing.Point(429, 50);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(75, 23);
-            this.btnAdd.TabIndex = 3;
+            this.btnAdd.TabIndex = 2;
             this.btnAdd.Text = "Add";
             this.btnAdd.UseVisualStyleBackColor = true;
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // btnUpdate
             // 
+            this.btnUpdate.Enabled = false;
             this.btnUpdate.Location = new System.Drawing.Point(429, 86);
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.Size = new System.Drawing.Size(75, 23);
-            this.btnUpdate.TabIndex = 4;
+            this.btnUpdate.TabIndex = 3;
             this.btnUpdate.Text = "Update";
             this.btnUpdate.UseVisualStyleBackColor = true;
             this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
             // 
             // btnDelete
             // 
+            this.btnDelete.Enabled = false;
             this.btnDelete.Location = new System.Drawing.Point(429, 122);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(75, 23);
-            this.btnDelete.TabIndex = 5;
+            this.btnDelete.TabIndex = 4;
             this.btnDelete.Text = "Delete";
             this.btnDelete.UseVisualStyleBackColor = true;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);

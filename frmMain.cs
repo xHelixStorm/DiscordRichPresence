@@ -56,6 +56,7 @@ namespace DiscordRichPresence
             fillOptionsGroupBox(null);
             btnDelete.Enabled = false;
             btnUpdate.Enabled = false;
+            cbxProfiles.Focus();
         }
 
         private void initializeActivityTypes()
@@ -74,8 +75,16 @@ namespace DiscordRichPresence
             {
                 Profile profile = item.SelectedItem as Profile;
                 fillOptionsGroupBox(profile);
-                btnDelete.Enabled = true;
-                btnUpdate.Enabled = true;
+                if(profile != null)
+                {
+                    btnDelete.Enabled = true;
+                    btnUpdate.Enabled = true;
+                }
+                else
+                {
+                    btnDelete.Enabled = false;
+                    btnUpdate.Enabled = false;
+                }
             }
             else
             {
@@ -204,7 +213,7 @@ namespace DiscordRichPresence
         {
             bool enabled = (insertMode || updateMode);
 
-            cbxProfiles.Enabled = !enabled;
+            cbxProfiles.Enabled = !enabled && cbxProfiles.Items.Count > 0;
             btnAdd.Enabled = !enabled;
             btnUpdate.Enabled = !enabled;
             btnDelete.Enabled = !enabled;
@@ -238,12 +247,14 @@ namespace DiscordRichPresence
             cbxProfiles.SelectedIndex = -1;
             fillOptionsGroupBox(null);
             handleFieldEnableMode();
+            tbxProfileName.Focus();
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
             updateMode = true;
             handleFieldEnableMode();
+            tbxProfileName.Focus();
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -334,7 +345,7 @@ namespace DiscordRichPresence
 
             fillOptionsGroupBox(null);
             handleFieldEnableMode();
-            cbxProfiles_SelectionChangeCommitted(cbxProfiles.SelectedItem, e);
+            cbxProfiles_SelectionChangeCommitted(cbxProfiles, e);
         }
     }
 }
