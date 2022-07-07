@@ -21,7 +21,8 @@ namespace DiscordRichPresence.modules
             if (!modSQL.testDBConnection())
             {
                 logger.Fatal("Terminate application due to database error");
-                Application.Exit();
+                System.Windows.Forms.Application.ExitThread();
+                return;
             }
 
             logger.Info("Initialize application start up");

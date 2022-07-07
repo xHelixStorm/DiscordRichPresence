@@ -32,6 +32,7 @@
             this.lblProfiles = new System.Windows.Forms.Label();
             this.cbxProfiles = new System.Windows.Forms.ComboBox();
             this.gbxOptions = new System.Windows.Forms.GroupBox();
+            this.chkAudible = new System.Windows.Forms.CheckBox();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.cbxTypes = new System.Windows.Forms.ComboBox();
@@ -62,30 +63,34 @@
             this.lblSourceDomain = new System.Windows.Forms.Label();
             this.tbxProfileName = new System.Windows.Forms.TextBox();
             this.lblProfileName = new System.Windows.Forms.Label();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.btnAdd = new System.Windows.Forms.Button();
             this.btnUpdate = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
-            this.chkAudible = new System.Windows.Forms.CheckBox();
             this.gbxOptions.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblProfiles
             // 
-            resources.ApplyResources(this.lblProfiles, "lblProfiles");
+            this.lblProfiles.AutoSize = true;
+            this.lblProfiles.Location = new System.Drawing.Point(12, 9);
             this.lblProfiles.Name = "lblProfiles";
+            this.lblProfiles.Size = new System.Drawing.Size(49, 15);
+            this.lblProfiles.TabIndex = 0;
+            this.lblProfiles.Text = "Profiles:";
             // 
             // cbxProfiles
             // 
-            resources.ApplyResources(this.cbxProfiles, "cbxProfiles");
             this.cbxProfiles.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbxProfiles.Enabled = false;
             this.cbxProfiles.FormattingEnabled = true;
+            this.cbxProfiles.Location = new System.Drawing.Point(64, 6);
             this.cbxProfiles.Name = "cbxProfiles";
+            this.cbxProfiles.Size = new System.Drawing.Size(121, 23);
+            this.cbxProfiles.TabIndex = 1;
             this.cbxProfiles.SelectionChangeCommitted += new System.EventHandler(this.cbxProfiles_SelectionChangeCommitted);
             // 
             // gbxOptions
             // 
-            resources.ApplyResources(this.gbxOptions, "gbxOptions");
             this.gbxOptions.BackColor = System.Drawing.SystemColors.Window;
             this.gbxOptions.Controls.Add(this.chkAudible);
             this.gbxOptions.Controls.Add(this.btnCancel);
@@ -118,202 +123,342 @@
             this.gbxOptions.Controls.Add(this.lblSourceDomain);
             this.gbxOptions.Controls.Add(this.tbxProfileName);
             this.gbxOptions.Controls.Add(this.lblProfileName);
+            this.gbxOptions.Location = new System.Drawing.Point(12, 35);
             this.gbxOptions.Name = "gbxOptions";
+            this.gbxOptions.Size = new System.Drawing.Size(400, 472);
+            this.gbxOptions.TabIndex = 2;
             this.gbxOptions.TabStop = false;
+            this.gbxOptions.Text = "Options";
+            // 
+            // chkAudible
+            // 
+            this.chkAudible.AutoSize = true;
+            this.chkAudible.Enabled = false;
+            this.chkAudible.Location = new System.Drawing.Point(325, 413);
+            this.chkAudible.Name = "chkAudible";
+            this.chkAudible.Size = new System.Drawing.Size(67, 19);
+            this.chkAudible.TabIndex = 31;
+            this.chkAudible.Text = "Audible";
+            this.chkAudible.UseVisualStyleBackColor = true;
             // 
             // btnCancel
             // 
-            resources.ApplyResources(this.btnCancel, "btnCancel");
+            this.btnCancel.Enabled = false;
+            this.btnCancel.Location = new System.Drawing.Point(98, 443);
             this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnCancel.TabIndex = 30;
+            this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // btnSave
             // 
-            resources.ApplyResources(this.btnSave, "btnSave");
+            this.btnSave.Enabled = false;
+            this.btnSave.Location = new System.Drawing.Point(11, 443);
             this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(75, 23);
+            this.btnSave.TabIndex = 29;
+            this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // cbxTypes
             // 
-            resources.ApplyResources(this.cbxTypes, "cbxTypes");
             this.cbxTypes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbxTypes.Enabled = false;
             this.cbxTypes.FormattingEnabled = true;
+            this.cbxTypes.Location = new System.Drawing.Point(119, 124);
             this.cbxTypes.Name = "cbxTypes";
+            this.cbxTypes.Size = new System.Drawing.Size(200, 23);
+            this.cbxTypes.TabIndex = 28;
             // 
             // tbxName
             // 
-            resources.ApplyResources(this.tbxName, "tbxName");
+            this.tbxName.Enabled = false;
+            this.tbxName.Location = new System.Drawing.Point(119, 160);
             this.tbxName.Name = "tbxName";
+            this.tbxName.Size = new System.Drawing.Size(200, 23);
+            this.tbxName.TabIndex = 27;
             // 
             // label1
             // 
-            resources.ApplyResources(this.label1, "label1");
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(7, 163);
             this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(42, 15);
+            this.label1.TabIndex = 25;
+            this.label1.Text = "Name:";
             // 
             // lblType
             // 
-            resources.ApplyResources(this.lblType, "lblType");
+            this.lblType.AutoSize = true;
+            this.lblType.Location = new System.Drawing.Point(7, 127);
             this.lblType.Name = "lblType";
+            this.lblType.Size = new System.Drawing.Size(34, 15);
+            this.lblType.TabIndex = 24;
+            this.lblType.Text = "Type:";
             // 
             // chkTargetSmallText
             // 
-            resources.ApplyResources(this.chkTargetSmallText, "chkTargetSmallText");
+            this.chkTargetSmallText.AutoSize = true;
+            this.chkTargetSmallText.Enabled = false;
+            this.chkTargetSmallText.Location = new System.Drawing.Point(325, 377);
             this.chkTargetSmallText.Name = "chkTargetSmallText";
+            this.chkTargetSmallText.Size = new System.Drawing.Size(58, 19);
+            this.chkTargetSmallText.TabIndex = 23;
+            this.chkTargetSmallText.Text = "Target";
+            this.chkTargetSmallText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.chkTargetSmallText.UseVisualStyleBackColor = true;
             // 
             // chkTargetSmallImage
             // 
-            resources.ApplyResources(this.chkTargetSmallImage, "chkTargetSmallImage");
+            this.chkTargetSmallImage.AutoSize = true;
+            this.chkTargetSmallImage.Enabled = false;
+            this.chkTargetSmallImage.Location = new System.Drawing.Point(325, 341);
             this.chkTargetSmallImage.Name = "chkTargetSmallImage";
+            this.chkTargetSmallImage.Size = new System.Drawing.Size(58, 19);
+            this.chkTargetSmallImage.TabIndex = 22;
+            this.chkTargetSmallImage.Text = "Target";
+            this.chkTargetSmallImage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.chkTargetSmallImage.UseVisualStyleBackColor = true;
             // 
             // chkTargetLargeText
             // 
-            resources.ApplyResources(this.chkTargetLargeText, "chkTargetLargeText");
+            this.chkTargetLargeText.AutoSize = true;
+            this.chkTargetLargeText.Enabled = false;
+            this.chkTargetLargeText.Location = new System.Drawing.Point(325, 308);
             this.chkTargetLargeText.Name = "chkTargetLargeText";
+            this.chkTargetLargeText.Size = new System.Drawing.Size(58, 19);
+            this.chkTargetLargeText.TabIndex = 21;
+            this.chkTargetLargeText.Text = "Target";
+            this.chkTargetLargeText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.chkTargetLargeText.UseVisualStyleBackColor = true;
             // 
             // chkTargetLargeImage
             // 
-            resources.ApplyResources(this.chkTargetLargeImage, "chkTargetLargeImage");
+            this.chkTargetLargeImage.AutoSize = true;
+            this.chkTargetLargeImage.Enabled = false;
+            this.chkTargetLargeImage.Location = new System.Drawing.Point(325, 272);
             this.chkTargetLargeImage.Name = "chkTargetLargeImage";
+            this.chkTargetLargeImage.Size = new System.Drawing.Size(58, 19);
+            this.chkTargetLargeImage.TabIndex = 20;
+            this.chkTargetLargeImage.Text = "Target";
+            this.chkTargetLargeImage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.chkTargetLargeImage.UseVisualStyleBackColor = true;
             // 
             // chkTargetDetails
             // 
-            resources.ApplyResources(this.chkTargetDetails, "chkTargetDetails");
+            this.chkTargetDetails.AutoSize = true;
+            this.chkTargetDetails.Enabled = false;
+            this.chkTargetDetails.Location = new System.Drawing.Point(325, 234);
             this.chkTargetDetails.Name = "chkTargetDetails";
+            this.chkTargetDetails.Size = new System.Drawing.Size(58, 19);
+            this.chkTargetDetails.TabIndex = 19;
+            this.chkTargetDetails.Text = "Target";
+            this.chkTargetDetails.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.chkTargetDetails.UseVisualStyleBackColor = true;
             // 
             // chkTargetState
             // 
-            resources.ApplyResources(this.chkTargetState, "chkTargetState");
+            this.chkTargetState.AutoSize = true;
+            this.chkTargetState.Enabled = false;
+            this.chkTargetState.Location = new System.Drawing.Point(325, 198);
             this.chkTargetState.Name = "chkTargetState";
+            this.chkTargetState.Size = new System.Drawing.Size(58, 19);
+            this.chkTargetState.TabIndex = 18;
+            this.chkTargetState.Text = "Target";
+            this.chkTargetState.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.chkTargetState.UseVisualStyleBackColor = true;
             // 
             // tbxDetails
             // 
-            resources.ApplyResources(this.tbxDetails, "tbxDetails");
+            this.tbxDetails.Enabled = false;
+            this.tbxDetails.Location = new System.Drawing.Point(119, 232);
             this.tbxDetails.Name = "tbxDetails";
+            this.tbxDetails.Size = new System.Drawing.Size(200, 23);
+            this.tbxDetails.TabIndex = 17;
             // 
             // tbxState
             // 
-            resources.ApplyResources(this.tbxState, "tbxState");
+            this.tbxState.Enabled = false;
+            this.tbxState.Location = new System.Drawing.Point(119, 196);
             this.tbxState.Name = "tbxState";
+            this.tbxState.Size = new System.Drawing.Size(200, 23);
+            this.tbxState.TabIndex = 16;
             // 
             // lblDetails
             // 
-            resources.ApplyResources(this.lblDetails, "lblDetails");
+            this.lblDetails.AutoSize = true;
+            this.lblDetails.Location = new System.Drawing.Point(7, 235);
             this.lblDetails.Name = "lblDetails";
+            this.lblDetails.Size = new System.Drawing.Size(45, 15);
+            this.lblDetails.TabIndex = 15;
+            this.lblDetails.Text = "Details:";
             // 
             // lblState
             // 
-            resources.ApplyResources(this.lblState, "lblState");
+            this.lblState.AutoSize = true;
+            this.lblState.Location = new System.Drawing.Point(7, 199);
             this.lblState.Name = "lblState";
+            this.lblState.Size = new System.Drawing.Size(36, 15);
+            this.lblState.TabIndex = 14;
+            this.lblState.Text = "State:";
             // 
             // tbxSmallText
             // 
-            resources.ApplyResources(this.tbxSmallText, "tbxSmallText");
+            this.tbxSmallText.Enabled = false;
+            this.tbxSmallText.Location = new System.Drawing.Point(119, 375);
             this.tbxSmallText.Name = "tbxSmallText";
+            this.tbxSmallText.Size = new System.Drawing.Size(200, 23);
+            this.tbxSmallText.TabIndex = 13;
             // 
             // tbxSmallImage
             // 
-            resources.ApplyResources(this.tbxSmallImage, "tbxSmallImage");
+            this.tbxSmallImage.Enabled = false;
+            this.tbxSmallImage.Location = new System.Drawing.Point(119, 339);
             this.tbxSmallImage.Name = "tbxSmallImage";
+            this.tbxSmallImage.Size = new System.Drawing.Size(200, 23);
+            this.tbxSmallImage.TabIndex = 12;
             // 
             // tbxLargeText
             // 
-            resources.ApplyResources(this.tbxLargeText, "tbxLargeText");
+            this.tbxLargeText.Enabled = false;
+            this.tbxLargeText.Location = new System.Drawing.Point(119, 306);
             this.tbxLargeText.Name = "tbxLargeText";
+            this.tbxLargeText.Size = new System.Drawing.Size(200, 23);
+            this.tbxLargeText.TabIndex = 11;
             // 
             // tbxLargeImage
             // 
-            resources.ApplyResources(this.tbxLargeImage, "tbxLargeImage");
+            this.tbxLargeImage.Enabled = false;
+            this.tbxLargeImage.Location = new System.Drawing.Point(119, 270);
             this.tbxLargeImage.Name = "tbxLargeImage";
+            this.tbxLargeImage.Size = new System.Drawing.Size(200, 23);
+            this.tbxLargeImage.TabIndex = 10;
             // 
             // tbxTargetDomain
             // 
-            resources.ApplyResources(this.tbxTargetDomain, "tbxTargetDomain");
+            this.tbxTargetDomain.Enabled = false;
+            this.tbxTargetDomain.Location = new System.Drawing.Point(119, 88);
             this.tbxTargetDomain.Name = "tbxTargetDomain";
+            this.tbxTargetDomain.Size = new System.Drawing.Size(200, 23);
+            this.tbxTargetDomain.TabIndex = 9;
             // 
             // tbxSourceDomain
             // 
-            resources.ApplyResources(this.tbxSourceDomain, "tbxSourceDomain");
+            this.tbxSourceDomain.Enabled = false;
+            this.tbxSourceDomain.Location = new System.Drawing.Point(119, 52);
             this.tbxSourceDomain.Name = "tbxSourceDomain";
+            this.tbxSourceDomain.Size = new System.Drawing.Size(200, 23);
+            this.tbxSourceDomain.TabIndex = 8;
             // 
             // lblSmallText
             // 
-            resources.ApplyResources(this.lblSmallText, "lblSmallText");
+            this.lblSmallText.AutoSize = true;
+            this.lblSmallText.Location = new System.Drawing.Point(7, 378);
             this.lblSmallText.Name = "lblSmallText";
+            this.lblSmallText.Size = new System.Drawing.Size(63, 15);
+            this.lblSmallText.TabIndex = 7;
+            this.lblSmallText.Text = "Small Text:";
             // 
             // lblSmallImage
             // 
-            resources.ApplyResources(this.lblSmallImage, "lblSmallImage");
+            this.lblSmallImage.AutoSize = true;
+            this.lblSmallImage.Location = new System.Drawing.Point(7, 342);
             this.lblSmallImage.Name = "lblSmallImage";
+            this.lblSmallImage.Size = new System.Drawing.Size(75, 15);
+            this.lblSmallImage.TabIndex = 6;
+            this.lblSmallImage.Text = "Small Image:";
             // 
             // lblLargeText
             // 
-            resources.ApplyResources(this.lblLargeText, "lblLargeText");
+            this.lblLargeText.AutoSize = true;
+            this.lblLargeText.Location = new System.Drawing.Point(7, 309);
             this.lblLargeText.Name = "lblLargeText";
+            this.lblLargeText.Size = new System.Drawing.Size(63, 15);
+            this.lblLargeText.TabIndex = 5;
+            this.lblLargeText.Text = "Large Text:";
             // 
             // lblLargeImage
             // 
-            resources.ApplyResources(this.lblLargeImage, "lblLargeImage");
+            this.lblLargeImage.AutoSize = true;
+            this.lblLargeImage.Location = new System.Drawing.Point(7, 273);
             this.lblLargeImage.Name = "lblLargeImage";
+            this.lblLargeImage.Size = new System.Drawing.Size(75, 15);
+            this.lblLargeImage.TabIndex = 4;
+            this.lblLargeImage.Text = "Large Image:";
             // 
             // lblTargetDomain
             // 
-            resources.ApplyResources(this.lblTargetDomain, "lblTargetDomain");
+            this.lblTargetDomain.AutoSize = true;
+            this.lblTargetDomain.Location = new System.Drawing.Point(7, 91);
             this.lblTargetDomain.Name = "lblTargetDomain";
+            this.lblTargetDomain.Size = new System.Drawing.Size(87, 15);
+            this.lblTargetDomain.TabIndex = 3;
+            this.lblTargetDomain.Text = "Target Domain:";
             // 
             // lblSourceDomain
             // 
-            resources.ApplyResources(this.lblSourceDomain, "lblSourceDomain");
+            this.lblSourceDomain.AutoSize = true;
+            this.lblSourceDomain.Location = new System.Drawing.Point(7, 55);
             this.lblSourceDomain.Name = "lblSourceDomain";
+            this.lblSourceDomain.Size = new System.Drawing.Size(91, 15);
+            this.lblSourceDomain.TabIndex = 2;
+            this.lblSourceDomain.Text = "Source Domain:";
             // 
             // tbxProfileName
             // 
-            resources.ApplyResources(this.tbxProfileName, "tbxProfileName");
+            this.tbxProfileName.Enabled = false;
+            this.tbxProfileName.Location = new System.Drawing.Point(119, 16);
             this.tbxProfileName.Name = "tbxProfileName";
+            this.tbxProfileName.Size = new System.Drawing.Size(200, 23);
+            this.tbxProfileName.TabIndex = 1;
             // 
             // lblProfileName
             // 
-            resources.ApplyResources(this.lblProfileName, "lblProfileName");
+            this.lblProfileName.AutoSize = true;
+            this.lblProfileName.Location = new System.Drawing.Point(7, 19);
             this.lblProfileName.Name = "lblProfileName";
+            this.lblProfileName.Size = new System.Drawing.Size(79, 15);
+            this.lblProfileName.TabIndex = 0;
+            this.lblProfileName.Text = "Profile Name:";
             // 
             // btnAdd
             // 
-            resources.ApplyResources(this.btnAdd, "btnAdd");
+            this.btnAdd.Location = new System.Drawing.Point(429, 50);
             this.btnAdd.Name = "btnAdd";
+            this.btnAdd.Size = new System.Drawing.Size(75, 23);
+            this.btnAdd.TabIndex = 3;
+            this.btnAdd.Text = "Add";
             this.btnAdd.UseVisualStyleBackColor = true;
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // btnUpdate
             // 
-            resources.ApplyResources(this.btnUpdate, "btnUpdate");
+            this.btnUpdate.Location = new System.Drawing.Point(429, 86);
             this.btnUpdate.Name = "btnUpdate";
+            this.btnUpdate.Size = new System.Drawing.Size(75, 23);
+            this.btnUpdate.TabIndex = 4;
+            this.btnUpdate.Text = "Update";
             this.btnUpdate.UseVisualStyleBackColor = true;
             this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
             // 
             // btnDelete
             // 
-            resources.ApplyResources(this.btnDelete, "btnDelete");
+            this.btnDelete.Location = new System.Drawing.Point(429, 122);
             this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(75, 23);
+            this.btnDelete.TabIndex = 5;
+            this.btnDelete.Text = "Delete";
             this.btnDelete.UseVisualStyleBackColor = true;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
-            // chkAudible
-            // 
-            resources.ApplyResources(this.chkAudible, "chkAudible");
-            this.chkAudible.Name = "chkAudible";
-            this.chkAudible.UseVisualStyleBackColor = true;
-            // 
             // frmMain
             // 
-            resources.ApplyResources(this, "$this");
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(517, 515);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnUpdate);
             this.Controls.Add(this.btnAdd);
@@ -321,7 +466,9 @@
             this.Controls.Add(this.cbxProfiles);
             this.Controls.Add(this.lblProfiles);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmMain";
+            this.Text = "Discord Rich Presence Creator";
             this.Load += new System.EventHandler(this.frmMain_Load);
             this.gbxOptions.ResumeLayout(false);
             this.gbxOptions.PerformLayout();
@@ -335,7 +482,6 @@
         private Label lblProfiles;
         private ComboBox cbxProfiles;
         private GroupBox gbxOptions;
-        private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private TextBox tbxProfileName;
         private Label lblProfileName;
         private TextBox tbxSmallText;

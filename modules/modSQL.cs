@@ -15,7 +15,7 @@ namespace DiscordRichPresence.modules
 
         private static SqliteConnection? createConnection()
         {
-            SqliteConnection con = new SqliteConnection("Data Source=DiscordRichPresence.db;Mode=ReadWrite;");
+            SqliteConnection con = new SqliteConnection("Data Source=DiscordRichPresence.db;");
             try
             {
                 con.Open();
