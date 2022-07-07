@@ -19,5 +19,10 @@ namespace DiscordRichPresence.modules
         {
             return folders;
         }
+
+        public static void throwError(string message)
+        {
+            MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
     }
 }
