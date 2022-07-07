@@ -5,6 +5,7 @@ using NLog;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -117,12 +118,15 @@ namespace DiscordRichPresence
 
             if(profile != null)
             {
-                int sourceLength = "source;".Length;
-                int targetLength = "target;".Length;
+                const string source = "source;";
+                const string target = "target;";
+
+                int sourceLength = source.Length;
+                int targetLength = target.Length;
 
                 profileName = profile.ProfileName;
-                sourceDomain = profile.SourceDomain;
-                targetDomain = profile.TargetDomain;
+                sourceDomain = profile.SourceUrl;
+                targetDomain = profile.TargetUrl;
                 for (int i = 0; i < cbxTypes.Items.Count; i++)
                 {
                     if (((IActivityType)cbxTypes.Items[i]).Type == profile.Type)
@@ -132,7 +136,7 @@ namespace DiscordRichPresence
                     }
                 }
                 name = profile.Name;
-                if(profile.State.StartsWith("target;"))
+                if(profile.State.StartsWith(target))
                 {
                     state = profile.State.Substring(targetLength);
                     targetState = true;
@@ -141,7 +145,7 @@ namespace DiscordRichPresence
                 {
                     state = profile.State.Substring(sourceLength);
                 }
-                if(profile.Details.StartsWith("target;"))
+                if(profile.Details.StartsWith(target))
                 {
                     details = profile.Details.Substring(targetLength);
                     targetDetails = true;
@@ -150,7 +154,7 @@ namespace DiscordRichPresence
                 {
                     details = profile.Details.Substring(sourceLength);
                 }
-                if (profile.LargeImage.StartsWith("target;"))
+                if (profile.LargeImage.StartsWith(target))
                 {
                     largeImage = profile.LargeImage.Substring(targetLength);
                     targetLargeImage = true;
@@ -159,7 +163,7 @@ namespace DiscordRichPresence
                 {
                     largeImage = profile.LargeImage.Substring(sourceLength);
                 }
-                if(profile.LargeText.StartsWith("target;"))
+                if(profile.LargeText.StartsWith(target))
                 {
                     largeText = profile.LargeText.Substring(targetLength);
                     targetLargeText = true;
@@ -168,7 +172,7 @@ namespace DiscordRichPresence
                 {
                     largeText = profile.LargeText.Substring(sourceLength);
                 }
-                if (profile.SmallImage.StartsWith("target;"))
+                if (profile.SmallImage.StartsWith(target))
                 {
                     smallImage = profile.SmallImage.Substring(targetLength);
                     targetSmallImage = true;
@@ -177,7 +181,7 @@ namespace DiscordRichPresence
                 {
                     smallImage = profile.SmallImage.Substring(sourceLength);
                 }
-                if (profile.SmallText.StartsWith("target;"))
+                if (profile.SmallText.StartsWith(target))
                 {
                     smallText = profile.SmallText.Substring(targetLength);
                     targetSmallText = true;
@@ -190,8 +194,8 @@ namespace DiscordRichPresence
             }
 
             tbxProfileName.Text = profileName;
-            tbxSourceDomain.Text = sourceDomain;
-            tbxTargetDomain.Text = targetDomain;
+            tbxSourceUrl.Text = sourceDomain;
+            tbxTargetUrl.Text = targetDomain;
             cbxTypes.SelectedIndex = typeIndex;
             tbxName.Text = name;
             tbxState.Text = state;
@@ -219,8 +223,8 @@ namespace DiscordRichPresence
             btnDelete.Enabled = !enabled;
 
             tbxProfileName.Enabled = enabled;
-            tbxSourceDomain.Enabled = enabled;
-            tbxTargetDomain.Enabled = enabled;
+            tbxSourceUrl.Enabled = enabled;
+            tbxTargetUrl.Enabled = enabled;
             cbxTypes.Enabled = enabled;
             tbxName.Enabled = enabled;
             tbxState.Enabled = enabled;
@@ -283,21 +287,35 @@ namespace DiscordRichPresence
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            const string source = "source;";
+            const string target = "target;";
+
             Profile profile = new Profile(
                 (cbxProfiles.SelectedItem != null ? ((Profile)cbxProfiles.SelectedItem).ProfileId: 0),
                 tbxProfileName.Text,
-                tbxSourceDomain.Text,
-                tbxTargetDomain.Text,
+                tbxSourceUrl.Text,
+                tbxTargetUrl.Text,
                 (cbxTypes.SelectedItem != null ? ((IActivityType)cbxTypes.SelectedItem).Type : (int)ActivityType.Playing),
                 tbxName.Text,
-                (chkTargetState.Checked ? "target;" : "source;")+tbxState.Text,
-                (chkTargetDetails.Checked ? "target;" : "source;") + tbxDetails.Text,
-                (chkTargetLargeImage.Checked ? "target;" : "source;") + tbxLargeImage.Text,
-                (chkTargetLargeText.Checked ? "target;" : "source;") + tbxLargeText.Text,
-                (chkTargetSmallImage.Checked ? "target;" : "source;") + tbxSmallImage.Text,
-                (chkTargetSmallText.Checked ? "target;" : "source;") + tbxSmallText.Text,
+                (chkTargetState.Checked ? target : source)+tbxState.Text,
+                (chkTargetDetails.Checked ? target : source) + tbxDetails.Text,
+                (chkTargetLargeImage.Checked ? target : source) + tbxLargeImage.Text,
+                (chkTargetLargeText.Checked ? target : source) + tbxLargeText.Text,
+                (chkTargetSmallImage.Checked ? target : source) + tbxSmallImage.Text,
+                (chkTargetSmallText.Checked ? target : source) + tbxSmallText.Text,
                 chkAudible.Checked
             );
+
+            try
+            {
+                profile.Validate();
+            } catch(ValidationException ex)
+            {
+                logger.Warn(ex, "Fields have failed the validation");
+                modUtil.throwError(ex.Message);
+                return;
+            }
+
             if (insertMode)
             {
                 int result = modSQL.insertProfile(profile);
@@ -306,6 +324,7 @@ namespace DiscordRichPresence
                     fetchAllProfiles();
                     insertMode = false;
                     handleFieldEnableMode();
+                    logger.Info("New Profile has been created");
                 }
                 else
                 {
@@ -330,6 +349,7 @@ namespace DiscordRichPresence
                             break;
                         }
                     }
+                    logger.Info("Profile with the id {0} has been updated", profileId);
                 }
                 else
                 {

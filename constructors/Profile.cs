@@ -1,7 +1,10 @@
-﻿using System;
+﻿using DiscordRichPresence.modules;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace DiscordRichPresence.constructors
@@ -10,8 +13,8 @@ namespace DiscordRichPresence.constructors
     {
         private int profileId;
         private string profileName;
-        private string sourceDomain;
-        private string targetDomain;
+        private string sourceUrl;
+        private string targetUrl;
         private int type;
         private string name;
         private string state;
@@ -22,12 +25,12 @@ namespace DiscordRichPresence.constructors
         private string smallText;
         private bool audible;
 
-        public Profile(int profileId, String profileName, string sourceDomain, string targetDomain, int type, string name, string state, string details, string largeImage, string largeText, string smallImage, string smallText, bool audible)
+        public Profile(int profileId, String profileName, string sourceUrl, string targetUrl, int type, string name, string state, string details, string largeImage, string largeText, string smallImage, string smallText, bool audible)
         {
             this.profileId = profileId;
             this.profileName = profileName;
-            this.sourceDomain = sourceDomain;
-            this.targetDomain = targetDomain;
+            this.sourceUrl = sourceUrl;
+            this.targetUrl = targetUrl;
             this.type = type;
             this.name = name;
             this.state = state;
@@ -44,19 +47,21 @@ namespace DiscordRichPresence.constructors
             get { return profileId; }
         }
 
+        [Required(ErrorMessage = "Profile Name field is required.")]
         public String ProfileName
         {
             get { return profileName; }
         }
 
-        public String SourceDomain
+        [Required(ErrorMessage = "Source Domain field is required.")]
+        public String SourceUrl
         {
-            get { return sourceDomain; }
+            get { return sourceUrl; }
         }
 
-        public String TargetDomain
+        public String TargetUrl
         {
-            get { return targetDomain; }
+            get { return targetUrl; }
         }
 
         public int Type
@@ -64,6 +69,7 @@ namespace DiscordRichPresence.constructors
             get { return type; }
         }
 
+        [Required(ErrorMessage = "Name field is required.")]
         public string Name
         {
             get { return name; }
@@ -111,7 +117,40 @@ namespace DiscordRichPresence.constructors
 
         public string ToString2()
         {
-            return "{" + profileId + ", " + profileName + ", " + sourceDomain + ", " + targetDomain + ", " + type + ", " + name + ", " + state + ", " + details + ", " + largeImage + ", " + largeText + ", " + smallImage + ", " + smallText + ", " + audible + "}".Normalize();
+            return "{" + profileId + ", " + profileName + ", " + sourceUrl + ", " + targetUrl + ", " + type + ", " + name + ", " + state + ", " + details + ", " + largeImage + ", " + largeText + ", " + smallImage + ", " + smallText + ", " + audible + "}".Normalize();
+        }
+
+        /// <summary>
+        /// Validate all required fields.
+        /// </summary>
+        /// <exception cref="ValidationException">Error when a validation has failed.</exception>
+        public void Validate()
+        {
+            const string urlPattern = @"^(http|https):\/\/[\d\w]{1,}\.[a-z0-9]{2,5}.*$";
+
+            ValidationContext context = new ValidationContext(this, serviceProvider: null, items: null);
+            List<ValidationResult> results = new List<ValidationResult>();
+            bool isValid = Validator.TryValidateObject(this, context, results, true);
+            bool isSourceDomainValid = sourceUrl.Length == 0 || (sourceUrl.Length > 0 && Regex.Match(sourceUrl, urlPattern).Success);
+            bool isTargetDomainValid = targetUrl.Length == 0 || (targetUrl.Length > 0 && Regex.Match(targetUrl, urlPattern).Success);
+
+            if (!isValid || !isSourceDomainValid || !isTargetDomainValid)
+            {
+                StringBuilder sbrErrors = new StringBuilder();
+                foreach (var validationResult in results)
+                {
+                    sbrErrors.AppendLine(validationResult.ErrorMessage);
+                }
+                if(!isSourceDomainValid)
+                {
+                    sbrErrors.AppendLine("Invalid url inside of Source Url field.");
+                }
+                if (!isTargetDomainValid)
+                {
+                    sbrErrors.AppendLine("Invalid url inside of Target Url field.");
+                }
+                throw new ValidationException(sbrErrors.ToString());
+            }
         }
     }
 }

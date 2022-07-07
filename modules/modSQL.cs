@@ -110,11 +110,11 @@ namespace DiscordRichPresence.modules
             if (con == null) return -1;
 
             var command = con.CreateCommand();
-            command.CommandText = @"INSERT INTO profiles (profile_name, source_domain, target_domain, type, name, state, details, large_image, large_text, small_image, small_text, audible)
-                VALUES($profile_name, $source_domain, $target_domain, $type, $name, $state, $details, $large_image, $large_text, $small_image, $small_text, $audible)";
+            command.CommandText = @"INSERT INTO profiles (profile_name, source_url, target_url, type, name, state, details, large_image, large_text, small_image, small_text, audible)
+                VALUES($profile_name, $source_url, $target_url, $type, $name, $state, $details, $large_image, $large_text, $small_image, $small_text, $audible)";
             command.Parameters.AddWithValue("$profile_name", profile.ProfileName);
-            command.Parameters.AddWithValue("$source_domain", profile.SourceDomain);
-            command.Parameters.AddWithValue("$target_domain", profile.TargetDomain);
+            command.Parameters.AddWithValue("$source_url", profile.SourceUrl);
+            command.Parameters.AddWithValue("$target_url", profile.TargetUrl);
             command.Parameters.AddWithValue("$type", profile.Type);
             command.Parameters.AddWithValue("$name", profile.Name);
             command.Parameters.AddWithValue("$state", profile.State);
@@ -147,8 +147,8 @@ namespace DiscordRichPresence.modules
             command.CommandText = @"
                 UPDATE profiles SET 
                     profile_name = $profile_name,
-                    source_domain = $source_domain,
-                    target_domain = $target_domain,
+                    source_url = $source_url,
+                    target_url = $target_url,
                     type = $type,
                     name = $name,
                     state = $state,
@@ -161,8 +161,8 @@ namespace DiscordRichPresence.modules
                 WHERE profile_id = $profile_id";
             command.Parameters.AddWithValue("$profile_id", profile.ProfileId);
             command.Parameters.AddWithValue("$profile_name", profile.ProfileName);
-            command.Parameters.AddWithValue("$source_domain", profile.SourceDomain);
-            command.Parameters.AddWithValue("$target_domain", profile.TargetDomain);
+            command.Parameters.AddWithValue("$source_url", profile.SourceUrl);
+            command.Parameters.AddWithValue("$target_url", profile.TargetUrl);
             command.Parameters.AddWithValue("$type", profile.Type);
             command.Parameters.AddWithValue("$name", profile.Name);
             command.Parameters.AddWithValue("$state", profile.State);

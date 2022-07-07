@@ -53,14 +53,14 @@
             this.tbxSmallImage = new System.Windows.Forms.TextBox();
             this.tbxLargeText = new System.Windows.Forms.TextBox();
             this.tbxLargeImage = new System.Windows.Forms.TextBox();
-            this.tbxTargetDomain = new System.Windows.Forms.TextBox();
-            this.tbxSourceDomain = new System.Windows.Forms.TextBox();
+            this.tbxTargetUrl = new System.Windows.Forms.TextBox();
+            this.tbxSourceUrl = new System.Windows.Forms.TextBox();
             this.lblSmallText = new System.Windows.Forms.Label();
             this.lblSmallImage = new System.Windows.Forms.Label();
             this.lblLargeText = new System.Windows.Forms.Label();
             this.lblLargeImage = new System.Windows.Forms.Label();
-            this.lblTargetDomain = new System.Windows.Forms.Label();
-            this.lblSourceDomain = new System.Windows.Forms.Label();
+            this.lblTargetUrl = new System.Windows.Forms.Label();
+            this.lblSourceUrl = new System.Windows.Forms.Label();
             this.tbxProfileName = new System.Windows.Forms.TextBox();
             this.lblProfileName = new System.Windows.Forms.Label();
             this.btnAdd = new System.Windows.Forms.Button();
@@ -114,14 +114,14 @@
             this.gbxOptions.Controls.Add(this.tbxSmallImage);
             this.gbxOptions.Controls.Add(this.tbxLargeText);
             this.gbxOptions.Controls.Add(this.tbxLargeImage);
-            this.gbxOptions.Controls.Add(this.tbxTargetDomain);
-            this.gbxOptions.Controls.Add(this.tbxSourceDomain);
+            this.gbxOptions.Controls.Add(this.tbxTargetUrl);
+            this.gbxOptions.Controls.Add(this.tbxSourceUrl);
             this.gbxOptions.Controls.Add(this.lblSmallText);
             this.gbxOptions.Controls.Add(this.lblSmallImage);
             this.gbxOptions.Controls.Add(this.lblLargeText);
             this.gbxOptions.Controls.Add(this.lblLargeImage);
-            this.gbxOptions.Controls.Add(this.lblTargetDomain);
-            this.gbxOptions.Controls.Add(this.lblSourceDomain);
+            this.gbxOptions.Controls.Add(this.lblTargetUrl);
+            this.gbxOptions.Controls.Add(this.lblSourceUrl);
             this.gbxOptions.Controls.Add(this.tbxProfileName);
             this.gbxOptions.Controls.Add(this.lblProfileName);
             this.gbxOptions.Location = new System.Drawing.Point(12, 35);
@@ -338,21 +338,21 @@
             this.tbxLargeImage.Size = new System.Drawing.Size(200, 23);
             this.tbxLargeImage.TabIndex = 15;
             // 
-            // tbxTargetDomain
+            // tbxTargetUrl
             // 
-            this.tbxTargetDomain.Enabled = false;
-            this.tbxTargetDomain.Location = new System.Drawing.Point(119, 88);
-            this.tbxTargetDomain.Name = "tbxTargetDomain";
-            this.tbxTargetDomain.Size = new System.Drawing.Size(200, 23);
-            this.tbxTargetDomain.TabIndex = 8;
+            this.tbxTargetUrl.Enabled = false;
+            this.tbxTargetUrl.Location = new System.Drawing.Point(119, 88);
+            this.tbxTargetUrl.Name = "tbxTargetUrl";
+            this.tbxTargetUrl.Size = new System.Drawing.Size(200, 23);
+            this.tbxTargetUrl.TabIndex = 8;
             // 
-            // tbxSourceDomain
+            // tbxSourceUrl
             // 
-            this.tbxSourceDomain.Enabled = false;
-            this.tbxSourceDomain.Location = new System.Drawing.Point(119, 52);
-            this.tbxSourceDomain.Name = "tbxSourceDomain";
-            this.tbxSourceDomain.Size = new System.Drawing.Size(200, 23);
-            this.tbxSourceDomain.TabIndex = 7;
+            this.tbxSourceUrl.Enabled = false;
+            this.tbxSourceUrl.Location = new System.Drawing.Point(119, 52);
+            this.tbxSourceUrl.Name = "tbxSourceUrl";
+            this.tbxSourceUrl.Size = new System.Drawing.Size(200, 23);
+            this.tbxSourceUrl.TabIndex = 7;
             // 
             // lblSmallText
             // 
@@ -390,23 +390,23 @@
             this.lblLargeImage.TabIndex = 4;
             this.lblLargeImage.Text = "Large Image:";
             // 
-            // lblTargetDomain
+            // lblTargetUrl
             // 
-            this.lblTargetDomain.AutoSize = true;
-            this.lblTargetDomain.Location = new System.Drawing.Point(7, 91);
-            this.lblTargetDomain.Name = "lblTargetDomain";
-            this.lblTargetDomain.Size = new System.Drawing.Size(87, 15);
-            this.lblTargetDomain.TabIndex = 3;
-            this.lblTargetDomain.Text = "Target Domain:";
+            this.lblTargetUrl.AutoSize = true;
+            this.lblTargetUrl.Location = new System.Drawing.Point(7, 91);
+            this.lblTargetUrl.Name = "lblTargetUrl";
+            this.lblTargetUrl.Size = new System.Drawing.Size(60, 15);
+            this.lblTargetUrl.TabIndex = 3;
+            this.lblTargetUrl.Text = "Target Url:";
             // 
-            // lblSourceDomain
+            // lblSourceUrl
             // 
-            this.lblSourceDomain.AutoSize = true;
-            this.lblSourceDomain.Location = new System.Drawing.Point(7, 55);
-            this.lblSourceDomain.Name = "lblSourceDomain";
-            this.lblSourceDomain.Size = new System.Drawing.Size(91, 15);
-            this.lblSourceDomain.TabIndex = 2;
-            this.lblSourceDomain.Text = "Source Domain:";
+            this.lblSourceUrl.AutoSize = true;
+            this.lblSourceUrl.Location = new System.Drawing.Point(7, 55);
+            this.lblSourceUrl.Name = "lblSourceUrl";
+            this.lblSourceUrl.Size = new System.Drawing.Size(64, 15);
+            this.lblSourceUrl.TabIndex = 2;
+            this.lblSourceUrl.Text = "Source Url:";
             // 
             // tbxProfileName
             // 
@@ -491,14 +491,14 @@
         private TextBox tbxSmallImage;
         private TextBox tbxLargeText;
         private TextBox tbxLargeImage;
-        private TextBox tbxTargetDomain;
-        private TextBox tbxSourceDomain;
+        private TextBox tbxTargetUrl;
+        private TextBox tbxSourceUrl;
         private Label lblSmallText;
         private Label lblSmallImage;
         private Label lblLargeText;
         private Label lblLargeImage;
-        private Label lblTargetDomain;
-        private Label lblSourceDomain;
+        private Label lblTargetUrl;
+        private Label lblSourceUrl;
         private TextBox tbxDetails;
         private TextBox tbxState;
         private Label lblDetails;

@@ -20,6 +20,10 @@ namespace DiscordRichPresence.modules
             return folders;
         }
 
+        /// <summary>
+        /// Create a message box popup with the error message
+        /// </summary>
+        /// <param name="message"></param>
         public static void throwError(string message)
         {
             MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
