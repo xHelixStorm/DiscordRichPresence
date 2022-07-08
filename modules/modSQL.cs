@@ -12,13 +12,29 @@ namespace DiscordRichPresence.modules
     public class modSQL
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+        private static bool fileCheck = false;
+
+        const string SQLCONNECTION = "Data Source=DiscordRichPresence.db;";
 
         private static SqliteConnection? createConnection()
         {
-            SqliteConnection con = new SqliteConnection("Data Source=DiscordRichPresence.db;Mode=ReadWrite;");
+            bool createMode = false;
+            if(!fileCheck)
+            {
+                if (!File.Exists("./DiscordRichPresence.db"))
+                {
+                    createMode = true;
+                }
+                fileCheck = true;
+            }
+            SqliteConnection con = new SqliteConnection(SQLCONNECTION);
             try
             {
                 con.Open();
+                if (createMode)
+                {
+                    createTables(con);
+                }
                 return con;
             }
             catch (Exception e)
@@ -26,6 +42,24 @@ namespace DiscordRichPresence.modules
                 logger.Error(e, "Database connection couldn't be established");
                 con.Close();
                 return null;
+            }
+        }
+
+        public static void createTables(SqliteConnection con)
+        {
+            logger.Debug("SQL method createTables called");
+            if (con == null) return;
+
+            var command = con.CreateCommand();
+            command.CommandText = "CREATE TABLE `profiles` (`profile_id` INTEGER not null primary key autoincrement, `profile_name` VARCHAR(255) not null, `source_url` VARCHAR(255) not null, `target_url` VARCHAR(255) null, `type` INTEGER null DEFAULT '0', `name` VARCHAR(255) null, `state` VARCHAR(255) null, `details` VARCHAR(255) null, `large_image` VARCHAR(255) null, `large_text` VARCHAR(255) null, `small_image` VARCHAR(255) null, `small_text` VARCHAR(255) null, `audible` BOOLEAN null, `created_at` datetime not null default CURRENT_TIMESTAMP)";
+            logger.Trace("Execute query: {0}", command.CommandText);
+
+            try
+            {
+                command.ExecuteNonQuery();
+            } catch(SqliteException e)
+            {
+                logger.Error(e, "DB action coldn't be executed");
             }
         }
 
@@ -110,8 +144,7 @@ namespace DiscordRichPresence.modules
             if (con == null) return -1;
 
             var command = con.CreateCommand();
-            command.CommandText = @"INSERT INTO profiles (profile_name, source_url, target_url, type, name, state, details, large_image, large_text, small_image, small_text, audible)
-                VALUES($profile_name, $source_url, $target_url, $type, $name, $state, $details, $large_image, $large_text, $small_image, $small_text, $audible)";
+            command.CommandText = @"INSERT INTO profiles (profile_name, source_url, target_url, type, name, state, details, large_image, large_text, small_image, small_text, audible) VALUES($profile_name, $source_url, $target_url, $type, $name, $state, $details, $large_image, $large_text, $small_image, $small_text, $audible)";
             command.Parameters.AddWithValue("$profile_name", profile.ProfileName);
             command.Parameters.AddWithValue("$source_url", profile.SourceUrl);
             command.Parameters.AddWithValue("$target_url", profile.TargetUrl);
@@ -144,21 +177,7 @@ namespace DiscordRichPresence.modules
             if (con == null) return -1;
 
             var command = con.CreateCommand();
-            command.CommandText = @"
-                UPDATE profiles SET 
-                    profile_name = $profile_name,
-                    source_url = $source_url,
-                    target_url = $target_url,
-                    type = $type,
-                    name = $name,
-                    state = $state,
-                    details = $details,
-                    large_image = $large_image,
-                    large_text = $large_text,
-                    small_image = $small_image, 
-                    small_text = $small_text,
-                    audible = $audible
-                WHERE profile_id = $profile_id";
+            command.CommandText = "UPDATE profiles SET profile_name = $profile_name, source_url = $source_url, target_url = $target_url, type = $type, name = $name, state = $state, details = $details, large_image = $large_image, large_text = $large_text, small_image = $small_image, small_text = $small_text, audible = $audible WHERE profile_id = $profile_id";
             command.Parameters.AddWithValue("$profile_id", profile.ProfileId);
             command.Parameters.AddWithValue("$profile_name", profile.ProfileName);
             command.Parameters.AddWithValue("$source_url", profile.SourceUrl);
