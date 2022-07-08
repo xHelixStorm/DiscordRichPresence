@@ -70,6 +70,7 @@
             this.ntfIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.hlpProvider = new System.Windows.Forms.HelpProvider();
             this.btnMinimize = new System.Windows.Forms.Button();
+            this.btnOptions = new System.Windows.Forms.Button();
             this.gbxOptions.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -477,11 +478,22 @@
             this.btnMinimize.UseVisualStyleBackColor = true;
             this.btnMinimize.Click += new System.EventHandler(this.btnMinimize_Click);
             // 
+            // btnOptions
+            // 
+            this.btnOptions.Location = new System.Drawing.Point(430, 194);
+            this.btnOptions.Name = "btnOptions";
+            this.btnOptions.Size = new System.Drawing.Size(75, 23);
+            this.btnOptions.TabIndex = 6;
+            this.btnOptions.Text = "Options";
+            this.btnOptions.UseVisualStyleBackColor = true;
+            this.btnOptions.Click += new System.EventHandler(this.btnOptions_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(517, 515);
+            this.Controls.Add(this.btnOptions);
             this.Controls.Add(this.btnMinimize);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnUpdate);
@@ -546,5 +558,6 @@
         private NotifyIcon ntfIcon;
         private HelpProvider hlpProvider;
         private Button btnMinimize;
+        private Button btnOptions;
     }
 }

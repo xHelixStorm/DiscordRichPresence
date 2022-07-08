@@ -18,10 +18,10 @@ namespace DiscordRichPresence.modules
             initializeNLog();
             Logger logger = LogManager.GetCurrentClassLogger();
 
-            if (!modSQL.testDBConnection())
+            if (!modSQL.TestDBConnection())
             {
                 logger.Fatal("Terminate application due to database error");
-                System.Windows.Forms.Application.ExitThread();
+                Application.Exit();
                 return;
             }
 

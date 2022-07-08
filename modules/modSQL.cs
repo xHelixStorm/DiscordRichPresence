@@ -16,65 +16,63 @@ namespace DiscordRichPresence.modules
 
         const string SQLCONNECTION = "Data Source=DiscordRichPresence.db;";
 
-        private static SqliteConnection? createConnection()
+        private static SqliteConnection? CreateConnection()
         {
-            bool createMode = false;
-            if(!fileCheck)
-            {
-                if (!File.Exists("./DiscordRichPresence.db"))
-                {
-                    createMode = true;
-                }
-                fileCheck = true;
-            }
             SqliteConnection con = new SqliteConnection(SQLCONNECTION);
             try
             {
                 con.Open();
-                if (createMode)
+                if (con != null && !fileCheck)
                 {
-                    createTables(con);
+                    fileCheck = true;
+                    CreateTables(con);
                 }
                 return con;
             }
             catch (Exception e)
             {
                 logger.Error(e, "Database connection couldn't be established");
-                con.Close();
                 return null;
             }
         }
 
-        public static void createTables(SqliteConnection con)
+        public static void CreateTables(SqliteConnection con)
         {
-            logger.Debug("SQL method createTables called");
+            logger.Debug("SQL method CreateTables called");
             if (con == null) return;
-
-            var command = con.CreateCommand();
-            command.CommandText = "CREATE TABLE `profiles` (`profile_id` INTEGER not null primary key autoincrement, `profile_name` VARCHAR(255) not null, `source_url` VARCHAR(255) not null, `target_url` VARCHAR(255) null, `type` INTEGER null DEFAULT '0', `name` VARCHAR(255) null, `state` VARCHAR(255) null, `details` VARCHAR(255) null, `large_image` VARCHAR(255) null, `large_text` VARCHAR(255) null, `small_image` VARCHAR(255) null, `small_text` VARCHAR(255) null, `audible` BOOLEAN null, `created_at` datetime not null default CURRENT_TIMESTAMP)";
-            logger.Trace("Execute query: {0}", command.CommandText);
 
             try
             {
+                var command = con.CreateCommand();
+                command.CommandText = "CREATE TABLE IF NOT EXISTS `profiles` (`profile_id` INTEGER not null primary key autoincrement, `profile_name` VARCHAR(255) not null, `source_url` VARCHAR(255) not null, `target_url` VARCHAR(255) null, `type` INTEGER null DEFAULT '0', `name` VARCHAR(255) null, `state` VARCHAR(255) null, `details` VARCHAR(255) null, `large_image` VARCHAR(255) null, `large_text` VARCHAR(255) null, `small_image` VARCHAR(255) null, `small_text` VARCHAR(255) null, `audible` BOOLEAN null, `created_at` datetime not null default CURRENT_TIMESTAMP)";
+                logger.Trace("Execute query: {0}", command.CommandText);
+
+                command.ExecuteNonQuery();
+
+                command = con.CreateCommand();
+                command.CommandText = "CREATE TABLE IF NOT EXISTS `encryption` (`key` VARCHAR(255) not null PRIMARY KEY, `iv` VARCHAR(255) not null)";
+                logger.Trace("Execute query: {0}", command.CommandText);
+
                 command.ExecuteNonQuery();
             } catch(SqliteException e)
             {
-                logger.Error(e, "DB action coldn't be executed");
+                logger.Fatal(e, "Database tables couldn't be created. Application shutdown!");
+                throw (new Exception("Database tables couldn't be created. Application shutdown!"));
             }
         }
 
-        public static bool testDBConnection()
+        public static bool TestDBConnection()
         {
-            logger.Debug("SQL method testDBConnection called");
-            SqliteConnection con = createConnection();
+            logger.Debug("SQL method TestDBConnection called");
+            SqliteConnection con = CreateConnection();
             if (con != null) { return true; }
             return false;
         }
 
-        public static List<Profile>? fetchAllProfiles()
+        public static List<Profile>? FetchAllProfiles()
         {
-            logger.Debug("SQL method fetchAllProfiles called");
-            var con = createConnection();
+            logger.Debug("SQL method FetchAllProfiles called");
+            var con = CreateConnection();
             if (con == null) return null;
 
             List<Profile> profiles = new List<Profile>();
@@ -115,10 +113,10 @@ namespace DiscordRichPresence.modules
             return profiles;
         }
 
-        public static int deleteProfile(int profileId)
+        public static int DeleteProfile(int profileId)
         {
-            logger.Debug("SQL method deleteProfile called");
-            var con = createConnection();
+            logger.Debug("SQL method DeleteProfile called");
+            var con = CreateConnection();
             if (con == null) return -1;
 
             var command = con.CreateCommand();
@@ -137,10 +135,10 @@ namespace DiscordRichPresence.modules
             }
         }
 
-        public static int insertProfile(Profile profile)
+        public static int InsertProfile(Profile profile)
         {
-            logger.Debug("SQL method insertProfile called");
-            var con = createConnection();
+            logger.Debug("SQL method InsertProfile called");
+            var con = CreateConnection();
             if (con == null) return -1;
 
             var command = con.CreateCommand();
@@ -170,10 +168,10 @@ namespace DiscordRichPresence.modules
             }
         }
 
-        public static int updateProfile(Profile profile)
+        public static int UpdateProfile(Profile profile)
         {
-            logger.Debug("SQL method updateProfile called");
-            var con = createConnection();
+            logger.Debug("SQL method UpdateProfile called");
+            var con = CreateConnection();
             if (con == null) return -1;
 
             var command = con.CreateCommand();
@@ -193,6 +191,57 @@ namespace DiscordRichPresence.modules
             command.Parameters.AddWithValue("$audible", profile.Audible);
             logger.Trace("Execute query: {0}", command.CommandText);
             logger.Trace("Parameters passed: {0}", profile.ToString2());
+
+            try
+            {
+                return command.ExecuteNonQuery();
+            } catch(SqliteException e)
+            {
+                logger.Error(e, "DB action couldn't be executed");
+                return -1;
+            }
+        }
+
+        public static Encryption? GetEncryption()
+        {
+            logger.Debug("SQL method GetEncryption called");
+            var con = CreateConnection();
+            if (con == null) return null;
+
+            var command = con.CreateCommand();
+            command.CommandText = "SELECT * FROM encryption";
+            logger.Trace("Execute query: {0}", command.CommandText);
+
+            SqliteDataReader reader = null;
+            try
+            {
+                reader = command.ExecuteReader();
+                if (reader.Read())
+                {
+                    Encryption encryption = new Encryption(Convert.FromBase64String(reader.GetString(0)), Convert.FromBase64String(reader.GetString(1)));
+                    logger.Trace("Values obtained: {0}", encryption.ToString());
+                    return encryption;
+                }
+            } catch(SqliteException e)
+            {
+                logger.Error("DB action couldn't be executed");
+                return null;
+            }
+            return null;
+        }
+
+        public static int InsertEncryption(Encryption encryption)
+        {
+            logger.Debug("SQL method InsertEncryption called");
+            var con = CreateConnection();
+            if (con == null) return -1;
+
+            var command = con.CreateCommand();
+            command.CommandText = "INSERT INTO encryption (key, iv) VALUES($key, $iv)";
+            command.Parameters.AddWithValue("$key", Convert.ToBase64String(encryption.Key));
+            command.Parameters.AddWithValue("$iv", Convert.ToBase64String(encryption.IV));
+            logger.Trace("Execute query: {0}", command.CommandText);
+            logger.Trace("Parameters passed: {0}", encryption.ToString());
 
             try
             {

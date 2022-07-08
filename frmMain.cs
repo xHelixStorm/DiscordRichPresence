@@ -29,7 +29,7 @@ namespace DiscordRichPresence
 
         private void frmMain_Load(object sender, EventArgs e)
         {
-            logger.Info("Initialize Form");
+            logger.Info("Initialize Form frmMain");
             //initialize combo box for the activity type selections
             initializeActivityTypes();
             //Initialize help provider
@@ -41,7 +41,7 @@ namespace DiscordRichPresence
         private void fetchAllProfiles()
         {
             cbxProfiles.Items.Clear();
-            var profiles = modSQL.fetchAllProfiles();
+            var profiles = modSQL.FetchAllProfiles();
             if (profiles != null && profiles.Count > 0)
             {
                 cbxProfiles.Enabled = true;
@@ -331,7 +331,7 @@ namespace DiscordRichPresence
                 var profile = cbxProfiles.SelectedItem as Profile;
                 if(profile != null)
                 {
-                    dbResult = modSQL.deleteProfile(profile.ProfileId);
+                    dbResult = modSQL.DeleteProfile(profile.ProfileId);
                 }
                 if(dbResult > 0)
                 {
@@ -377,7 +377,7 @@ namespace DiscordRichPresence
 
             if (insertMode)
             {
-                int result = modSQL.insertProfile(profile);
+                int result = modSQL.InsertProfile(profile);
                 if(result > 0)
                 {
                     fetchAllProfiles();
@@ -392,7 +392,7 @@ namespace DiscordRichPresence
             }
             else if (updateMode)
             {
-                int result = modSQL.updateProfile(profile);
+                int result = modSQL.UpdateProfile(profile);
                 if(result > 0)
                 {
                     int profileId = profile.ProfileId;
@@ -439,6 +439,11 @@ namespace DiscordRichPresence
             this.WindowState = FormWindowState.Minimized;
             this.Hide();
             ntfIcon.Visible = true;
+        }
+
+        private void btnOptions_Click(object sender, EventArgs e)
+        {
+            new frmOptions().ShowDialog();
         }
     }
 }
