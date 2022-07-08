@@ -36,6 +36,15 @@ namespace DiscordRichPresence
             fetchAllProfiles();
         }
 
+        private void frmMain_Resize(object sender, EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Minimized)
+            {
+                this.Hide();
+                ntfIcon.Visible = true;
+            }
+        }
+
         private void fetchAllProfiles()
         {
             cbxProfiles.Items.Clear();
@@ -366,6 +375,13 @@ namespace DiscordRichPresence
             fillOptionsGroupBox(null);
             handleFieldEnableMode();
             cbxProfiles_SelectionChangeCommitted(cbxProfiles, e);
+        }
+
+        private void ntfIcon_DoubleClick(object sender, EventArgs e)
+        {
+            this.Show();
+            this.WindowState = FormWindowState.Normal;
+            ntfIcon.Visible = false;
         }
     }
 }
