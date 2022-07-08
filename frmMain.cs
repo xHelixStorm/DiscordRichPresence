@@ -32,17 +32,10 @@ namespace DiscordRichPresence
             logger.Info("Initialize Form");
             //initialize combo box for the activity type selections
             initializeActivityTypes();
+            //Initialize help provider
+            initializeHelpProvider();
             //Fetch all existing Profiles
             fetchAllProfiles();
-        }
-
-        private void frmMain_Resize(object sender, EventArgs e)
-        {
-            if (this.WindowState == FormWindowState.Minimized)
-            {
-                this.Hide();
-                ntfIcon.Visible = true;
-            }
         }
 
         private void fetchAllProfiles()
@@ -75,6 +68,62 @@ namespace DiscordRichPresence
                 IActivityType activity = new IActivityType(activityType);
                 cbxTypes.Items.Add(activity);
             }
+        }
+
+        private void initializeHelpProvider()
+        {
+            hlpProvider.SetShowHelp(cbxProfiles, true);
+            hlpProvider.SetShowHelp(btnAdd, true);
+            hlpProvider.SetShowHelp(btnUpdate, true);
+            hlpProvider.SetShowHelp(btnDelete, true);
+            hlpProvider.SetShowHelp(btnMinimize, true);
+            hlpProvider.SetShowHelp(tbxProfileName, true);
+            hlpProvider.SetShowHelp(tbxSourceUrl, true);
+            hlpProvider.SetShowHelp(tbxTargetUrl, true);
+            hlpProvider.SetShowHelp(cbxTypes, true);
+            hlpProvider.SetShowHelp(tbxName, true);
+            hlpProvider.SetShowHelp(tbxState, true);
+            hlpProvider.SetShowHelp(chkTargetState, true);
+            hlpProvider.SetShowHelp(tbxDetails, true);
+            hlpProvider.SetShowHelp(chkTargetDetails, true);
+            hlpProvider.SetShowHelp(tbxLargeImage, true);
+            hlpProvider.SetShowHelp(chkTargetLargeImage, true);
+            hlpProvider.SetShowHelp(tbxLargeText, true);
+            hlpProvider.SetShowHelp(chkTargetLargeText, true);
+            hlpProvider.SetShowHelp(tbxSmallImage, true);
+            hlpProvider.SetShowHelp(chkTargetSmallImage, true);
+            hlpProvider.SetShowHelp(tbxSmallText, true);
+            hlpProvider.SetShowHelp(chkTargetSmallText, true);
+            hlpProvider.SetShowHelp(chkAudible, true);
+            hlpProvider.SetShowHelp(btnSave, true);
+            hlpProvider.SetShowHelp(btnCancel, true);
+
+
+            hlpProvider.SetHelpString(cbxProfiles, "Select a registered profile to view the details or to enable additional buttons to either update or remove the selected profile.");
+            hlpProvider.SetHelpString(btnAdd, "Activate all components inside the Options group box for the creation of a new profile.");
+            hlpProvider.SetHelpString(btnUpdate, "Activate all components inside the Options group box to update a selected profile.");
+            hlpProvider.SetHelpString(btnDelete, "Delete a selected profile. Before the deletion, a message prompt appears to confirm the choice.");
+            hlpProvider.SetHelpString(btnMinimize, "Minimize application to the system tray.");
+            hlpProvider.SetHelpString(tbxProfileName, "Required field which has to contain the name of the profile that has to be created or updated.");
+            hlpProvider.SetHelpString(tbxSourceUrl, "Required field which has to contain the url of the website where events have to be collected.\nThe format of the url has to contain the full domain name, while sub domains can be written directly or combined with a regex requests.\n\nExamples of valid urls:\n\n- https://google.com\n- https://discord.com/developers/docs\n- https://discord.com/[regex:^.*$]");
+            hlpProvider.SetHelpString(tbxTargetUrl, "Optional field which has to contain the url of the website where the source url is redirected to.\nThe format of the url has to contain the full domain name, while sub domains can be written directly or combined with a regex requests.\n\nExamples of valid urls:\n\n- https://google.com\n- https://discord.com/developers/docs\n- https://discord.com/[regex:^.*$]");
+            hlpProvider.SetHelpString(cbxTypes, "Combo box for the type of activity. The activity types are to be combined with the Name field.\n\n- Playing: 'Playing {name}'\n- Streaming: 'Streaming {name}'\n- Listening: 'Listening to {name}'\n- Watching: 'Watching {name}'\n- Custom: '{name}'\n- Competing: 'Competing in {name}'\n\nNote: Streaming is only supported with Twitch and YouTube.");
+            hlpProvider.SetHelpString(tbxName, "Required field which works together with the activity types combo box for the status display on Discord. For example 'Playing {name}'.");
+            hlpProvider.SetHelpString(tbxState, "Optional field that will fill the state spot for the activity display on Discord. Content of this field can be combined with various expressions.\n\n- Regex: '[regex:[\\d\\w]*]'\n- Url: '[url]' or '[url=regex:[\\d]*$]]'\n- HTML Location: '[location:<div id=xyz>]' or '[location:<img class=xyz>:href]'\n- HTML Click Location: '[click:<a>;up;<div>;down;<img>:href]'");
+            hlpProvider.SetHelpString(chkTargetState, "When selected, values will be taken from the target website. Else, it will be taken from the source website.");
+            hlpProvider.SetHelpString(tbxDetails, "Optional field that will fill the details spot for the activity display on Discord. Content of this field can be combined with various expressions.\n\n- Regex: '[regex:[\\d\\w]*]'\n- Url: '[url]' or '[url=regex:[\\d]*$]]'\n- HTML Location: '[location:<div id=xyz>]' or '[location:<img class=xyz>:href]'\n- HTML Click Location: '[click:<a>;up;<div>;down;<img>:href]'");
+            hlpProvider.SetHelpString(chkTargetDetails, "When selected, values will be taken from the target website. Else, it will be taken from the source website.");
+            hlpProvider.SetHelpString(tbxLargeImage, "Optional field that will fill the large image spot for the activity display on Discord. Content of this field can be combined with various expressions.\n\n- Regex: '[regex:[\\d\\w]*]'\n- HTML Location: '[location:<img class=xyz>:href]'\n- HTML Click Location: '[click:<a>;up;<div>;down;<img>:href]'");
+            hlpProvider.SetHelpString(chkTargetLargeImage, "When selected, values will be taken from the target website. Else, it will be taken from the source website.");
+            hlpProvider.SetHelpString(tbxLargeText, "Optional field that will fill the large text spot for the activity display on Discord. Content of this field can be combined with various expressions.\n\n- Regex: '[regex:[\\d\\w]*]'\n- Url: '[url]' or '[url=regex:[\\d]*$]]'\n- HTML Location: '[location:<div id=xyz>]' or '[location:<img class=xyz>:href]'\n- HTML Click Location: '[click:<a>;up;<div>;down;<img>:href]'");
+            hlpProvider.SetHelpString(chkTargetLargeText, "When selected, values will be taken from the target website. Else, it will be taken from the source website.");
+            hlpProvider.SetHelpString(tbxSmallImage, "Optional field that will fill the small image spot for the activity display on Discord. Content of this field can be combined with various expressions.\n\n- Regex: '[regex:[\\d\\w]*]'\n- HTML Location: '[location:<img class=xyz>:href]'\n- HTML Click Location: '[click:<a>;up;<div>;down;<img>:href]'");
+            hlpProvider.SetHelpString(chkTargetSmallImage, "When selected, values will be taken from the target website. Else, it will be taken from the source website.");
+            hlpProvider.SetHelpString(tbxSmallText, "Optional field that will fill the small text spot for the activity display on Discord. Content of this field can be combined with various expressions.\n\n- Regex: '[regex:[\\d\\w]*]'\n- Url: '[url]' or '[url=regex:[\\d]*$]]'\n- HTML Location: '[location:<div id=xyz>]' or '[location:<img class=xyz>:href]'\n- HTML Click Location: '[click:<a>;up;<div>;down;<img>:href]'");
+            hlpProvider.SetHelpString(chkTargetSmallText, "When selected, values will be taken from the target website. Else, it will be taken from the source website.");
+            hlpProvider.SetHelpString(chkAudible, "When selected, events are collected when the browser tab has an audio but works only with values to be collected from the source website. Else, values are collected when the website is visited.");
+            hlpProvider.SetHelpString(btnSave, "Save all input by either creating a new profile or by updating an existing one.");
+            hlpProvider.SetHelpString(btnCancel, "Undo all not saved changes");
         }
 
         private void cbxProfiles_SelectionChangeCommitted(object sender, EventArgs e)
@@ -230,6 +279,7 @@ namespace DiscordRichPresence
             btnAdd.Enabled = !enabled;
             btnUpdate.Enabled = !enabled;
             btnDelete.Enabled = !enabled;
+            btnMinimize.Enabled = !enabled;
 
             tbxProfileName.Enabled = enabled;
             tbxSourceUrl.Enabled = enabled;
@@ -382,6 +432,13 @@ namespace DiscordRichPresence
             this.Show();
             this.WindowState = FormWindowState.Normal;
             ntfIcon.Visible = false;
+        }
+
+        private void btnMinimize_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
+            this.Hide();
+            ntfIcon.Visible = true;
         }
     }
 }

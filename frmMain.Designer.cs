@@ -68,6 +68,8 @@
             this.btnUpdate = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
             this.ntfIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.hlpProvider = new System.Windows.Forms.HelpProvider();
+            this.btnMinimize = new System.Windows.Forms.Button();
             this.gbxOptions.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -465,11 +467,22 @@
             this.ntfIcon.Text = "Discord Rich Presence Creator";
             this.ntfIcon.DoubleClick += new System.EventHandler(this.ntfIcon_DoubleClick);
             // 
+            // btnMinimize
+            // 
+            this.btnMinimize.Location = new System.Drawing.Point(429, 158);
+            this.btnMinimize.Name = "btnMinimize";
+            this.btnMinimize.Size = new System.Drawing.Size(75, 23);
+            this.btnMinimize.TabIndex = 4;
+            this.btnMinimize.Text = "Minimize";
+            this.btnMinimize.UseVisualStyleBackColor = true;
+            this.btnMinimize.Click += new System.EventHandler(this.btnMinimize_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(517, 515);
+            this.Controls.Add(this.btnMinimize);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnUpdate);
             this.Controls.Add(this.btnAdd);
@@ -477,12 +490,13 @@
             this.Controls.Add(this.cbxProfiles);
             this.Controls.Add(this.lblProfiles);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.HelpButton = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "frmMain";
             this.Text = "Discord Rich Presence Creator";
             this.Load += new System.EventHandler(this.frmMain_Load);
-            this.Resize += new System.EventHandler(this.frmMain_Resize);
             this.gbxOptions.ResumeLayout(false);
             this.gbxOptions.PerformLayout();
             this.ResumeLayout(false);
@@ -530,5 +544,7 @@
         private Button btnDelete;
         private CheckBox chkAudible;
         private NotifyIcon ntfIcon;
+        private HelpProvider hlpProvider;
+        private Button btnMinimize;
     }
 }
