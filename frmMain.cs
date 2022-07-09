@@ -1,6 +1,7 @@
 ﻿using DiscordRichPresence.constructors;
 using DiscordRichPresence.enums;
 using DiscordRichPresence.modules;
+using Microsoft.Win32;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -21,10 +22,12 @@ namespace DiscordRichPresence
 
         private bool insertMode = false;
         private bool updateMode = false;
+        private bool autoMinimize = false;
 
-        public frmMain()
+        public frmMain(bool minimize)
         {
             InitializeComponent();
+            autoMinimize = minimize;
         }
 
         private void frmMain_Load(object sender, EventArgs e)
@@ -36,6 +39,20 @@ namespace DiscordRichPresence
             initializeHelpProvider();
             //Fetch all existing Profiles
             fetchAllProfiles();
+        }
+
+        private void frmMain_Shown(object sender, EventArgs e)
+        {
+            //Minimize application to system tray if the startup parameter was used
+            if (autoMinimize)
+            {
+                btnMinimize_Click(sender, e);
+            }
+            else
+            {
+                this.ShowInTaskbar = true;
+                this.WindowState = FormWindowState.Normal;
+            }
         }
 
         private void fetchAllProfiles()
@@ -432,21 +449,41 @@ namespace DiscordRichPresence
 
         private void ntfIcon_DoubleClick(object sender, EventArgs e)
         {
+            this.ShowInTaskbar = true;
             this.Show();
             this.WindowState = FormWindowState.Normal;
-            ntfIcon.Visible = false;
+            this.Activate();
         }
 
         private void btnMinimize_Click(object sender, EventArgs e)
         {
             this.WindowState = FormWindowState.Minimized;
             this.Hide();
-            ntfIcon.Visible = true;
         }
 
         private void btnOptions_Click(object sender, EventArgs e)
         {
+
             new frmOptions().ShowDialog();
+
+            AppConf conf = modUtil.GetAppConf();
+
+            //Initialize application auto start
+            RegistryKey regKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true);
+            if (regKey == null)
+            {
+                logger.Warn("Auto start path in the registry couldn't be opened");
+                return;
+            }
+            if (conf.AutoStart)
+            {
+                regKey.SetValue("DiscordRichPresence", Application.ExecutablePath + " /startup");
+            }
+            else
+            {
+                regKey.DeleteValue("DiscordRichPresence", false);
+            }
+            regKey.Close();
         }
     }
 }

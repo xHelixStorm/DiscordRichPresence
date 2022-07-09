@@ -12,7 +12,16 @@ namespace DiscordRichPresence.constructors
     public class AppConf
     {
         private static readonly string confFileName = "./conf.cfg";
-        private static readonly string confContent = @"<?xml version=""1.0"" encoding=""utf-8"" ?><configuration><appSettings><Port>{port}</Port></appSettings></configuration>";
+        private static readonly string confContent = 
+        @"<?xml version=""1.0"" encoding=""utf-8"" ?>
+        <configuration>
+            <appSettings>
+                <Port>{port}</Port>
+                <DiscordClientId>{discordClientId}</DiscordClientId>
+                <AutoStart>{autoStart}</AutoStart>
+                <AutoStartWebservice>{autoStartWebservice}</AutoStartWebservice>
+            </appSettings>
+        </configuration>";
 
         private int port = 0;
         private long discordClientId = 0;

@@ -466,6 +466,7 @@
             // 
             this.ntfIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("ntfIcon.Icon")));
             this.ntfIcon.Text = "Discord Rich Presence Creator";
+            this.ntfIcon.Visible = true;
             this.ntfIcon.DoubleClick += new System.EventHandler(this.ntfIcon_DoubleClick);
             // 
             // btnMinimize
@@ -507,8 +508,11 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frmMain";
+            this.ShowInTaskbar = false;
             this.Text = "Discord Rich Presence Creator";
+            this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
             this.Load += new System.EventHandler(this.frmMain_Load);
+            this.Shown += new System.EventHandler(this.frmMain_Shown);
             this.gbxOptions.ResumeLayout(false);
             this.gbxOptions.PerformLayout();
             this.ResumeLayout(false);

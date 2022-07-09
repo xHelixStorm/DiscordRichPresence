@@ -11,7 +11,7 @@ namespace DiscordRichPresence.modules
         ///  Create Rich presences for Discord.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
             //Create all required directories
             CreateDirectories();
@@ -31,7 +31,8 @@ namespace DiscordRichPresence.modules
             {
                 logger.Info("Initialize application start up");
                 ApplicationConfiguration.Initialize();
-                Application.Run(new frmMain());
+                bool minimize = args.Where(arg => arg.StartsWith("/startup")).Any();
+                Application.Run(new frmMain(minimize));
             }
             else
             {
