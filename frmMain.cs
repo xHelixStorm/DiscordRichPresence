@@ -485,5 +485,15 @@ namespace DiscordRichPresence
             }
             regKey.Close();
         }
+
+        private void tsmOpen_Click(object sender, EventArgs e)
+        {
+            ntfIcon_DoubleClick(sender, e);
+        }
+
+        private void tsmClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }

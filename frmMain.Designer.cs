@@ -68,10 +68,15 @@
             this.btnUpdate = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
             this.ntfIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.cmsTrayIconContext = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tsmOpen = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsmClose = new System.Windows.Forms.ToolStripMenuItem();
             this.hlpProvider = new System.Windows.Forms.HelpProvider();
             this.btnMinimize = new System.Windows.Forms.Button();
             this.btnOptions = new System.Windows.Forms.Button();
             this.gbxOptions.SuspendLayout();
+            this.cmsTrayIconContext.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblProfiles
@@ -464,10 +469,39 @@
             // 
             // ntfIcon
             // 
+            this.ntfIcon.ContextMenuStrip = this.cmsTrayIconContext;
             this.ntfIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("ntfIcon.Icon")));
             this.ntfIcon.Text = "Discord Rich Presence Creator";
             this.ntfIcon.Visible = true;
             this.ntfIcon.DoubleClick += new System.EventHandler(this.ntfIcon_DoubleClick);
+            // 
+            // cmsTrayIconContext
+            // 
+            this.cmsTrayIconContext.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmOpen,
+            this.toolStripSeparator1,
+            this.tsmClose});
+            this.cmsTrayIconContext.Name = "cmsTrayIconContext";
+            this.cmsTrayIconContext.Size = new System.Drawing.Size(104, 54);
+            // 
+            // tsmOpen
+            // 
+            this.tsmOpen.Name = "tsmOpen";
+            this.tsmOpen.Size = new System.Drawing.Size(103, 22);
+            this.tsmOpen.Text = "Open";
+            this.tsmOpen.Click += new System.EventHandler(this.tsmOpen_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(100, 6);
+            // 
+            // tsmClose
+            // 
+            this.tsmClose.Name = "tsmClose";
+            this.tsmClose.Size = new System.Drawing.Size(103, 22);
+            this.tsmClose.Text = "Close";
+            this.tsmClose.Click += new System.EventHandler(this.tsmClose_Click);
             // 
             // btnMinimize
             // 
@@ -515,6 +549,7 @@
             this.Shown += new System.EventHandler(this.frmMain_Shown);
             this.gbxOptions.ResumeLayout(false);
             this.gbxOptions.PerformLayout();
+            this.cmsTrayIconContext.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -563,5 +598,9 @@
         private HelpProvider hlpProvider;
         private Button btnMinimize;
         private Button btnOptions;
+        private ContextMenuStrip cmsTrayIconContext;
+        private ToolStripMenuItem tsmOpen;
+        private ToolStripSeparator toolStripSeparator1;
+        private ToolStripMenuItem tsmClose;
     }
 }
