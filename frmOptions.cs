@@ -19,87 +19,59 @@ namespace DiscordRichPresence
     public partial class frmOptions : Form
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
-        private static readonly string FILENAME = "./conf.cfg";
-        private static Encryption? encryption;
 
         public frmOptions()
         {
             InitializeComponent();
-
-            hlpProvider.SetShowHelp(nudPort, true);
-            hlpProvider.SetHelpString(nudPort, "Port for the internal webservice which receives events from the browser extension.");
-
-            if(encryption == null)
-            {
-                encryption = modSQL.GetEncryption();
-                if (encryption == null)
-                {
-                    var aes = Aes.Create();
-                    if (aes != null)
-                    {
-                        encryption = new Encryption(aes.Key, aes.IV);
-                        modSQL.InsertEncryption(encryption);
-                    }
-                    else
-                    {
-                        logger.Fatal("Encryption keys couldn't be generated. Application shutdown!");
-                        throw new Exception("Encryption keys couldn't be generated. Application shutdown!");
-                    }
-                }
-            }
+            InitializeHelpProvider();
         }
 
         private void frmOptions_Load(object sender, EventArgs e)
         {
             logger.Info("Initialize Form frmOptions");
-            try
+            
+            AppConf appConf = modUtil.GetAppConf();
+            nudPort.Value = appConf.Port;
+            nudDiscordClientId.Value = appConf.DiscordClientId;
+            chkAutoStart.Checked = appConf.AutoStart;
+            chkAutoStartWebservice.Checked = appConf.AutoStartWebservice;
+        }
+
+        private void InitializeHelpProvider()
+        {
+            hlpProvider.SetShowHelp(nudPort, true);
+            hlpProvider.SetShowHelp(nudDiscordClientId, true);
+            hlpProvider.SetShowHelp(chkAutoStart, true);
+            hlpProvider.SetShowHelp(chkAutoStartWebservice, true);
+            hlpProvider.SetShowHelp(btnOK, true);
+
+            hlpProvider.SetHelpString(nudPort, "Port for the internal webservice which receives events from the browser extension.");
+            hlpProvider.SetHelpString(nudDiscordClientId, "Unique number obtained from the Discord developer site after creating an application. The client id is required to use the Discord API to display activities on Discord.");
+            hlpProvider.SetHelpString(chkAutoStart, "Automatically start this application on windows start");
+            hlpProvider.SetHelpString(chkAutoStartWebservice, "Automatically run the webservice in the background when the application has started.");
+            hlpProvider.SetHelpString(btnOK, "Save configuration and close the window.");
+        }
+
+        private void HandleKeyPressed(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
             {
-                if (!File.Exists(FILENAME))
-                {
-                    nudPort.Value = 0;
-                }
-                else
-                {
-                    string fileContent = modUtil.Decrypt(File.ReadAllBytes(FILENAME), encryption.Key, encryption.IV);
-                    XDocument doc = XDocument.Parse(fileContent);
-                    XElement configuration = doc.Element("configuration");
-                    if(configuration != null)
-                    {
-                        XElement appSettings = configuration.Element("appSettings");
-                        if(appSettings != null)
-                        {
-                            foreach (var el in appSettings.Elements())
-                            {
-                                if (el.Name == "Port")
-                                {
-                                    nudPort.Value = Convert.ToInt32(el.Value);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            throw new Exception("Invalid configuration file");
-                        }
-                    }
-                    else
-                    {
-                        throw new Exception("Invalid configuration file");
-                    }
-                }
-            } catch(Exception ex)
-            {
-                logger.Fatal(ex, "Error on fetching the configuration. Application shutdown!");
-                Application.Exit();
+                btnOK_Click(sender, e);
             }
         }
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            string xml = modUtil.ConfContent();
-            xml = xml.Replace("{port}", nudPort.Value + "");
+            AppConf appConf = modUtil.GetAppConf();
+            appConf.Port = (int)nudPort.Value;
+            appConf.DiscordClientId = (long)nudDiscordClientId.Value;
+            appConf.AutoStart = chkAutoStart.Checked;
+            appConf.AutoStartWebservice = chkAutoStartWebservice.Checked;
+
             try
             {
-                File.WriteAllBytes(FILENAME, modUtil.Encrypt(xml, encryption.Key, encryption.IV));
+                appConf.Save();
+                modUtil.SetAppConf(appConf);
                 this.Close();
             } catch(Exception ex)
             {
@@ -110,10 +82,22 @@ namespace DiscordRichPresence
 
         private void nudPort_KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.KeyCode == Keys.Enter)
-            {
-                btnOK_Click(sender, e);
-            }
+            HandleKeyPressed(sender, e);
+        }
+
+        private void nudDiscordClientId_KeyDown(object sender, KeyEventArgs e)
+        {
+            HandleKeyPressed(sender, e);
+        }
+
+        private void chkAutoStart_KeyDown(object sender, KeyEventArgs e)
+        {
+            HandleKeyPressed(sender, e);
+        }
+
+        private void chkAutoStartWebservice_KeyDown(object sender, KeyEventArgs e)
+        {
+            HandleKeyPressed(sender, e);
         }
     }
 }

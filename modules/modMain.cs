@@ -1,3 +1,4 @@
+using DiscordRichPresence.constructors;
 using DiscordRichPresence.enums;
 using NLog;
 
@@ -13,9 +14,9 @@ namespace DiscordRichPresence.modules
         static void Main()
         {
             //Create all required directories
-            createDirectories();
+            CreateDirectories();
             //initialize Logger configuration
-            initializeNLog();
+            InitializeNLog();
             Logger logger = LogManager.GetCurrentClassLogger();
 
             if (!modSQL.TestDBConnection())
@@ -25,15 +26,23 @@ namespace DiscordRichPresence.modules
                 return;
             }
 
-            logger.Info("Initialize application start up");
-            ApplicationConfiguration.Initialize();
-            Application.Run(new frmMain());
+            //Load configuration of this application
+            if(LoadAppConfig(logger))
+            {
+                logger.Info("Initialize application start up");
+                ApplicationConfiguration.Initialize();
+                Application.Run(new frmMain());
+            }
+            else
+            {
+                Application.Exit();
+            }
         }
 
         /// <summary>
         /// Create directories on start up
         /// </summary>
-        private static void createDirectories()
+        private static void CreateDirectories()
         {
             foreach (string path in modUtil.GetFolders().GetPaths())
             {
@@ -47,10 +56,10 @@ namespace DiscordRichPresence.modules
         /// <summary>
         /// Method for the initialization of NLog
         /// </summary>
-        private static void initializeNLog()
+        private static void InitializeNLog()
         {
             var config = new NLog.Config.LoggingConfiguration();
-            const string layout = "${pad:padding=5:inner=level:uppercase=true} ${longdate} ${logger} Thread ${threadid} - ${message} ${exception:format=toString,Data}";
+            const string layout = "${pad:padding=5:inner=${level:uppercase=true}} ${longdate} ${logger} Thread ${threadid} - ${message} ${exception:format=toString,Data}";
             var logFile = new NLog.Targets.FileTarget("logfile") { FileName = modUtil.GetFolders().GetPath(Folder.LOG)+"DiscordRichPresence.log" };
             var logConsole = new NLog.Targets.ConsoleTarget("logconsole");
 
@@ -70,6 +79,19 @@ namespace DiscordRichPresence.modules
                 config.AddRule(LogLevel.Info, LogLevel.Fatal, logFile);
             #endif
             NLog.LogManager.Configuration = config;
+        }
+
+        private static bool LoadAppConfig(Logger logger)
+        {
+            try
+            {
+                modUtil.SetAppConf(new AppConf().Load());
+            } catch(Exception e)
+            {
+                logger.Fatal(e, "Configuration couldn't be loaded. Application shutdown!");
+                return false;
+            }
+            return true;
         }
     }
 }

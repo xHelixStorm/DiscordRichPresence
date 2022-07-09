@@ -1,4 +1,5 @@
-﻿using DiscordRichPresence.enums;
+﻿using DiscordRichPresence.constructors;
+using DiscordRichPresence.enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace DiscordRichPresence.modules
     public class modUtil
     {
         private static readonly IFolder folders = new IFolder();
-        private static readonly string confContent = @"<?xml version=""1.0"" encoding=""utf-8"" ?><configuration><appSettings><Port>{port}</Port></appSettings></configuration>";
+        private static AppConf appConf = new AppConf();
 
         /// <summary>
         /// Return IFolder object instance which utilizes the enum Folder
@@ -22,9 +23,22 @@ namespace DiscordRichPresence.modules
             return folders;
         }
 
-        public static string ConfContent()
+        /// <summary>
+        /// Method to retrieve the current configuration of this application
+        /// </summary>
+        /// <returns>Retrieve configuration options</returns>
+        public static AppConf GetAppConf()
         {
-            return confContent;
+            return appConf;
+        }
+
+        /// <summary>
+        /// Overwrite the existing configuration
+        /// </summary>
+        /// <param name="_appConf">AppConf object with the new configuration</param>
+        public static void SetAppConf(AppConf _appConf)
+        {
+            appConf = _appConf;
         }
 
         /// <summary>
