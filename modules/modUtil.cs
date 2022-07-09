@@ -11,6 +11,7 @@ namespace DiscordRichPresence.modules
     public class modUtil
     {
         private static readonly IFolder folders = new IFolder();
+        private static readonly string confContent = @"<?xml version=""1.0"" encoding=""utf-8"" ?><configuration><appSettings><Port>{port}</Port></appSettings></configuration>";
 
         /// <summary>
         /// Return IFolder object instance which utilizes the enum Folder
@@ -19,6 +20,11 @@ namespace DiscordRichPresence.modules
         public static IFolder GetFolders()
         {
             return folders;
+        }
+
+        public static string ConfContent()
+        {
+            return confContent;
         }
 
         /// <summary>
