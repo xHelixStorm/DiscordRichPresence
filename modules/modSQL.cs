@@ -14,7 +14,7 @@ namespace DiscordRichPresence.modules
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private static bool fileCheck = false;
 
-        const string SQLCONNECTION = "Data Source=DiscordRichPresence.db;";
+        private static readonly string SQLCONNECTION = "Data Source=" + Application.StartupPath + "DiscordRichPresence.db;";
 
         private static SqliteConnection? CreateConnection()
         {

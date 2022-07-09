@@ -11,7 +11,7 @@ namespace DiscordRichPresence.constructors
 {
     public class AppConf
     {
-        private static readonly string confFileName = "./conf.cfg";
+        private static readonly string confFileName = Application.StartupPath + "conf.cfg";
         private static readonly string confContent = 
         @"<?xml version=""1.0"" encoding=""utf-8"" ?>
         <configuration>
@@ -133,6 +133,11 @@ namespace DiscordRichPresence.constructors
             Encryption encryption = Encryption();
             File.WriteAllBytes(confFileName, modUtil.Encrypt(xml, encryption.Key, encryption.IV));
             return this;
+        }
+
+        public override string ToString()
+        {
+            return "{\"Port\": " + port + ", \"DiscordClientId\": " + discordClientId + ", \"AutoStart\": " + autoStart + ", \"AutoStartWebservice\": " + autoStartWebservice + "}".Normalize();
         }
     }
 }

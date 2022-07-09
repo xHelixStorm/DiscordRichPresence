@@ -35,6 +35,9 @@ namespace DiscordRichPresence
             nudDiscordClientId.Value = appConf.DiscordClientId;
             chkAutoStart.Checked = appConf.AutoStart;
             chkAutoStartWebservice.Checked = appConf.AutoStartWebservice;
+
+            logger.Trace("Configuration obtained from file: {0}", appConf.ToString);
+            logger.Info("Configuration loaded.");
         }
 
         private void InitializeHelpProvider()
@@ -72,6 +75,8 @@ namespace DiscordRichPresence
             {
                 appConf.Save();
                 modUtil.SetAppConf(appConf);
+                logger.Trace("New configuration values: {0}", appConf.ToString());
+                logger.Info("Configuration saved");
                 this.Close();
             } catch(Exception ex)
             {

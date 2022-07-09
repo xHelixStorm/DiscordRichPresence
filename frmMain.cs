@@ -469,7 +469,7 @@ namespace DiscordRichPresence
             AppConf conf = modUtil.GetAppConf();
 
             //Initialize application auto start
-            RegistryKey regKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true);
+            RegistryKey regKey = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", true);
             if (regKey == null)
             {
                 logger.Warn("Auto start path in the registry couldn't be opened");
@@ -477,11 +477,11 @@ namespace DiscordRichPresence
             }
             if (conf.AutoStart)
             {
-                regKey.SetValue("DiscordRichPresence", Application.ExecutablePath + " /startup");
+                regKey.SetValue(Application.ProductName, "\"" + Application.ExecutablePath + "\" /startup");
             }
             else
             {
-                regKey.DeleteValue("DiscordRichPresence", false);
+                regKey.DeleteValue(Application.ProductName, false);
             }
             regKey.Close();
         }
