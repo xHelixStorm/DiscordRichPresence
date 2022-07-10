@@ -124,6 +124,7 @@ namespace DiscordRichPresence
             hlpProvider.SetShowHelp(chkAudible, true);
             hlpProvider.SetShowHelp(btnSave, true);
             hlpProvider.SetShowHelp(btnCancel, true);
+            hlpProvider.SetShowHelp(tbxPort, true);
 
 
             hlpProvider.SetHelpString(cbxProfiles, "Select a registered profile to view the details or to enable additional buttons to either update or remove the selected profile.");
@@ -154,6 +155,7 @@ namespace DiscordRichPresence
             hlpProvider.SetHelpString(chkAudible, "When selected, events are collected when the browser tab has an audio but works only with values to be collected from the source website. Else, values are collected when the website is visited.");
             hlpProvider.SetHelpString(btnSave, "Save all input by either creating a new profile or by updating an existing one.");
             hlpProvider.SetHelpString(btnCancel, "Undo all not saved changes");
+            hlpProvider.SetHelpString(tbxPort, "Display the port that is in use from the webservice.");
         }
 
         private void cbxProfiles_SelectionChangeCommitted(object sender, EventArgs e)
