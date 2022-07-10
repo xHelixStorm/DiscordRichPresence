@@ -48,7 +48,7 @@ namespace DiscordRichPresence
             hlpProvider.SetShowHelp(chkAutoStartWebservice, true);
             hlpProvider.SetShowHelp(btnOK, true);
 
-            hlpProvider.SetHelpString(nudPort, "Port for the internal webservice which receives events from the browser extension.");
+            hlpProvider.SetHelpString(nudPort, "Port for the internal webservice which receives events from the browser extension. If the port stays 0, a random available port will be used.");
             hlpProvider.SetHelpString(nudDiscordClientId, "Unique number obtained from the Discord developer site after creating an application. The client id is required to use the Discord API to display activities on Discord.");
             hlpProvider.SetHelpString(chkAutoStart, "Automatically start this application on windows start");
             hlpProvider.SetHelpString(chkAutoStartWebservice, "Automatically run the webservice in the background when the application has started.");

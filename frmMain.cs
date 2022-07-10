@@ -24,6 +24,8 @@ namespace DiscordRichPresence
         private bool updateMode = false;
         private bool autoMinimize = false;
 
+        private int usedPort = 0;
+
         public frmMain(bool minimize)
         {
             InitializeComponent();
@@ -511,7 +513,8 @@ namespace DiscordRichPresence
             tsmRunWebservice.Enabled = false;
             btnEnd.Enabled = true;
             tsmEndWebservice.Enabled = true;
-            modWebservice.RunWebservice();
+            int port = modWebservice.RunWebservice();
+            tbxPort.Text = port.ToString();
         }
 
         private void btnEnd_Click(object sender, EventArgs e)
@@ -521,6 +524,7 @@ namespace DiscordRichPresence
             btnStart.Enabled = true;
             tsmRunWebservice.Enabled = true;
             modWebservice.StopWebservice();
+            tbxPort.Text = "";
         }
     }
 }

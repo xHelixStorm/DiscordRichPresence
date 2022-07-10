@@ -17,16 +17,18 @@ namespace DiscordRichPresence.modules
         private static TcpListener? server = null;
         private static bool interrupt = false;
 
-        public static void RunWebservice()
+        public static int RunWebservice()
         {
             interrupt = false;
+            AppConf appConf = modUtil.GetAppConf();
+            server = new TcpListener(IPAddress.Parse("127.0.0.1"), appConf.Port);
+            server.Start();
+
+            int port = Convert.ToInt32(server.LocalEndpoint.ToString()?.Split(":")[1]);
+            logger.Info("Webservice started with port: {0}", port);
+
             Task.Run(() =>
             {
-                AppConf appConf = modUtil.GetAppConf();
-                server = new TcpListener(IPAddress.Parse("127.0.0.1"), appConf.Port);
-                server.Start();
-                logger.Info("Webservice started with port: {0}", appConf.Port);
-
                 while (true)
                 {
                     TcpClient client = null;
@@ -89,6 +91,8 @@ namespace DiscordRichPresence.modules
                     }
                 }
             });
+
+            return port;
         }
 
         public static void StopWebservice()

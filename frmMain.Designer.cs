@@ -70,16 +70,18 @@
             this.ntfIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.cmsTrayIconContext = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmOpen = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmRunWebservice = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmEndWebservice = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmClose = new System.Windows.Forms.ToolStripMenuItem();
             this.hlpProvider = new System.Windows.Forms.HelpProvider();
             this.btnMinimize = new System.Windows.Forms.Button();
             this.btnOptions = new System.Windows.Forms.Button();
             this.gbxWebservice = new System.Windows.Forms.GroupBox();
+            this.tbxPort = new System.Windows.Forms.TextBox();
+            this.lblPort = new System.Windows.Forms.Label();
             this.btnEnd = new System.Windows.Forms.Button();
             this.btnStart = new System.Windows.Forms.Button();
-            this.tsmRunWebservice = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmEndWebservice = new System.Windows.Forms.ToolStripMenuItem();
             this.gbxOptions.SuspendLayout();
             this.cmsTrayIconContext.SuspendLayout();
             this.gbxWebservice.SuspendLayout();
@@ -499,6 +501,21 @@
             this.tsmOpen.Text = "Open";
             this.tsmOpen.Click += new System.EventHandler(this.tsmOpen_Click);
             // 
+            // tsmRunWebservice
+            // 
+            this.tsmRunWebservice.Name = "tsmRunWebservice";
+            this.tsmRunWebservice.Size = new System.Drawing.Size(158, 22);
+            this.tsmRunWebservice.Text = "Run Webservice";
+            this.tsmRunWebservice.Click += new System.EventHandler(this.btnStart_Click);
+            // 
+            // tsmEndWebservice
+            // 
+            this.tsmEndWebservice.Enabled = false;
+            this.tsmEndWebservice.Name = "tsmEndWebservice";
+            this.tsmEndWebservice.Size = new System.Drawing.Size(158, 22);
+            this.tsmEndWebservice.Text = "End Webservice";
+            this.tsmEndWebservice.Click += new System.EventHandler(this.btnEnd_Click);
+            // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
@@ -534,14 +551,35 @@
             // gbxWebservice
             // 
             this.gbxWebservice.BackColor = System.Drawing.SystemColors.Window;
+            this.gbxWebservice.Controls.Add(this.tbxPort);
+            this.gbxWebservice.Controls.Add(this.lblPort);
             this.gbxWebservice.Controls.Add(this.btnEnd);
             this.gbxWebservice.Controls.Add(this.btnStart);
             this.gbxWebservice.Location = new System.Drawing.Point(418, 263);
             this.gbxWebservice.Name = "gbxWebservice";
-            this.gbxWebservice.Size = new System.Drawing.Size(99, 129);
+            this.gbxWebservice.Size = new System.Drawing.Size(99, 188);
             this.gbxWebservice.TabIndex = 7;
             this.gbxWebservice.TabStop = false;
             this.gbxWebservice.Text = "Webservice";
+            // 
+            // tbxPort
+            // 
+            this.tbxPort.Location = new System.Drawing.Point(12, 149);
+            this.tbxPort.Name = "tbxPort";
+            this.tbxPort.ReadOnly = true;
+            this.tbxPort.Size = new System.Drawing.Size(75, 23);
+            this.tbxPort.TabIndex = 8;
+            this.tbxPort.TabStop = false;
+            this.tbxPort.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // lblPort
+            // 
+            this.lblPort.AutoSize = true;
+            this.lblPort.Location = new System.Drawing.Point(12, 114);
+            this.lblPort.Name = "lblPort";
+            this.lblPort.Size = new System.Drawing.Size(32, 15);
+            this.lblPort.TabIndex = 9;
+            this.lblPort.Text = "Port:";
             // 
             // btnEnd
             // 
@@ -563,21 +601,6 @@
             this.btnStart.Text = "Start";
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
-            // 
-            // tsmRunWebservice
-            // 
-            this.tsmRunWebservice.Name = "tsmRunWebservice";
-            this.tsmRunWebservice.Size = new System.Drawing.Size(158, 22);
-            this.tsmRunWebservice.Text = "Run Webservice";
-            this.tsmRunWebservice.Click += new System.EventHandler(this.btnStart_Click);
-            // 
-            // tsmEndWebservice
-            // 
-            this.tsmEndWebservice.Enabled = false;
-            this.tsmEndWebservice.Name = "tsmEndWebservice";
-            this.tsmEndWebservice.Size = new System.Drawing.Size(158, 22);
-            this.tsmEndWebservice.Text = "End Webservice";
-            this.tsmEndWebservice.Click += new System.EventHandler(this.btnEnd_Click);
             // 
             // frmMain
             // 
@@ -608,6 +631,7 @@
             this.gbxOptions.PerformLayout();
             this.cmsTrayIconContext.ResumeLayout(false);
             this.gbxWebservice.ResumeLayout(false);
+            this.gbxWebservice.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -665,5 +689,7 @@
         private Button btnStart;
         private ToolStripMenuItem tsmRunWebservice;
         private ToolStripMenuItem tsmEndWebservice;
+        private TextBox tbxPort;
+        private Label lblPort;
     }
 }
