@@ -78,6 +78,8 @@
             this.gbxWebservice = new System.Windows.Forms.GroupBox();
             this.btnEnd = new System.Windows.Forms.Button();
             this.btnStart = new System.Windows.Forms.Button();
+            this.tsmRunWebservice = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmEndWebservice = new System.Windows.Forms.ToolStripMenuItem();
             this.gbxOptions.SuspendLayout();
             this.cmsTrayIconContext.SuspendLayout();
             this.gbxWebservice.SuspendLayout();
@@ -483,27 +485,29 @@
             // 
             this.cmsTrayIconContext.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmOpen,
+            this.tsmRunWebservice,
+            this.tsmEndWebservice,
             this.toolStripSeparator1,
             this.tsmClose});
             this.cmsTrayIconContext.Name = "cmsTrayIconContext";
-            this.cmsTrayIconContext.Size = new System.Drawing.Size(104, 54);
+            this.cmsTrayIconContext.Size = new System.Drawing.Size(159, 98);
             // 
             // tsmOpen
             // 
             this.tsmOpen.Name = "tsmOpen";
-            this.tsmOpen.Size = new System.Drawing.Size(103, 22);
+            this.tsmOpen.Size = new System.Drawing.Size(158, 22);
             this.tsmOpen.Text = "Open";
             this.tsmOpen.Click += new System.EventHandler(this.tsmOpen_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(100, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(155, 6);
             // 
             // tsmClose
             // 
             this.tsmClose.Name = "tsmClose";
-            this.tsmClose.Size = new System.Drawing.Size(103, 22);
+            this.tsmClose.Size = new System.Drawing.Size(158, 22);
             this.tsmClose.Text = "Close";
             this.tsmClose.Click += new System.EventHandler(this.tsmClose_Click);
             // 
@@ -559,6 +563,21 @@
             this.btnStart.Text = "Start";
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
+            // 
+            // tsmRunWebservice
+            // 
+            this.tsmRunWebservice.Name = "tsmRunWebservice";
+            this.tsmRunWebservice.Size = new System.Drawing.Size(158, 22);
+            this.tsmRunWebservice.Text = "Run Webservice";
+            this.tsmRunWebservice.Click += new System.EventHandler(this.btnStart_Click);
+            // 
+            // tsmEndWebservice
+            // 
+            this.tsmEndWebservice.Enabled = false;
+            this.tsmEndWebservice.Name = "tsmEndWebservice";
+            this.tsmEndWebservice.Size = new System.Drawing.Size(158, 22);
+            this.tsmEndWebservice.Text = "End Webservice";
+            this.tsmEndWebservice.Click += new System.EventHandler(this.btnEnd_Click);
             // 
             // frmMain
             // 
@@ -644,5 +663,7 @@
         private GroupBox gbxWebservice;
         private Button btnEnd;
         private Button btnStart;
+        private ToolStripMenuItem tsmRunWebservice;
+        private ToolStripMenuItem tsmEndWebservice;
     }
 }

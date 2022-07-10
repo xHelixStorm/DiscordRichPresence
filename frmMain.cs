@@ -508,14 +508,18 @@ namespace DiscordRichPresence
         private void btnStart_Click(object sender, EventArgs e)
         {
             btnStart.Enabled = false;
+            tsmRunWebservice.Enabled = false;
             btnEnd.Enabled = true;
+            tsmEndWebservice.Enabled = true;
             modWebservice.RunWebservice();
         }
 
         private void btnEnd_Click(object sender, EventArgs e)
         {
             btnEnd.Enabled = false;
+            tsmEndWebservice.Enabled = false;
             btnStart.Enabled = true;
+            tsmRunWebservice.Enabled = true;
             modWebservice.StopWebservice();
         }
     }
