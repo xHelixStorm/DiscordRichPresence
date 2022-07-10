@@ -75,8 +75,12 @@
             this.hlpProvider = new System.Windows.Forms.HelpProvider();
             this.btnMinimize = new System.Windows.Forms.Button();
             this.btnOptions = new System.Windows.Forms.Button();
+            this.gbxWebservice = new System.Windows.Forms.GroupBox();
+            this.btnEnd = new System.Windows.Forms.Button();
+            this.btnStart = new System.Windows.Forms.Button();
             this.gbxOptions.SuspendLayout();
             this.cmsTrayIconContext.SuspendLayout();
+            this.gbxWebservice.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblProfiles
@@ -523,11 +527,45 @@
             this.btnOptions.UseVisualStyleBackColor = true;
             this.btnOptions.Click += new System.EventHandler(this.btnOptions_Click);
             // 
+            // gbxWebservice
+            // 
+            this.gbxWebservice.BackColor = System.Drawing.SystemColors.Window;
+            this.gbxWebservice.Controls.Add(this.btnEnd);
+            this.gbxWebservice.Controls.Add(this.btnStart);
+            this.gbxWebservice.Location = new System.Drawing.Point(418, 263);
+            this.gbxWebservice.Name = "gbxWebservice";
+            this.gbxWebservice.Size = new System.Drawing.Size(99, 129);
+            this.gbxWebservice.TabIndex = 7;
+            this.gbxWebservice.TabStop = false;
+            this.gbxWebservice.Text = "Webservice";
+            // 
+            // btnEnd
+            // 
+            this.btnEnd.Enabled = false;
+            this.btnEnd.Location = new System.Drawing.Point(12, 77);
+            this.btnEnd.Name = "btnEnd";
+            this.btnEnd.Size = new System.Drawing.Size(75, 23);
+            this.btnEnd.TabIndex = 8;
+            this.btnEnd.Text = "End";
+            this.btnEnd.UseVisualStyleBackColor = true;
+            this.btnEnd.Click += new System.EventHandler(this.btnEnd_Click);
+            // 
+            // btnStart
+            // 
+            this.btnStart.Location = new System.Drawing.Point(12, 37);
+            this.btnStart.Name = "btnStart";
+            this.btnStart.Size = new System.Drawing.Size(75, 23);
+            this.btnStart.TabIndex = 7;
+            this.btnStart.Text = "Start";
+            this.btnStart.UseVisualStyleBackColor = true;
+            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(517, 515);
+            this.Controls.Add(this.gbxWebservice);
             this.Controls.Add(this.btnOptions);
             this.Controls.Add(this.btnMinimize);
             this.Controls.Add(this.btnDelete);
@@ -550,6 +588,7 @@
             this.gbxOptions.ResumeLayout(false);
             this.gbxOptions.PerformLayout();
             this.cmsTrayIconContext.ResumeLayout(false);
+            this.gbxWebservice.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -602,5 +641,8 @@
         private ToolStripMenuItem tsmOpen;
         private ToolStripSeparator toolStripSeparator1;
         private ToolStripMenuItem tsmClose;
+        private GroupBox gbxWebservice;
+        private Button btnEnd;
+        private Button btnStart;
     }
 }

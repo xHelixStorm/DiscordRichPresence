@@ -53,6 +53,11 @@ namespace DiscordRichPresence
                 this.ShowInTaskbar = true;
                 this.WindowState = FormWindowState.Normal;
             }
+            AppConf appConf = modUtil.GetAppConf();
+            if (appConf.AutoStartWebservice)
+            {
+                btnStart_Click(sender, e);
+            }
         }
 
         private void fetchAllProfiles()
@@ -95,6 +100,8 @@ namespace DiscordRichPresence
             hlpProvider.SetShowHelp(btnDelete, true);
             hlpProvider.SetShowHelp(btnMinimize, true);
             hlpProvider.SetShowHelp(btnOptions, true);
+            hlpProvider.SetShowHelp(btnStart, true);
+            hlpProvider.SetShowHelp(btnEnd, true);
             hlpProvider.SetShowHelp(tbxProfileName, true);
             hlpProvider.SetShowHelp(tbxSourceUrl, true);
             hlpProvider.SetShowHelp(tbxTargetUrl, true);
@@ -123,6 +130,8 @@ namespace DiscordRichPresence
             hlpProvider.SetHelpString(btnDelete, "Delete a selected profile. Before the deletion, a message prompt appears to confirm the choice.");
             hlpProvider.SetHelpString(btnMinimize, "Minimize application to the system tray.");
             hlpProvider.SetHelpString(btnOptions, "Open the options page.");
+            hlpProvider.SetHelpString(btnStart, "Initialize the rest api webserver to receive events from the browser extension;");
+            hlpProvider.SetHelpString(btnEnd, "Terminate the rest api webserver and stop from receiving events.");
             hlpProvider.SetHelpString(tbxProfileName, "Required field which has to contain the name of the profile that has to be created or updated.");
             hlpProvider.SetHelpString(tbxSourceUrl, "Required field which has to contain the url of the website where events have to be collected.\nThe format of the url has to contain the full domain name, while sub domains can be written directly or combined with a regex requests.\n\nExamples of valid urls:\n\n- https://google.com\n- https://discord.com/developers/docs\n- https://discord.com/[regex:^.*$]");
             hlpProvider.SetHelpString(tbxTargetUrl, "Optional field which has to contain the url of the website where the source url is redirected to.\nThe format of the url has to contain the full domain name, while sub domains can be written directly or combined with a regex requests.\n\nExamples of valid urls:\n\n- https://google.com\n- https://discord.com/developers/docs\n- https://discord.com/[regex:^.*$]");
@@ -494,6 +503,20 @@ namespace DiscordRichPresence
         private void tsmClose_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void btnStart_Click(object sender, EventArgs e)
+        {
+            btnStart.Enabled = false;
+            btnEnd.Enabled = true;
+            modWebservice.RunWebservice();
+        }
+
+        private void btnEnd_Click(object sender, EventArgs e)
+        {
+            btnEnd.Enabled = false;
+            btnStart.Enabled = true;
+            modWebservice.StopWebservice();
         }
     }
 }
