@@ -52,4 +52,12 @@
     <Folder Include="Resources\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="bin\Debug\net6.0-windows10.0.17763.0\discord_game_sdk.bundle" />
+    <None Include="bin\Debug\net6.0-windows10.0.17763.0\discord_game_sdk.dll" />
+    <None Include="bin\Debug\net6.0-windows10.0.17763.0\discord_game_sdk.dll.lib" />
+    <None Include="bin\Debug\net6.0-windows10.0.17763.0\discord_game_sdk.dylib" />
+    <None Include="bin\Debug\net6.0-windows10.0.17763.0\discord_game_sdk.so" />
+  </ItemGroup>
+
 </Project>

@@ -82,6 +82,7 @@
             this.lblPort = new System.Windows.Forms.Label();
             this.btnEnd = new System.Windows.Forms.Button();
             this.btnStart = new System.Windows.Forms.Button();
+            this.btnTest = new System.Windows.Forms.Button();
             this.gbxOptions.SuspendLayout();
             this.cmsTrayIconContext.SuspendLayout();
             this.gbxWebservice.SuspendLayout();
@@ -602,11 +603,22 @@
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
+            // btnTest
+            // 
+            this.btnTest.Location = new System.Drawing.Point(429, 478);
+            this.btnTest.Name = "btnTest";
+            this.btnTest.Size = new System.Drawing.Size(75, 23);
+            this.btnTest.TabIndex = 8;
+            this.btnTest.Text = "Test";
+            this.btnTest.UseVisualStyleBackColor = true;
+            this.btnTest.Click += new System.EventHandler(this.btnTest_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(517, 515);
+            this.Controls.Add(this.btnTest);
             this.Controls.Add(this.gbxWebservice);
             this.Controls.Add(this.btnOptions);
             this.Controls.Add(this.btnMinimize);
@@ -691,5 +703,6 @@
         private ToolStripMenuItem tsmEndWebservice;
         private TextBox tbxPort;
         private Label lblPort;
+        private Button btnTest;
     }
 }

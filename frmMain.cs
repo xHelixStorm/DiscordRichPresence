@@ -24,8 +24,6 @@ namespace DiscordRichPresence
         private bool updateMode = false;
         private bool autoMinimize = false;
 
-        private int usedPort = 0;
-
         public frmMain(bool minimize)
         {
             InitializeComponent();
@@ -36,9 +34,9 @@ namespace DiscordRichPresence
         {
             logger.Info("Initialize Form frmMain");
             //initialize combo box for the activity type selections
-            initializeActivityTypes();
+            InitializeActivityTypes();
             //Initialize help provider
-            initializeHelpProvider();
+            InitializeHelpProvider();
             //Fetch all existing Profiles
             fetchAllProfiles();
         }
@@ -80,13 +78,13 @@ namespace DiscordRichPresence
             {
                 cbxProfiles.Enabled = false;
             }
-            fillOptionsGroupBox(null);
+            FillOptionsGroupBox(null);
             btnDelete.Enabled = false;
             btnUpdate.Enabled = false;
             cbxProfiles.Focus();
         }
 
-        private void initializeActivityTypes()
+        private void InitializeActivityTypes()
         {
             foreach(ActivityType activityType in Enum.GetValues(typeof(ActivityType))){
                 IActivityType activity = new IActivityType(activityType);
@@ -94,7 +92,7 @@ namespace DiscordRichPresence
             }
         }
 
-        private void initializeHelpProvider()
+        private void InitializeHelpProvider()
         {
             hlpProvider.SetShowHelp(cbxProfiles, true);
             hlpProvider.SetShowHelp(btnAdd, true);
@@ -125,6 +123,7 @@ namespace DiscordRichPresence
             hlpProvider.SetShowHelp(btnSave, true);
             hlpProvider.SetShowHelp(btnCancel, true);
             hlpProvider.SetShowHelp(tbxPort, true);
+            hlpProvider.SetShowHelp(btnTest, true);
 
 
             hlpProvider.SetHelpString(cbxProfiles, "Select a registered profile to view the details or to enable additional buttons to either update or remove the selected profile.");
@@ -156,6 +155,7 @@ namespace DiscordRichPresence
             hlpProvider.SetHelpString(btnSave, "Save all input by either creating a new profile or by updating an existing one.");
             hlpProvider.SetHelpString(btnCancel, "Undo all not saved changes");
             hlpProvider.SetHelpString(tbxPort, "Display the port that is in use from the webservice.");
+            hlpProvider.SetHelpString(btnTest, "Experiment with the displayed fields to display the activity on Discord.");
         }
 
         private void cbxProfiles_SelectionChangeCommitted(object sender, EventArgs e)
@@ -165,7 +165,7 @@ namespace DiscordRichPresence
             if(item != null)
             {
                 Profile profile = item.SelectedItem as Profile;
-                fillOptionsGroupBox(profile);
+                FillOptionsGroupBox(profile);
                 if(profile != null)
                 {
                     btnDelete.Enabled = true;
@@ -179,13 +179,13 @@ namespace DiscordRichPresence
             }
             else
             {
-                fillOptionsGroupBox(null);
+                FillOptionsGroupBox(null);
                 btnDelete.Enabled = false;
                 btnUpdate.Enabled = false;
             }
         }
 
-        private void fillOptionsGroupBox(Profile? profile)
+        private void FillOptionsGroupBox(Profile? profile)
         {
             string profileName = "";
             string sourceDomain = "";
@@ -303,7 +303,7 @@ namespace DiscordRichPresence
             chkAudible.Checked = audible;
         }
 
-        private void handleFieldEnableMode()
+        private void HandleFieldEnableMode()
         {
             bool enabled = (insertMode || updateMode);
 
@@ -341,15 +341,15 @@ namespace DiscordRichPresence
         {
             insertMode = true;
             cbxProfiles.SelectedIndex = -1;
-            fillOptionsGroupBox(null);
-            handleFieldEnableMode();
+            FillOptionsGroupBox(null);
+            HandleFieldEnableMode();
             tbxProfileName.Focus();
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
             updateMode = true;
-            handleFieldEnableMode();
+            HandleFieldEnableMode();
             tbxProfileName.Focus();
         }
 
@@ -415,7 +415,7 @@ namespace DiscordRichPresence
                 {
                     fetchAllProfiles();
                     insertMode = false;
-                    handleFieldEnableMode();
+                    HandleFieldEnableMode();
                     logger.Info("New Profile has been created");
                 }
                 else
@@ -431,7 +431,7 @@ namespace DiscordRichPresence
                     int profileId = profile.ProfileId;
                     fetchAllProfiles();
                     updateMode = false;
-                    handleFieldEnableMode();
+                    HandleFieldEnableMode();
                     for (int i = 0; i < cbxProfiles.Items.Count; i++)
                     {
                         if (((Profile)cbxProfiles.Items[i]).ProfileId == profileId)
@@ -455,8 +455,8 @@ namespace DiscordRichPresence
             insertMode = false;
             updateMode = false;
 
-            fillOptionsGroupBox(null);
-            handleFieldEnableMode();
+            FillOptionsGroupBox(null);
+            HandleFieldEnableMode();
             cbxProfiles_SelectionChangeCommitted(cbxProfiles, e);
         }
 
@@ -511,6 +511,7 @@ namespace DiscordRichPresence
 
         private void btnStart_Click(object sender, EventArgs e)
         {
+            btnTest.Enabled = false;
             btnStart.Enabled = false;
             tsmRunWebservice.Enabled = false;
             btnEnd.Enabled = true;
@@ -521,12 +522,18 @@ namespace DiscordRichPresence
 
         private void btnEnd_Click(object sender, EventArgs e)
         {
+            btnTest.Enabled = true;
             btnEnd.Enabled = false;
             tsmEndWebservice.Enabled = false;
             btnStart.Enabled = true;
             tsmRunWebservice.Enabled = true;
             modWebservice.StopWebservice();
             tbxPort.Text = "";
+        }
+
+        private void btnTest_Click(object sender, EventArgs e)
+        {
+            new frmTest().ShowDialog();
         }
     }
 }
