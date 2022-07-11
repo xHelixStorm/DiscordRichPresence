@@ -58,6 +58,9 @@ namespace DiscordRichPresence.modules
             {
                 logger.Fatal(e, "Database tables couldn't be created. Application shutdown!");
                 throw (new Exception("Database tables couldn't be created. Application shutdown!"));
+            } finally 
+            { 
+                con.Close(); 
             }
         }
 
@@ -65,7 +68,11 @@ namespace DiscordRichPresence.modules
         {
             logger.Debug("SQL method TestDBConnection called");
             SqliteConnection con = CreateConnection();
-            if (con != null) { return true; }
+            if (con != null) 
+            {
+                con.Close();
+                return true; 
+            }
             return false;
         }
 
@@ -109,6 +116,9 @@ namespace DiscordRichPresence.modules
             {
                 logger.Error(e, "DB action couldn't be executed");
                 return null;
+            } finally
+            {
+                con.Close();
             }
             return profiles;
         }
@@ -132,6 +142,9 @@ namespace DiscordRichPresence.modules
             {
                 logger.Error(e, "DB action couldn't be executed");
                 return -1;
+            } finally
+            {
+                con.Close();
             }
         }
 
@@ -165,6 +178,9 @@ namespace DiscordRichPresence.modules
             {
                 logger.Error(e, "DB action couldn't be executed");
                 return -1;
+            } finally
+            {
+                con.Close();
             }
         }
 
@@ -199,6 +215,9 @@ namespace DiscordRichPresence.modules
             {
                 logger.Error(e, "DB action couldn't be executed");
                 return -1;
+            } finally
+            {
+                con.Close();
             }
         }
 
@@ -226,6 +245,9 @@ namespace DiscordRichPresence.modules
             {
                 logger.Error("DB action couldn't be executed");
                 return null;
+            } finally
+            {
+                con.Close();
             }
             return null;
         }
@@ -250,6 +272,9 @@ namespace DiscordRichPresence.modules
             {
                 logger.Error(e, "DB action couldn't be executed");
                 return -1;
+            } finally
+            {
+                con.Close();
             }
         }
     }
