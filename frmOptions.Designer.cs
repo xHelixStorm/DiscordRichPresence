@@ -64,7 +64,7 @@
             // 
             this.nudPort.Location = new System.Drawing.Point(146, 20);
             this.nudPort.Maximum = new decimal(new int[] {
-            9999,
+            99999,
             0,
             0,
             0});

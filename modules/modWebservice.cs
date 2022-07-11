@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -33,6 +34,7 @@ namespace DiscordRichPresence.modules
                 {
                     TcpClient client = null;
                     NetworkStream stream = null;
+                    string origin = "";
                     try
                     {
                         client = server.AcceptTcpClient();
@@ -47,10 +49,24 @@ namespace DiscordRichPresence.modules
                         string data = Encoding.UTF8.GetString(bytes);
                         logger.Trace("Retrieved data from socket: {0}", data);
 
-                        var origin = Regex.Match(data, @"(Origin):\s.*").Value.Trim().Split(": ")[1];
+                        origin = Regex.Match(data, @"(Origin):\s.*").Value.Trim().Split(": ")[1];
                         if (data.StartsWith("GET"))
                         {
-                            Return200(stream, "Request successful", false, origin);
+                            var path = Regex.Match(data, @"(GET).*").Value.Split(" ")[1];
+                            if(path.Equals("/test"))
+                            {
+                                Return200(stream, "Test successful", false, origin);
+                            }
+                            else if (path.Equals("/profiles"))
+                            {
+                                List<Profile> profiles = modSQL.FetchAllProfiles();
+                                string jsonString = JsonSerializer.Serialize(profiles);
+                                Return200(stream, jsonString, true, origin);
+                            }
+                            else
+                            {
+                                Return404(stream, "Path '" + path + "' not found", false, origin);
+                            }
                         }
                         else if (data.StartsWith("POST"))
                         {
@@ -78,6 +94,8 @@ namespace DiscordRichPresence.modules
                         else
                         {
                             logger.Error(e, "An unexpected error occurred");
+                            if (stream != null)
+                                Return500(stream, "An unexpected error occurred", false, origin);
                         }
                     }
                     finally
@@ -108,6 +126,20 @@ namespace DiscordRichPresence.modules
             byte[] response = Encoding.UTF8.GetBytes(
                 "HTTP/1.1 200 OK\r\n" +
                 "Access-Control-Allow-Origin: "+origin+"\r\n" +
+                "Server: Discord Rich Presence by xHelixStorm\r\n" +
+                "Date: " + DateTime.Now + "\r\n" +
+                "Content-Type: " + (json ? "application/json" : "text/plain") + "\r\n" +
+                "\r\n" +
+                message
+            );
+            stream.Write(response, 0, response.Length);
+        }
+
+        private static void Return404(NetworkStream stream, string message, bool json, string origin)
+        {
+            byte[] response = Encoding.UTF8.GetBytes(
+                "HTTP/1.1 404 Not Found\r\n" +
+                "Access-Control-Allow-Origin: " + origin + "\r\n" +
                 "Server: Discord Rich Presence by xHelixStorm\r\n" +
                 "Date: " + DateTime.Now + "\r\n" +
                 "Content-Type: " + (json ? "application/json" : "text/plain") + "\r\n" +
