@@ -52,7 +52,7 @@
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(12, 149);
+            this.btnOK.Location = new System.Drawing.Point(12, 185);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 5;
@@ -101,7 +101,7 @@
             this.chkAutoStart.Location = new System.Drawing.Point(12, 80);
             this.chkAutoStart.Name = "chkAutoStart";
             this.chkAutoStart.Size = new System.Drawing.Size(150, 24);
-            this.chkAutoStart.TabIndex = 3;
+            this.chkAutoStart.TabIndex = 4;
             this.chkAutoStart.Text = "Auto Start:";
             this.chkAutoStart.UseVisualStyleBackColor = true;
             this.chkAutoStart.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chkAutoStart_KeyDown);
@@ -112,7 +112,7 @@
             this.chkAutoStartWebservice.Location = new System.Drawing.Point(12, 109);
             this.chkAutoStartWebservice.Name = "chkAutoStartWebservice";
             this.chkAutoStartWebservice.Size = new System.Drawing.Size(150, 24);
-            this.chkAutoStartWebservice.TabIndex = 4;
+            this.chkAutoStartWebservice.TabIndex = 5;
             this.chkAutoStartWebservice.Text = "Auto Start Webservice:";
             this.chkAutoStartWebservice.UseVisualStyleBackColor = true;
             this.chkAutoStartWebservice.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chkAutoStartWebservice_KeyDown);
@@ -121,7 +121,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(293, 188);
+            this.ClientSize = new System.Drawing.Size(293, 226);
             this.Controls.Add(this.chkAutoStartWebservice);
             this.Controls.Add(this.chkAutoStart);
             this.Controls.Add(this.lblDicordClientId);

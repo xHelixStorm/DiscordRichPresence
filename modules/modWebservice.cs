@@ -47,9 +47,10 @@ namespace DiscordRichPresence.modules
                         string data = Encoding.UTF8.GetString(bytes);
                         logger.Trace("Retrieved data from socket: {0}", data);
 
+                        var origin = Regex.Match(data, @"(Origin):\s.*").Value.Trim().Split(": ")[1];
                         if (data.StartsWith("GET"))
                         {
-                            Return200(stream, "Request successful", false);
+                            Return200(stream, "Request successful", false, origin);
                         }
                         else if (data.StartsWith("POST"))
                         {
@@ -60,12 +61,12 @@ namespace DiscordRichPresence.modules
                             }
                             else
                             {
-                                Return501(stream, "Invalid Content-Type. Only application/json is allowed.", false);
+                                Return501(stream, "Invalid Content-Type. Only application/json is allowed.", false, origin);
                             }
                         }
                         else
                         {
-                            Return501(stream, "The used method is not implemented", false);
+                            Return501(stream, "The used method is not implemented", false, origin);
                         }
                     } catch(Exception e)
                     {
@@ -77,8 +78,6 @@ namespace DiscordRichPresence.modules
                         else
                         {
                             logger.Error(e, "An unexpected error occurred");
-                            if (stream != null)
-                                Return500(stream, "An unexpected error occurred", false);
                         }
                     }
                     finally
@@ -104,10 +103,11 @@ namespace DiscordRichPresence.modules
             }
         }
 
-        private static void Return200(NetworkStream stream, string message, bool json)
+        private static void Return200(NetworkStream stream, string message, bool json, string origin)
         {
             byte[] response = Encoding.UTF8.GetBytes(
                 "HTTP/1.1 200 OK\r\n" +
+                "Access-Control-Allow-Origin: "+origin+"\r\n" +
                 "Server: Discord Rich Presence by xHelixStorm\r\n" +
                 "Date: " + DateTime.Now + "\r\n" +
                 "Content-Type: " + (json ? "application/json" : "text/plain") + "\r\n" +
@@ -117,10 +117,11 @@ namespace DiscordRichPresence.modules
             stream.Write(response, 0, response.Length);
         }
 
-        private static void Return500(NetworkStream stream, string message, bool json)
+        private static void Return500(NetworkStream stream, string message, bool json, string origin)
         {
             byte[] response = Encoding.UTF8.GetBytes(
                 "HTTP/1.1 500 Internal Server Error\r\n" +
+                "Access-Control-Allow-Origin: " + origin + "\r\n" +
                 "Server: Discord Rich Presence by xHelixStorm\r\n" +
                 "Date: " + DateTime.Now + "\r\n" +
                 "Content-Type: " + (json ? "application/json" : "text/plain") + "\r\n" +
@@ -130,10 +131,11 @@ namespace DiscordRichPresence.modules
             stream.Write(response, 0, response.Length);
         }
 
-        private static void Return501(NetworkStream stream, string message, bool json)
+        private static void Return501(NetworkStream stream, string message, bool json, string origin)
         {
             byte[] response = Encoding.UTF8.GetBytes(
                 "HTTP/1.1 501 Not Implemented\r\n" +
+                "Access-Control-Allow-Origin: " + origin + "\r\n" +
                 "Server: Discord Rich Presence by xHelixStorm\r\n" +
                 "Date: " + DateTime.Now + "\r\n" +
                 "Content-Type: " + (json ? "application/json" : "text/plain") + "\r\n" +
