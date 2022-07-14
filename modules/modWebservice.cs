@@ -1,4 +1,5 @@
 ﻿using DiscordRichPresence.constructors;
+using Newtonsoft.Json.Linq;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -71,10 +72,62 @@ namespace DiscordRichPresence.modules
                         }
                         else if (data.StartsWith("POST"))
                         {
-                            string contentType = Regex.Match(data, @"(Content\-Type):\s.*").Value;
+                            string contentType = Regex.Match(data, @"(Content\-Type|content\-type):\s.*").Value;
                             if(contentType.Contains("application/json"))
                             {
-                                string body = Regex.Replace(data, @"^[\d\w\s\/&=\.\-:*,]*(\n)", "");
+                                string body = Regex.Replace(data, @"^[\d\w\s\/&=\.\-:*,;]*(\n)", "");
+                                var path = Regex.Match(data, @"(POST).*").Value.Split(" ")[1];
+                                if(path.Equals("/activity"))
+                                {
+                                    var json = JObject.Parse(body);
+                                    if (json.ContainsKey("action"))
+                                    {
+                                        string action = (string)json.GetValue("action");
+                                        switch(action)
+                                        {
+                                            case "update":
+                                                if (json.ContainsKey("profile"))
+                                                {
+                                                    JObject profile = (JObject)json.GetValue("profile");
+                                                    if (profile.ContainsKey("Type") && profile.ContainsKey("Name") && 
+                                                    profile.ContainsKey("State") && profile.ContainsKey("Details") && 
+                                                    profile.ContainsKey("LargeImage") && profile.ContainsKey("LargeText") && 
+                                                    profile.ContainsKey("SmallImage") && profile.ContainsKey("SmallText"))
+                                                    {
+                                                        if(appConf.DiscordClientId > 0)
+                                                        {
+                                                            modDiscord.InitializeActivity(profile);
+                                                            Return200(stream, "{\"message\": \"Discord activity set.\"}", true, origin);
+                                                        }
+                                                        else
+                                                        {
+                                                            Return400(stream, "{\"message\": \"Discord client id has not been provided.\"}", true, origin);
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        Return400(stream, "{\"message\": \"A required object value of profile is missing.\"}", true, origin);
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    Return400(stream, "{\"message\": \"Profile object is required.\"}", true, origin);
+                                                }
+                                                break;
+                                            case "stop":
+                                                modDiscord.StopActivity();
+                                                Return200(stream, "{\"message\": \"Discord activity has been stopped.\"}", true, origin);
+                                                break;
+                                            default:
+                                                Return400(stream, "{\"message\": \"Action type invalid.\"}", true, origin);
+                                                break;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Return400(stream, "{\"message\": \"action type is required.\"}", true, origin);
+                                    }
+                                }
                             }
                             else
                             {
@@ -127,6 +180,20 @@ namespace DiscordRichPresence.modules
             byte[] response = Encoding.UTF8.GetBytes(
                 "HTTP/1.1 200 OK\r\n" +
                 "Access-Control-Allow-Origin: "+origin+"\r\n" +
+                "Server: Discord Rich Presence by xHelixStorm\r\n" +
+                "Date: " + DateTime.Now + "\r\n" +
+                "Content-Type: " + (json ? "application/json" : "text/plain") + "\r\n" +
+                "\r\n" +
+                message
+            );
+            stream.Write(response, 0, response.Length);
+        }
+
+        private static void Return400(NetworkStream stream, string message, bool json, string origin)
+        {
+            byte[] response = Encoding.UTF8.GetBytes(
+                "HTTP/1.1 400 Bad Request\r\n" +
+                "Access-Control-Allow-Origin: " + origin + "\r\n" +
                 "Server: Discord Rich Presence by xHelixStorm\r\n" +
                 "Date: " + DateTime.Now + "\r\n" +
                 "Content-Type: " + (json ? "application/json" : "text/plain") + "\r\n" +
