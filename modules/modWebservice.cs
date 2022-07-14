@@ -49,6 +49,8 @@ namespace DiscordRichPresence.modules
                         string data = Encoding.UTF8.GetString(bytes);
                         logger.Trace("Retrieved data from socket: {0}", data);
 
+                        if(data.Contains("Origin: "))
+                            origin = Regex.Match(data, @"(Origin):\s.*").Value.Trim().Split(": ")[1];
                         if (data.StartsWith("GET"))
                         {
                             var path = Regex.Match(data, @"(GET).*").Value.Split(" ")[1];
@@ -69,7 +71,6 @@ namespace DiscordRichPresence.modules
                         }
                         else if (data.StartsWith("POST"))
                         {
-                            origin = Regex.Match(data, @"(Origin):\s.*").Value.Trim().Split(": ")[1];
                             string contentType = Regex.Match(data, @"(Content\-Type):\s.*").Value;
                             if(contentType.Contains("application/json"))
                             {
