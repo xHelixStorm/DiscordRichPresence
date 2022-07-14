@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmTest));
             this.gbxOptions = new System.Windows.Forms.GroupBox();
+            this.btnClose = new System.Windows.Forms.Button();
             this.chkAudible = new System.Windows.Forms.CheckBox();
             this.btnEnd = new System.Windows.Forms.Button();
             this.btnTest = new System.Windows.Forms.Button();
@@ -45,7 +46,6 @@
             this.lblSmallImage = new System.Windows.Forms.Label();
             this.lblLargeText = new System.Windows.Forms.Label();
             this.lblLargeImage = new System.Windows.Forms.Label();
-            this.btnClose = new System.Windows.Forms.Button();
             this.gbxOptions.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -74,6 +74,16 @@
             this.gbxOptions.TabIndex = 6;
             this.gbxOptions.TabStop = false;
             this.gbxOptions.Text = "Options";
+            // 
+            // btnClose
+            // 
+            this.btnClose.Location = new System.Drawing.Point(185, 264);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(75, 23);
+            this.btnClose.TabIndex = 26;
+            this.btnClose.Text = "Close";
+            this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // chkAudible
             // 
@@ -202,16 +212,6 @@
             this.lblLargeImage.Size = new System.Drawing.Size(75, 15);
             this.lblLargeImage.TabIndex = 4;
             this.lblLargeImage.Text = "Large Image:";
-            // 
-            // btnClose
-            // 
-            this.btnClose.Location = new System.Drawing.Point(185, 264);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(75, 23);
-            this.btnClose.TabIndex = 26;
-            this.btnClose.Text = "Close";
-            this.btnClose.UseVisualStyleBackColor = true;
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // frmTest
             // 
