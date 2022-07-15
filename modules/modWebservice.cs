@@ -75,7 +75,7 @@ namespace DiscordRichPresence.modules
                             string contentType = Regex.Match(data, @"(Content\-Type|content\-type):\s.*").Value;
                             if(contentType.Contains("application/json"))
                             {
-                                string body = Regex.Replace(data, @"^[\d\w\s\/&=\.\-:*,;]*(\n)", "");
+                                string body = Regex.Replace(data, @"^[\d\w\s\/&=\.\-:*,;\()\[\]]*(\n)", "");
                                 var path = Regex.Match(data, @"(POST).*").Value.Split(" ")[1];
                                 if(path.Equals("/activity"))
                                 {
