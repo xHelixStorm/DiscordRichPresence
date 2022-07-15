@@ -105,7 +105,7 @@
             this.cbxProfiles.Location = new System.Drawing.Point(64, 6);
             this.cbxProfiles.MaxDropDownItems = 100;
             this.cbxProfiles.Name = "cbxProfiles";
-            this.cbxProfiles.Size = new System.Drawing.Size(121, 23);
+            this.cbxProfiles.Size = new System.Drawing.Size(348, 23);
             this.cbxProfiles.TabIndex = 1;
             this.cbxProfiles.SelectionChangeCommitted += new System.EventHandler(this.cbxProfiles_SelectionChangeCommitted);
             // 
