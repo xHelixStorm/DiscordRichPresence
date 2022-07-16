@@ -23,6 +23,7 @@ namespace DiscordRichPresence
         private bool insertMode = false;
         private bool updateMode = false;
         private bool autoMinimize = false;
+        private bool keyChanged = false;
 
         public frmMain(bool minimize)
         {
@@ -124,6 +125,7 @@ namespace DiscordRichPresence
             hlpProvider.SetShowHelp(btnCancel, true);
             hlpProvider.SetShowHelp(tbxPort, true);
             hlpProvider.SetShowHelp(btnTest, true);
+            hlpProvider.SetShowHelp(tbxKey, true);
 
 
             hlpProvider.SetHelpString(cbxProfiles, "Select a registered profile to view the details or to enable additional buttons to either update or remove the selected profile.");
@@ -156,6 +158,7 @@ namespace DiscordRichPresence
             hlpProvider.SetHelpString(btnCancel, "Undo all not saved changes");
             hlpProvider.SetHelpString(tbxPort, "Display the port that is in use from the webservice.");
             hlpProvider.SetHelpString(btnTest, "Experiment with the displayed fields to display the activity on Discord.");
+            hlpProvider.SetHelpString(tbxKey, "For cases when the target site is visited directly without the source page, it will be possible to automatically autofill values obtained from the source page. Automatically saved are values that have to be obtained from the source page. Content of this field can be combined with various expressions.\n\n- Regex: '{::regex:[\\d\\w]*::}'\n- Url: '{::url::}' or '{::url:{::regex:[\\d]*$::}::}'\n- HTML Location: '{::location:<div id=\"xyz\">::}' or '{::location:<img class=\"xyz\">:src::}'\n- HTML Click Location: '{::click:<a>;up;<div>;down;<img>:src::}'\n\nNote: for 'click' and 'location' the regex can be used with the parentheses to filter for attributes with specific names.");
         }
 
         private void cbxProfiles_SelectionChangeCommitted(object sender, EventArgs e)
@@ -204,6 +207,7 @@ namespace DiscordRichPresence
             bool targetSmallImage = false;
             string smallText = "";
             bool targetSmallText = false;
+            string key = "";
             bool audible = false;
 
             if(profile != null)
@@ -280,6 +284,7 @@ namespace DiscordRichPresence
                 {
                     smallText = profile.SmallText.Substring(sourceLength);
                 }
+                key = profile.Key;
                 audible = profile.Audible;
             }
 
@@ -300,6 +305,7 @@ namespace DiscordRichPresence
             chkTargetSmallImage.Checked = targetSmallImage;
             tbxSmallText.Text = smallText;
             chkTargetSmallText.Checked = targetSmallText;
+            tbxKey.Text = key;
             chkAudible.Checked = audible;
         }
 
@@ -331,6 +337,7 @@ namespace DiscordRichPresence
             chkTargetSmallImage.Enabled = enabled;
             tbxSmallText.Enabled = enabled;
             chkTargetSmallText.Enabled = enabled;
+            tbxKey.Enabled = enabled;
             chkAudible.Enabled = enabled;
 
             btnSave.Enabled = enabled;
@@ -382,8 +389,15 @@ namespace DiscordRichPresence
             const string source = "source;";
             const string target = "target;";
 
+            if (keyChanged && cbxProfiles.SelectedItem != null)
+            {
+                modSQL.DeleteKeyPreset(((Profile)cbxProfiles.SelectedItem).ProfileId);
+            }
+
+            keyChanged = false;
+
             Profile profile = new Profile(
-                (cbxProfiles.SelectedItem != null ? ((Profile)cbxProfiles.SelectedItem).ProfileId: 0),
+                (cbxProfiles.SelectedItem != null ? ((Profile)cbxProfiles.SelectedItem).ProfileId : 0),
                 tbxProfileName.Text,
                 tbxSourceUrl.Text,
                 tbxTargetUrl.Text,
@@ -395,6 +409,7 @@ namespace DiscordRichPresence
                 (chkTargetLargeText.Checked ? target : source) + tbxLargeText.Text,
                 (chkTargetSmallImage.Checked ? target : source) + tbxSmallImage.Text,
                 (chkTargetSmallText.Checked ? target : source) + tbxSmallText.Text,
+                tbxKey.Text,
                 chkAudible.Checked
             );
 
@@ -454,6 +469,7 @@ namespace DiscordRichPresence
         {
             insertMode = false;
             updateMode = false;
+            keyChanged = false;
 
             FillOptionsGroupBox(null);
             HandleFieldEnableMode();
@@ -534,6 +550,11 @@ namespace DiscordRichPresence
         private void btnTest_Click(object sender, EventArgs e)
         {
             new frmTest().ShowDialog();
+        }
+
+        private void tbxKey_Leave(object sender, EventArgs e)
+        {
+            keyChanged = true;
         }
     }
 }

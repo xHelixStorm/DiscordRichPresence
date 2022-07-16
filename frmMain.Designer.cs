@@ -33,6 +33,8 @@
             this.lblProfiles = new System.Windows.Forms.Label();
             this.cbxProfiles = new System.Windows.Forms.ComboBox();
             this.gbxOptions = new System.Windows.Forms.GroupBox();
+            this.tbxKey = new System.Windows.Forms.TextBox();
+            this.lblKey = new System.Windows.Forms.Label();
             this.chkAudible = new System.Windows.Forms.CheckBox();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
@@ -112,6 +114,8 @@
             // gbxOptions
             // 
             this.gbxOptions.BackColor = System.Drawing.SystemColors.Window;
+            this.gbxOptions.Controls.Add(this.tbxKey);
+            this.gbxOptions.Controls.Add(this.lblKey);
             this.gbxOptions.Controls.Add(this.chkAudible);
             this.gbxOptions.Controls.Add(this.btnCancel);
             this.gbxOptions.Controls.Add(this.btnSave);
@@ -149,6 +153,24 @@
             this.gbxOptions.TabIndex = 5;
             this.gbxOptions.TabStop = false;
             this.gbxOptions.Text = "Options";
+            // 
+            // tbxKey
+            // 
+            this.tbxKey.Enabled = false;
+            this.tbxKey.Location = new System.Drawing.Point(119, 411);
+            this.tbxKey.Name = "tbxKey";
+            this.tbxKey.Size = new System.Drawing.Size(200, 23);
+            this.tbxKey.TabIndex = 27;
+            this.tbxKey.Leave += new System.EventHandler(this.tbxKey_Leave);
+            // 
+            // lblKey
+            // 
+            this.lblKey.AutoSize = true;
+            this.lblKey.Location = new System.Drawing.Point(7, 414);
+            this.lblKey.Name = "lblKey";
+            this.lblKey.Size = new System.Drawing.Size(29, 15);
+            this.lblKey.TabIndex = 26;
+            this.lblKey.Text = "Key:";
             // 
             // chkAudible
             // 
@@ -704,5 +726,7 @@
         private TextBox tbxPort;
         private Label lblPort;
         private Button btnTest;
+        private TextBox tbxKey;
+        private Label lblKey;
     }
 }

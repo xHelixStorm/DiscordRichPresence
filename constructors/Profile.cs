@@ -23,9 +23,10 @@ namespace DiscordRichPresence.constructors
         private string largeText;
         private string smallImage;
         private string smallText;
+        private string key;
         private bool audible;
 
-        public Profile(int profileId, String profileName, string sourceUrl, string targetUrl, int type, string name, string state, string details, string largeImage, string largeText, string smallImage, string smallText, bool audible)
+        public Profile(int profileId, String profileName, string sourceUrl, string targetUrl, int type, string name, string state, string details, string largeImage, string largeText, string smallImage, string smallText, string key, bool audible)
         {
             this.profileId = profileId;
             this.profileName = profileName;
@@ -39,6 +40,7 @@ namespace DiscordRichPresence.constructors
             this.largeText = largeText;
             this.smallImage = smallImage;
             this.smallText = smallText;
+            this.key = key;
             this.audible = audible;
         }
 
@@ -105,6 +107,11 @@ namespace DiscordRichPresence.constructors
             get { return smallText; }
         }
 
+        public String Key
+        {
+            get { return key; }
+        }
+
         public bool Audible
         {
             get { return audible; }
@@ -117,7 +124,7 @@ namespace DiscordRichPresence.constructors
 
         public string ToString2()
         {
-            return "{" + profileId + ", " + profileName + ", " + sourceUrl + ", " + targetUrl + ", " + type + ", " + name + ", " + state + ", " + details + ", " + largeImage + ", " + largeText + ", " + smallImage + ", " + smallText + ", " + audible + "}".Normalize();
+            return "{" + profileId + ", " + profileName + ", " + sourceUrl + ", " + targetUrl + ", " + type + ", " + name + ", " + state + ", " + details + ", " + largeImage + ", " + largeText + ", " + smallImage + ", " + smallText + ", " + key + ", " + audible + "}".Normalize();
         }
 
         /// <summary>

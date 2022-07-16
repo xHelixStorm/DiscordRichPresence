@@ -10,6 +10,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace DiscordRichPresence.modules
 {
@@ -64,6 +65,21 @@ namespace DiscordRichPresence.modules
                                 List<Profile> profiles = modSQL.FetchAllProfiles();
                                 string jsonString = JsonSerializer.Serialize(profiles);
                                 Return200(stream, jsonString, true, origin);
+                            }
+                            else if (path.StartsWith("/preset?key="))
+                            {
+                                var key = path.Split("=")[1];
+                                key = HttpUtility.UrlDecode(key, System.Text.Encoding.UTF8);
+                                Profile profile = modSQL.GetKeyPreset(key);
+                                if(profile != null)
+                                {
+                                    string jsonString = JsonSerializer.Serialize(profile);
+                                    Return200(stream, jsonString, true, origin);
+                                }
+                                else
+                                {
+                                    Return404(stream, "Key not found", false, origin);
+                                }
                             }
                             else
                             {
@@ -127,6 +143,71 @@ namespace DiscordRichPresence.modules
                                     {
                                         Return400(stream, "{\"message\": \"action type is required.\"}", true, origin);
                                     }
+                                }
+                                else if (path.Equals("/preset"))
+                                {
+                                    var json = JObject.Parse(body);
+                                    if (json.ContainsKey("action"))
+                                    {
+                                        string action = (string)json.GetValue("action");
+                                        if (action.Equals("save"))
+                                        {
+                                            if (json.ContainsKey("profile"))
+                                            {
+                                                json = (JObject)json.GetValue("profile");
+                                                if (json.ContainsKey("ProfileId") && json.ContainsKey("ProfileName") && 
+                                                    json.ContainsKey("SourceUrl") && json.ContainsKey("TargetUrl") &&
+                                                    json.ContainsKey("Type") && json.ContainsKey("Name") &&
+                                                    json.ContainsKey("State") && json.ContainsKey("Details") &&
+                                                    json.ContainsKey("LargeImage") && json.ContainsKey("LargeText") &&
+                                                    json.ContainsKey("SmallImage") && json.ContainsKey("SmallText") && 
+                                                    json.ContainsKey("Key") && json.ContainsKey("Audible"))
+                                                {
+                                                    var profile = new Profile(
+                                                        (int)json.GetValue("ProfileId"),
+                                                        (string)json.GetValue("ProfileName"),
+                                                        (string)json.GetValue("SourceUrl"),
+                                                        (string)json.GetValue("TargetUrl"),
+                                                        (int)json.GetValue("Type"),
+                                                        (string)json.GetValue("Name"),
+                                                        (string)json.GetValue("State"),
+                                                        (string)json.GetValue("Details"),
+                                                        (string)json.GetValue("LargeImage"),
+                                                        (string)json.GetValue("LargeText"),
+                                                        (string)json.GetValue("SmallImage"),
+                                                        (string)json.GetValue("SmallText"),
+                                                        (string)json.GetValue("Key"),
+                                                        (bool)json.GetValue("Audible")
+                                                    );
+
+                                                    if(modSQL.InsertKeyPreset(profile) > 0)
+                                                    {
+                                                        Return200(stream, "{\"message\": \"Success.\"}", true, origin);
+                                                    }
+                                                    else
+                                                    {
+                                                        Return500(stream, "{\"message\": \"An unexpected error occurred.\"}", true, origin);
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    Return400(stream, "{\"message\": \"A required object value of profile is missing.\"}", true, origin);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                Return400(stream, "{\"message\": \"Profile object is required.\"}", true, origin);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            Return400(stream, "{\"message\": \"Action type invalid.\"}", true, origin);
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    Return404(stream, "Path '" + path + "' not found", false, origin);
                                 }
                             }
                             else
