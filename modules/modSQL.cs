@@ -128,6 +128,57 @@ namespace DiscordRichPresence.modules
             return profiles;
         }
 
+        public static Profile? GetProfile(int profileId)
+        {
+            logger.Debug("SQL method GetProfile called");
+            var con = CreateConnection();
+            if (con == null) return null;
+
+            var command = con.CreateCommand();
+            command.CommandText = "SELECT * FROM profiles WHERE profile_id = $profile_id";
+            command.Parameters.AddWithValue("$profile_id", profileId);
+            logger.Trace("Execute query: {0}", command.CommandText);
+            logger.Trace("Parameters passed: {0}", profileId);
+
+            SqliteDataReader reader = null;
+            try
+            {
+                reader = command.ExecuteReader();
+                if (reader.Read())
+                {
+                    Profile profile = new Profile(
+                        reader.GetInt32(0),
+                        reader.GetString(1),
+                        reader.GetString(2),
+                        reader.GetString(3),
+                        reader.GetInt32(4),
+                        reader.GetString(5),
+                        reader.GetString(6),
+                        reader.GetString(7),
+                        reader.GetString(8),
+                        reader.GetString(9),
+                        reader.GetString(10),
+                        reader.GetString(11),
+                        reader.GetString(12),
+                        reader.GetBoolean(13)
+                    );
+                    logger.Trace("Obtained DB values: {0}", profile.ToString2);
+                    return profile;
+                }
+                reader.Close();
+            }
+            catch (SqliteException e)
+            {
+                logger.Error(e, "DB action couldn't be executed");
+                return null;
+            }
+            finally
+            {
+                con.Close();
+            }
+            return null;
+        }
+
         public static int DeleteProfile(int profileId)
         {
             logger.Debug("SQL method DeleteProfile called");

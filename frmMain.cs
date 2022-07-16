@@ -82,6 +82,7 @@ namespace DiscordRichPresence
             FillOptionsGroupBox(null);
             btnDelete.Enabled = false;
             btnUpdate.Enabled = false;
+            btnCopy.Enabled = false;
             cbxProfiles.Focus();
         }
 
@@ -126,6 +127,7 @@ namespace DiscordRichPresence
             hlpProvider.SetShowHelp(tbxPort, true);
             hlpProvider.SetShowHelp(btnTest, true);
             hlpProvider.SetShowHelp(tbxKey, true);
+            hlpProvider.SetShowHelp(btnCopy, true);
 
 
             hlpProvider.SetHelpString(cbxProfiles, "Select a registered profile to view the details or to enable additional buttons to either update or remove the selected profile.");
@@ -159,6 +161,7 @@ namespace DiscordRichPresence
             hlpProvider.SetHelpString(tbxPort, "Display the port that is in use from the webservice.");
             hlpProvider.SetHelpString(btnTest, "Experiment with the displayed fields to display the activity on Discord.");
             hlpProvider.SetHelpString(tbxKey, "For cases when the target site is visited directly without the source page, it will be possible to automatically autofill values obtained from the source page. Automatically saved are values that have to be obtained from the source page. Content of this field can be combined with various expressions.\n\n- Regex: '{::regex:[\\d\\w]*::}'\n- Url: '{::url::}' or '{::url:{::regex:[\\d]*$::}::}'\n- HTML Location: '{::location:<div id=\"xyz\">::}' or '{::location:<img class=\"xyz\">:src::}'\n- HTML Click Location: '{::click:<a>;up;<div>;down;<img>:src::}'\n\nNote: for 'click' and 'location' the regex can be used with the parentheses to filter for attributes with specific names.");
+            hlpProvider.SetHelpString(btnCopy, "Copy an existing profile for the creation of a new profile.");
         }
 
         private void cbxProfiles_SelectionChangeCommitted(object sender, EventArgs e)
@@ -173,11 +176,13 @@ namespace DiscordRichPresence
                 {
                     btnDelete.Enabled = true;
                     btnUpdate.Enabled = true;
+                    btnCopy.Enabled = true;
                 }
                 else
                 {
                     btnDelete.Enabled = false;
                     btnUpdate.Enabled = false;
+                    btnCopy.Enabled = false;
                 }
             }
             else
@@ -185,6 +190,7 @@ namespace DiscordRichPresence
                 FillOptionsGroupBox(null);
                 btnDelete.Enabled = false;
                 btnUpdate.Enabled = false;
+                btnCopy.Enabled = false;
             }
         }
 
@@ -555,6 +561,21 @@ namespace DiscordRichPresence
         private void tbxKey_Leave(object sender, EventArgs e)
         {
             keyChanged = true;
+        }
+
+        private void btnCopy_Click(object sender, EventArgs e)
+        {
+            Profile profile = modSQL.GetProfile(((Profile)cbxProfiles.SelectedItem).ProfileId);
+            if(profile != null)
+            {
+                btnAdd_Click(sender, e);
+                FillOptionsGroupBox(profile);
+            }
+            else
+            {
+                logger.Error("Profile couldn't be copied.");
+                modUtil.throwError("Profile couldn't be copied. Please try again!");
+            }
         }
     }
 }

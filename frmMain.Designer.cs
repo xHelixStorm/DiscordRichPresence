@@ -85,6 +85,7 @@
             this.btnEnd = new System.Windows.Forms.Button();
             this.btnStart = new System.Windows.Forms.Button();
             this.btnTest = new System.Windows.Forms.Button();
+            this.btnCopy = new System.Windows.Forms.Button();
             this.gbxOptions.SuspendLayout();
             this.cmsTrayIconContext.SuspendLayout();
             this.gbxWebservice.SuspendLayout();
@@ -553,7 +554,7 @@
             // 
             // btnMinimize
             // 
-            this.btnMinimize.Location = new System.Drawing.Point(429, 158);
+            this.btnMinimize.Location = new System.Drawing.Point(430, 190);
             this.btnMinimize.Name = "btnMinimize";
             this.btnMinimize.Size = new System.Drawing.Size(75, 23);
             this.btnMinimize.TabIndex = 4;
@@ -563,7 +564,7 @@
             // 
             // btnOptions
             // 
-            this.btnOptions.Location = new System.Drawing.Point(430, 194);
+            this.btnOptions.Location = new System.Drawing.Point(430, 226);
             this.btnOptions.Name = "btnOptions";
             this.btnOptions.Size = new System.Drawing.Size(75, 23);
             this.btnOptions.TabIndex = 6;
@@ -635,11 +636,22 @@
             this.btnTest.UseVisualStyleBackColor = true;
             this.btnTest.Click += new System.EventHandler(this.btnTest_Click);
             // 
+            // btnCopy
+            // 
+            this.btnCopy.Location = new System.Drawing.Point(430, 154);
+            this.btnCopy.Name = "btnCopy";
+            this.btnCopy.Size = new System.Drawing.Size(75, 23);
+            this.btnCopy.TabIndex = 9;
+            this.btnCopy.Text = "Copy";
+            this.btnCopy.UseVisualStyleBackColor = true;
+            this.btnCopy.Click += new System.EventHandler(this.btnCopy_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(517, 515);
+            this.ClientSize = new System.Drawing.Size(523, 515);
+            this.Controls.Add(this.btnCopy);
             this.Controls.Add(this.btnTest);
             this.Controls.Add(this.gbxWebservice);
             this.Controls.Add(this.btnOptions);
@@ -728,5 +740,6 @@
         private Button btnTest;
         private TextBox tbxKey;
         private Label lblKey;
+        private Button btnCopy;
     }
 }
