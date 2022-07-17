@@ -19,6 +19,13 @@ namespace DiscordRichPresence.constructors
                 <DiscordClientId>{discordClientId}</DiscordClientId>
                 <AutoStart>{autoStart}</AutoStart>
                 <AutoStartWebservice>{autoStartWebservice}</AutoStartWebservice>
+                <Imgur>
+                    <ClientId>{clientIdImgur}</ClientId>
+                    <ClientSecret>{clientSecretImgur}</ClientSecret>
+                    <AccessToken>{accessTokenImgur}</AccessToken>
+                    <RefreshToken>{refreshTokenImgur}</RefreshToken>
+                    <Expires>{expiresImgur}</Expires>
+                </Imgur>
             </appSettings>
         </configuration>";
 
@@ -26,6 +33,7 @@ namespace DiscordRichPresence.constructors
         private long discordClientId = 0;
         private bool autoStart = false;
         private bool autoStartWebservice = false;
+        private Imgur imgur = new Imgur();
 
         public AppConf()
         {
@@ -62,6 +70,12 @@ namespace DiscordRichPresence.constructors
         {
             get { return autoStartWebservice; }
             set { autoStartWebservice = value; }
+        }
+
+        public Imgur Imgur
+        {
+            get { return imgur; }
+            set { imgur = value; }
         }
 
         private Encryption Encryption()
@@ -105,7 +119,23 @@ namespace DiscordRichPresence.constructors
                             else if (el.Name == "AutoStart")
                                 autoStart = el.Value == "1";
                             else if (el.Name == "AutoStartWebservice")
-                                AutoStartWebservice = el.Value == "1";
+                                autoStartWebservice = el.Value == "1";
+                            else if(el.Name == "Imgur")
+                            {
+                                foreach(var subEl in el.Elements())
+                                {
+                                    if (subEl.Name == "ClientId")
+                                        imgur.ClientId = subEl.Value;
+                                    else if (subEl.Name == "ClientSecret")
+                                        imgur.ClientSecret = subEl.Value;
+                                    else if (subEl.Name == "AccessToken")
+                                        imgur.AccessToken = subEl.Value;
+                                    else if (subEl.Name == "RefreshToken")
+                                        imgur.RefreshToken = subEl.Value;
+                                    else if (subEl.Name == "Expires")
+                                        imgur.Expires = Int64.Parse(subEl.Value);
+                                }
+                            }
                         }
                     }
                     else
@@ -129,6 +159,13 @@ namespace DiscordRichPresence.constructors
             xml = xml.Replace("{autoStart}", autoStart ? "1" : "0");
             xml = xml.Replace("{autoStartWebservice}", autoStartWebservice ? "1" : "0");
 
+            //Imgur
+            xml = xml.Replace("{clientIdImgur}", imgur.ClientId);
+            xml = xml.Replace("{clientSecretImgur}", imgur.ClientSecret);
+            xml = xml.Replace("{accessTokenImgur}", imgur.AccessToken);
+            xml = xml.Replace("{refreshTokenImgur}", imgur.RefreshToken);
+            xml = xml.Replace("{expiresImgur}", imgur.Expires+"");
+
             Encryption encryption = Encryption();
             File.WriteAllBytes(confFileName, modUtil.Encrypt(xml, encryption.Key, encryption.IV));
             return this;
@@ -136,7 +173,7 @@ namespace DiscordRichPresence.constructors
 
         public override string ToString()
         {
-            return "{\"Port\": " + port + ", \"DiscordClientId\": " + discordClientId + ", \"AutoStart\": " + autoStart + ", \"AutoStartWebservice\": " + autoStartWebservice + "}".Normalize();
+            return "{\"Port\": " + port + ", \"DiscordClientId\": " + discordClientId + ", \"AutoStart\": " + autoStart + ", \"AutoStartWebservice\": " + autoStartWebservice + "\"Imgur\": " + imgur.ToString() + "}".Normalize();
         }
     }
 }

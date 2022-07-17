@@ -13,6 +13,7 @@ namespace DiscordRichPresence.modules
     {
         private static readonly IFolder folders = new IFolder();
         private static AppConf appConf = new AppConf();
+        private static readonly HttpClient client = new HttpClient();
 
         /// <summary>
         /// Return IFolder object instance which utilizes the enum Folder
@@ -30,6 +31,15 @@ namespace DiscordRichPresence.modules
         public static AppConf GetAppConf()
         {
             return appConf;
+        }
+
+        /// <summary>
+        /// Return a global instance of HttpClient
+        /// </summary>
+        /// <returns>HttpClient object</returns>
+        public static HttpClient GetHttpClient()
+        {
+            return client;
         }
 
         /// <summary>

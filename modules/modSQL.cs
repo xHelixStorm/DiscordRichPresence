@@ -53,8 +53,22 @@ namespace DiscordRichPresence.modules
                 command.CommandText = "CREATE TABLE IF NOT EXISTS `encryption` (`key` VARCHAR(255) not null PRIMARY KEY, `iv` VARCHAR(255) not null)";
                 logger.Trace("Execute query: {0}", command.CommandText);
 
+                command.ExecuteNonQuery();
+
                 command = con.CreateCommand();
                 command.CommandText = "CREATE TABLE IF NOT EXISTS `key_presets` (`key` VARCHAR(255) not null PRIMARY KEY, `profile_id` INTEGER not null, `profile_name` VARCHAR(255) not null, `source_url` VARCHAR(255) not null, `target_url` VARCHAR(255) null, `type` INTEGER null DEFAULT '0', `name` VARCHAR(255) null, `state` VARCHAR(255) null, `details` VARCHAR(255) null, `large_image` VARCHAR(255) null, `large_text` VARCHAR(255) null, `small_image` VARCHAR(255) null, `small_text` VARCHAR(255) null, `audible` BOOLEAN null)";
+                logger.Trace("Execute query: {0}", command.CommandText);
+
+                command.ExecuteNonQuery();
+
+                command = con.CreateCommand();
+                command.CommandText = "CREATE TABLE IF NOT EXISTS `albums` (`album_id` VARCHAR(255) not null primary key, `deletehash` VARCHAR(255) not null, `name` VARCHAR(255) not null)";
+                logger.Trace("Execute query: {0}", command.CommandText);
+
+                command.ExecuteNonQuery();
+
+                command = con.CreateCommand();
+                command.CommandText = "CREATE TABLE IF NOT EXISTS `images` (`image_id` VARCHAR(255) not null primary key, `url` VARCHAR(255) not null, `key` VARCHAR(255) not null, `album_id` VARCHAR(255) not null)";
                 logger.Trace("Execute query: {0}", command.CommandText);
 
                 command.ExecuteNonQuery();
@@ -436,7 +450,7 @@ namespace DiscordRichPresence.modules
                         reader.GetString(0),
                         reader.GetBoolean(13)
                     );
-                    logger.Trace("Obtained DB values: {0}", profile.ToString2);
+                    logger.Trace("Obtained DB values: {0}", profile.ToString2());
                     return profile;
                 }
                 reader.Close();
@@ -451,6 +465,239 @@ namespace DiscordRichPresence.modules
                 con.Close();
             }
             return null;
+        }
+
+        public static List<Album>? GetAllAlbums()
+        {
+            logger.Debug("SQL method GetAllAlbums called");
+            var con = CreateConnection();
+            if (con == null) return null;
+
+            var command = con.CreateCommand();
+            command.CommandText = "SELECT * FROM albums";
+            logger.Trace("Execute query: {0}", command.CommandText);
+
+            List<Album> albums = new List<Album>();
+            SqliteDataReader reader = null;
+            try
+            {
+                reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    Album album = new Album(
+                        reader.GetString(0),
+                        reader.GetString(1),
+                        reader.GetString(2)
+                    );
+                    logger.Trace("Obtained DB values: {0}", album.ToString2());
+                    albums.Add(album);
+                }
+                reader.Close();
+                return albums;
+            }
+            catch (SqliteException e)
+            {
+                logger.Error(e, "DB action couldn't be executed");
+                return null;
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+
+        public static List<Img>? GetAlbumImages(string albumId)
+        {
+            logger.Debug("SQL method GetAlbumImages called");
+            var con = CreateConnection();
+            if (con == null) return null;
+
+            var command = con.CreateCommand();
+            if(albumId.Length == 0)
+            {
+                command.CommandText = "SELECT a.album_id, a.deletehash, a.name, b.image_id, b.url, b.key FROM albums a INNER JOIN images b ON a.album_id = b.album_id ORDER BY a.album_id";
+                logger.Trace("Execute query: {0}", command.CommandText);
+            }
+            else
+            {
+                command.CommandText = "SELECT a.album_id, a.deletehash, a.name, b.image_id, b.url, b.key FROM albums a INNER JOIN images b ON a.album_id = b.album_id WHERE a.album_id = $album_id ORDER BY a.album_id";
+                command.Parameters.AddWithValue("$album_id", albumId);
+                logger.Trace("Execute query: {0}", command.CommandText);
+            }
+
+            List<Img> images = new List<Img>();
+          
+            try
+            {
+                SqliteDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    Img img = new Img(
+                        reader.GetString(3),
+                        reader.GetString(4),
+                        reader.GetString(5),
+                        new Album(
+                            reader.GetString(0),
+                            reader.GetString(1),
+                            reader.GetString(2)
+                        )
+                    );
+                    logger.Trace("Obtained DB values: {0}", img.ToString());
+                    images.Add(img);
+                }
+                reader.Close();
+                return images;
+            }
+            catch (SqliteException e)
+            {
+                logger.Error(e, "DB action couldn't be executed");
+                return null;
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+
+        public static int InsertAlbum(Album album)
+        {
+            logger.Debug("SQL method InsertAlbum called");
+            var con = CreateConnection();
+            if (con == null) return -1;
+
+            var command = con.CreateCommand();
+            command.CommandText = @"INSERT OR REPLACE INTO albums (album_id, deletehash, name) VALUES($album_id, $deletehash, $name)";
+            command.Parameters.AddWithValue("$album_id", album.AlbumId);
+            command.Parameters.AddWithValue("$deletehash", album.DeleteHash);
+            command.Parameters.AddWithValue("$name", album.Name);
+            logger.Trace("Execute query: {0}", command.CommandText);
+            logger.Trace("Parameters passed: {0}", album.ToString2());
+
+            try
+            {
+                return command.ExecuteNonQuery();
+            }
+            catch (SqliteException e)
+            {
+                logger.Error(e, "DB action couldn't be executed");
+                return -1;
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+
+        public static int DeleteAlbum(string albumId)
+        {
+            logger.Debug("SQL method DeleteAlbum called");
+            var con = CreateConnection();
+            if (con == null) return -1;
+
+            var command = con.CreateCommand();
+            command.CommandText = @"DELETE FROM albums WHERE album_id = $album_id";
+            command.Parameters.AddWithValue("$album_id", albumId);
+            logger.Trace("Execute query: {0}", command.CommandText);
+            logger.Trace("Parameters passed: {0}", albumId);
+
+            try
+            {
+                return command.ExecuteNonQuery();
+            }
+            catch (SqliteException e)
+            {
+                logger.Error(e, "DB action couldn't be executed");
+                return -1;
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+
+        public static int InsertImage(Img image)
+        {
+            logger.Debug("SQL method InsertImage called");
+            var con = CreateConnection();
+            if (con == null) return -1;
+
+            var command = con.CreateCommand();
+            command.CommandText = @"INSERT OR REPLACE INTO images (image_id, url, key, album_id) VALUES($image_id, $url, $key, $album_id)";
+            command.Parameters.AddWithValue("$image_id", image.ImageId);
+            command.Parameters.AddWithValue("$url", image.Url);
+            command.Parameters.AddWithValue("$key", image.Key);
+            command.Parameters.AddWithValue("$album_id", image.Album.AlbumId);
+            logger.Trace("Execute query: {0}", command.CommandText);
+            logger.Trace("Parameters passed: {0}", image.ToString());
+
+            try
+            {
+                return command.ExecuteNonQuery();
+            }
+            catch (SqliteException e)
+            {
+                logger.Error(e, "DB action couldn't be executed");
+                return -1;
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+
+        public static int DeleteImage(string imageId)
+        {
+            logger.Debug("SQL method DeleteImage called");
+            var con = CreateConnection();
+            if (con == null) return -1;
+
+            var command = con.CreateCommand();
+            command.CommandText = @"DELETE FROM images WHERE image_id = $image_id";
+            command.Parameters.AddWithValue("$image_id", imageId);
+            logger.Trace("Execute query: {0}", command.CommandText);
+            logger.Trace("Parameters passed: {0}", imageId);
+
+            try
+            {
+                return command.ExecuteNonQuery();
+            }
+            catch (SqliteException e)
+            {
+                logger.Error(e, "DB action couldn't be executed");
+                return -1;
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+
+        public static int UpdateImageKeyBind(string imageId, string key)
+        {
+            logger.Debug("SQL method DeleteImage called");
+            var con = CreateConnection();
+            if (con == null) return -1;
+
+            var command = con.CreateCommand();
+            command.CommandText = @"UPDATE images SET key = $key WHERE image_id = $image_id";
+            command.Parameters.AddWithValue("$image_id", imageId);
+            command.Parameters.AddWithValue("$key", key);
+            logger.Trace("Execute query: {0}", command.CommandText);
+            logger.Trace("Parameters passed: {0}, {1}", imageId, key);
+
+            try
+            {
+                return command.ExecuteNonQuery();
+            }
+            catch (SqliteException e)
+            {
+                logger.Error(e, "DB action couldn't be executed");
+                return -1;
+            }
+            finally
+            {
+                con.Close();
+            }
         }
     }
 }

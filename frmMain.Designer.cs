@@ -86,6 +86,7 @@
             this.btnStart = new System.Windows.Forms.Button();
             this.btnTest = new System.Windows.Forms.Button();
             this.btnCopy = new System.Windows.Forms.Button();
+            this.btnAlbums = new System.Windows.Forms.Button();
             this.gbxOptions.SuspendLayout();
             this.cmsTrayIconContext.SuspendLayout();
             this.gbxWebservice.SuspendLayout();
@@ -579,16 +580,16 @@
             this.gbxWebservice.Controls.Add(this.lblPort);
             this.gbxWebservice.Controls.Add(this.btnEnd);
             this.gbxWebservice.Controls.Add(this.btnStart);
-            this.gbxWebservice.Location = new System.Drawing.Point(418, 263);
+            this.gbxWebservice.Location = new System.Drawing.Point(418, 299);
             this.gbxWebservice.Name = "gbxWebservice";
-            this.gbxWebservice.Size = new System.Drawing.Size(99, 188);
+            this.gbxWebservice.Size = new System.Drawing.Size(99, 165);
             this.gbxWebservice.TabIndex = 7;
             this.gbxWebservice.TabStop = false;
             this.gbxWebservice.Text = "Webservice";
             // 
             // tbxPort
             // 
-            this.tbxPort.Location = new System.Drawing.Point(12, 149);
+            this.tbxPort.Location = new System.Drawing.Point(12, 133);
             this.tbxPort.Name = "tbxPort";
             this.tbxPort.ReadOnly = true;
             this.tbxPort.Size = new System.Drawing.Size(75, 23);
@@ -599,7 +600,7 @@
             // lblPort
             // 
             this.lblPort.AutoSize = true;
-            this.lblPort.Location = new System.Drawing.Point(12, 114);
+            this.lblPort.Location = new System.Drawing.Point(12, 98);
             this.lblPort.Name = "lblPort";
             this.lblPort.Size = new System.Drawing.Size(32, 15);
             this.lblPort.TabIndex = 9;
@@ -608,7 +609,7 @@
             // btnEnd
             // 
             this.btnEnd.Enabled = false;
-            this.btnEnd.Location = new System.Drawing.Point(12, 77);
+            this.btnEnd.Location = new System.Drawing.Point(12, 61);
             this.btnEnd.Name = "btnEnd";
             this.btnEnd.Size = new System.Drawing.Size(75, 23);
             this.btnEnd.TabIndex = 8;
@@ -618,7 +619,7 @@
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(12, 37);
+            this.btnStart.Location = new System.Drawing.Point(12, 21);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(75, 23);
             this.btnStart.TabIndex = 7;
@@ -646,11 +647,22 @@
             this.btnCopy.UseVisualStyleBackColor = true;
             this.btnCopy.Click += new System.EventHandler(this.btnCopy_Click);
             // 
+            // btnAlbums
+            // 
+            this.btnAlbums.Location = new System.Drawing.Point(430, 262);
+            this.btnAlbums.Name = "btnAlbums";
+            this.btnAlbums.Size = new System.Drawing.Size(75, 23);
+            this.btnAlbums.TabIndex = 10;
+            this.btnAlbums.Text = "Albums";
+            this.btnAlbums.UseVisualStyleBackColor = true;
+            this.btnAlbums.Click += new System.EventHandler(this.btnAlbums_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(523, 515);
+            this.Controls.Add(this.btnAlbums);
             this.Controls.Add(this.btnCopy);
             this.Controls.Add(this.btnTest);
             this.Controls.Add(this.gbxWebservice);
@@ -741,5 +753,6 @@
         private TextBox tbxKey;
         private Label lblKey;
         private Button btnCopy;
+        private Button btnAlbums;
     }
 }

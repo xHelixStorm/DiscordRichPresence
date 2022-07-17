@@ -128,6 +128,7 @@ namespace DiscordRichPresence
             hlpProvider.SetShowHelp(btnTest, true);
             hlpProvider.SetShowHelp(tbxKey, true);
             hlpProvider.SetShowHelp(btnCopy, true);
+            hlpProvider.SetShowHelp(btnAlbums, true);
 
 
             hlpProvider.SetHelpString(cbxProfiles, "Select a registered profile to view the details or to enable additional buttons to either update or remove the selected profile.");
@@ -162,6 +163,7 @@ namespace DiscordRichPresence
             hlpProvider.SetHelpString(btnTest, "Experiment with the displayed fields to display the activity on Discord.");
             hlpProvider.SetHelpString(tbxKey, "For cases when the target site is visited directly without the source page, it will be possible to automatically autofill values obtained from the source page. Automatically saved are values that have to be obtained from the source page. Content of this field can be combined with various expressions.\n\n- Regex: '{::regex:[\\d\\w]*::}'\n- Url: '{::url::}' or '{::url:{::regex:[\\d]*$::}::}'\n- HTML Location: '{::location:<div id=\"xyz\">::}' or '{::location:<img class=\"xyz\">:src::}'\n- HTML Click Location: '{::click:<a>;up;<div>;down;<img>:src::}'\n\nNote: for 'click' and 'location' the regex can be used with the parentheses to filter for attributes with specific names.");
             hlpProvider.SetHelpString(btnCopy, "Copy an existing profile for the creation of a new profile.");
+            hlpProvider.SetHelpString(btnAlbums, "Manage albums and images on Imgur.");
         }
 
         private void cbxProfiles_SelectionChangeCommitted(object sender, EventArgs e)
@@ -575,6 +577,28 @@ namespace DiscordRichPresence
             {
                 logger.Error("Profile couldn't be copied.");
                 modUtil.throwError("Profile couldn't be copied. Please try again!");
+            }
+        }
+
+        private void btnAlbums_Click(object sender, EventArgs e)
+        {
+            AppConf appConf = modUtil.GetAppConf();
+            Imgur imgur = appConf.Imgur;
+            if (imgur.ClientId.Length == 0 || imgur.ClientSecret.Length == 0 || imgur.RefreshToken.Length == 0)
+            {
+                modUtil.throwError("Imgur settings not completed in the Options page. Pleae fill all options related to Imgur and then try again.");
+            }
+            else
+            {
+                var form = Application.OpenForms.OfType<frmAlbum>();
+                if (!form.Any())
+                {
+                    new frmAlbum().Show();
+                }
+                else
+                {
+                    form.First().Focus();
+                }
             }
         }
     }

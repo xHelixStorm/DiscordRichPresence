@@ -36,6 +36,10 @@ namespace DiscordRichPresence
             chkAutoStart.Checked = appConf.AutoStart;
             chkAutoStartWebservice.Checked = appConf.AutoStartWebservice;
 
+            tbxClientIdImgur.Text = appConf.Imgur.ClientId;
+            tbxClientSecretImgur.Text = appConf.Imgur.ClientSecret;
+            tbxRefreshTokenImgur.Text = appConf.Imgur.RefreshToken;
+
             logger.Trace("Configuration obtained from file: {0}", appConf.ToString);
             logger.Info("Configuration loaded.");
         }
@@ -46,12 +50,18 @@ namespace DiscordRichPresence
             hlpProvider.SetShowHelp(nudDiscordClientId, true);
             hlpProvider.SetShowHelp(chkAutoStart, true);
             hlpProvider.SetShowHelp(chkAutoStartWebservice, true);
+            hlpProvider.SetShowHelp(tbxClientIdImgur, true);
+            hlpProvider.SetShowHelp(tbxClientSecretImgur, true);
+            hlpProvider.SetShowHelp(tbxRefreshTokenImgur, true);
             hlpProvider.SetShowHelp(btnOK, true);
 
             hlpProvider.SetHelpString(nudPort, "Port for the internal webservice which receives events from the browser extension. If the port stays 0, a random available port will be used.");
             hlpProvider.SetHelpString(nudDiscordClientId, "Unique number obtained from the Discord developer site after creating an application. The client id is required to use the Discord API to display activities on Discord.");
             hlpProvider.SetHelpString(chkAutoStart, "Automatically start this application on windows start");
             hlpProvider.SetHelpString(chkAutoStartWebservice, "Automatically run the webservice in the background when the application has started.");
+            hlpProvider.SetHelpString(tbxClientIdImgur, "Client ID required to upload images on Imgur and to create galleries. Obtained after creating an application on the Imgur website.");
+            hlpProvider.SetHelpString(tbxClientSecretImgur, "Client ID required to upload images on Imgur and to create galleries. Obtained after creating an application on the Imgur website.");
+            hlpProvider.SetHelpString(tbxRefreshTokenImgur, "The Refresh Token is required to create an Access Token after its expiration and with it perform API operations with Imgur.");
             hlpProvider.SetHelpString(btnOK, "Save configuration and close the window.");
         }
 
@@ -70,6 +80,10 @@ namespace DiscordRichPresence
             appConf.DiscordClientId = (long)nudDiscordClientId.Value;
             appConf.AutoStart = chkAutoStart.Checked;
             appConf.AutoStartWebservice = chkAutoStartWebservice.Checked;
+
+            appConf.Imgur.ClientId = tbxClientIdImgur.Text;
+            appConf.Imgur.ClientSecret = tbxClientSecretImgur.Text;
+            appConf.Imgur.RefreshToken = tbxRefreshTokenImgur.Text;
 
             try
             {
@@ -101,6 +115,21 @@ namespace DiscordRichPresence
         }
 
         private void chkAutoStartWebservice_KeyDown(object sender, KeyEventArgs e)
+        {
+            HandleKeyPressed(sender, e);
+        }
+
+        private void tbxClientIdImgur_KeyDown(object sender, KeyEventArgs e)
+        {
+            HandleKeyPressed(sender, e);
+        }
+
+        private void tbxClientSecretImgur_KeyDown(object sender, KeyEventArgs e)
+        {
+            HandleKeyPressed(sender, e);
+        }
+
+        private void tbxRefreshTokenImgur_KeyDown(object sender, KeyEventArgs e)
         {
             HandleKeyPressed(sender, e);
         }
