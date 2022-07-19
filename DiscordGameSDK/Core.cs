@@ -89,10 +89,12 @@ namespace Discord
 
     public enum ActivityType
     {
-        Playing,
+        Game,
         Streaming,
         Listening,
         Watching,
+        Custom,
+        Competing
     }
 
     public enum ActivityActionType

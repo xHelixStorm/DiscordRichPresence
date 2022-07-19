@@ -21,7 +21,7 @@ namespace DiscordRichPresence.enums
         {
             foreach(Folder folder in Enum.GetValues(typeof(Folder)))
             {
-                folders[folder] = "./"+folder.ToString().ToLower()+"/";
+                folders[folder] = Application.StartupPath + folder.ToString().ToLower() + "\\";
             }
         }
 
