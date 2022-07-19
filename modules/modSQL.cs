@@ -62,13 +62,19 @@ namespace DiscordRichPresence.modules
                 command.ExecuteNonQuery();
 
                 command = con.CreateCommand();
-                command.CommandText = "CREATE TABLE IF NOT EXISTS `albums` (`album_id` VARCHAR(255) not null primary key, `deletehash` VARCHAR(255) not null, `name` VARCHAR(255) not null)";
+                command.CommandText = "CREATE TABLE IF NOT EXISTS `albums` (`album_id` VARCHAR(255) not null primary key, `name` VARCHAR(255) not null, `default` BOOLEAN not null)";
                 logger.Trace("Execute query: {0}", command.CommandText);
 
                 command.ExecuteNonQuery();
 
                 command = con.CreateCommand();
                 command.CommandText = "CREATE TABLE IF NOT EXISTS `images` (`image_id` VARCHAR(255) not null primary key, `url` VARCHAR(255) not null, `key` VARCHAR(255) not null, `album_id` VARCHAR(255) not null)";
+                logger.Trace("Execute query: {0}", command.CommandText);
+
+                command.ExecuteNonQuery();
+
+                command = con.CreateCommand();
+                command.CommandText = "CREATE TABLE IF NOT EXISTS `uploaded_images` (`orig_url` VARCHAR(255) not null primary key, `new_url` VARCHAR(255) not null)";
                 logger.Trace("Execute query: {0}", command.CommandText);
 
                 command.ExecuteNonQuery();
@@ -487,13 +493,50 @@ namespace DiscordRichPresence.modules
                     Album album = new Album(
                         reader.GetString(0),
                         reader.GetString(1),
-                        reader.GetString(2)
+                        reader.GetBoolean(2)
                     );
                     logger.Trace("Obtained DB values: {0}", album.ToString2());
                     albums.Add(album);
                 }
                 reader.Close();
                 return albums;
+            }
+            catch (SqliteException e)
+            {
+                logger.Error(e, "DB action couldn't be executed");
+                return null;
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+
+        public static Album? GetDefaultAlbum()
+        {
+            logger.Debug("SQL method GetDefaultAlbum called");
+            var con = CreateConnection();
+            if (con == null) return null;
+
+            var command = con.CreateCommand();
+            command.CommandText = "SELECT * FROM albums WHERE `default` = 1";
+            logger.Trace("Execute query: {0}", command.CommandText);
+
+            try
+            {
+                SqliteDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    Album album = new Album(
+                        reader.GetString(0),
+                        reader.GetString(1),
+                        reader.GetBoolean(2)
+                    );
+                    logger.Trace("Obtained DB values: {0}", album.ToString2());
+                    return album;
+                }
+                reader.Close();
+                return null;
             }
             catch (SqliteException e)
             {
@@ -515,14 +558,15 @@ namespace DiscordRichPresence.modules
             var command = con.CreateCommand();
             if(albumId.Length == 0)
             {
-                command.CommandText = "SELECT a.album_id, a.deletehash, a.name, b.image_id, b.url, b.key FROM albums a INNER JOIN images b ON a.album_id = b.album_id ORDER BY a.album_id";
+                command.CommandText = "SELECT a.album_id, a.name, a.`default`, b.image_id, b.url, b.key FROM albums a INNER JOIN images b ON a.album_id = b.album_id ORDER BY a.album_id";
                 logger.Trace("Execute query: {0}", command.CommandText);
             }
             else
             {
-                command.CommandText = "SELECT a.album_id, a.deletehash, a.name, b.image_id, b.url, b.key FROM albums a INNER JOIN images b ON a.album_id = b.album_id WHERE a.album_id = $album_id ORDER BY a.album_id";
+                command.CommandText = "SELECT a.album_id, a.name, a.`default`, b.image_id, b.url, b.key FROM albums a INNER JOIN images b ON a.album_id = b.album_id WHERE a.album_id = $album_id ORDER BY a.album_id";
                 command.Parameters.AddWithValue("$album_id", albumId);
                 logger.Trace("Execute query: {0}", command.CommandText);
+                logger.Trace("Parameters passed {0}, {1}", albumId);
             }
 
             List<Img> images = new List<Img>();
@@ -539,7 +583,7 @@ namespace DiscordRichPresence.modules
                         new Album(
                             reader.GetString(0),
                             reader.GetString(1),
-                            reader.GetString(2)
+                            reader.GetBoolean(2)
                         )
                     );
                     logger.Trace("Obtained DB values: {0}", img.ToString());
@@ -559,6 +603,34 @@ namespace DiscordRichPresence.modules
             }
         }
 
+        public static int UpdateAlbumDefault(string albumId, bool isDefault)
+        {
+            logger.Debug("SQL method UpdateAlbumDefault called");
+            var con = CreateConnection();
+            if (con == null) return -1;
+
+            var command = con.CreateCommand();
+            command.CommandText = @"UPDATE albums SET `default` = $default WHERE album_id = $album_id";
+            command.Parameters.AddWithValue("$album_id", albumId);
+            command.Parameters.AddWithValue("$default", isDefault);
+            logger.Trace("Execute query: {0}", command.CommandText);
+            logger.Trace("Parameters passed: {0}, {1}", albumId, isDefault);
+
+            try
+            {
+                return command.ExecuteNonQuery();
+            }
+            catch (SqliteException e)
+            {
+                logger.Error(e, "DB action couldn't be executed");
+                return -1;
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+
         public static int InsertAlbum(Album album)
         {
             logger.Debug("SQL method InsertAlbum called");
@@ -566,10 +638,10 @@ namespace DiscordRichPresence.modules
             if (con == null) return -1;
 
             var command = con.CreateCommand();
-            command.CommandText = @"INSERT OR REPLACE INTO albums (album_id, deletehash, name) VALUES($album_id, $deletehash, $name)";
+            command.CommandText = @"INSERT OR REPLACE INTO albums (album_id, name, `default`) VALUES($album_id, $name, $default)";
             command.Parameters.AddWithValue("$album_id", album.AlbumId);
-            command.Parameters.AddWithValue("$deletehash", album.DeleteHash);
             command.Parameters.AddWithValue("$name", album.Name);
+            command.Parameters.AddWithValue("$default", album.IsDefault);
             logger.Trace("Execute query: {0}", command.CommandText);
             logger.Trace("Parameters passed: {0}", album.ToString2());
 
@@ -684,6 +756,157 @@ namespace DiscordRichPresence.modules
             command.Parameters.AddWithValue("$key", key);
             logger.Trace("Execute query: {0}", command.CommandText);
             logger.Trace("Parameters passed: {0}, {1}", imageId, key);
+
+            try
+            {
+                return command.ExecuteNonQuery();
+            }
+            catch (SqliteException e)
+            {
+                logger.Error(e, "DB action couldn't be executed");
+                return -1;
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+
+        public static Img? GetImage(string albumId, string imageId)
+        {
+            logger.Debug("SQL method GetImage called");
+            var con = CreateConnection();
+            if (con == null) return null;
+
+            var command = con.CreateCommand();
+            command.CommandText = "SELECT a.album_id, a.name, a.`default`, b.image_id, b.url, b.key FROM albums a INNER JOIN images b ON a.album_id = b.album_id WHERE a.album_id = $album_id AND b.image_id = $image_id";
+            command.Parameters.AddWithValue("$album_id", albumId);
+            command.Parameters.AddWithValue("$image_id", imageId);
+            logger.Trace("Execute query: {0}", command.CommandText);
+            logger.Trace("Parameters passed {0}, {1}", albumId, imageId);
+
+            try
+            {
+                SqliteDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    Img img = new Img(
+                        reader.GetString(3),
+                        reader.GetString(4),
+                        reader.GetString(5),
+                        new Album(
+                            reader.GetString(0),
+                            reader.GetString(1),
+                            reader.GetBoolean(2)
+                        )
+                    );
+                    logger.Trace("Obtained DB values: {0}", img.ToString());
+                    return img;
+                }
+                reader.Close();
+                return null;
+            }
+            catch (SqliteException e)
+            {
+                logger.Error(e, "DB action couldn't be executed");
+                return null;
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+
+        public static Img? GetImageByKey(string albumId, string key)
+        {
+            logger.Debug("SQL method GetImageByKey called");
+            var con = CreateConnection();
+            if (con == null) return null;
+
+            var command = con.CreateCommand();
+            command.CommandText = "SELECT a.album_id, a.name, a.`default`, b.image_id, b.url, b.key FROM albums a INNER JOIN images b ON a.album_id = b.album_id WHERE a.album_id = $album_id AND b.key = $key";
+            command.Parameters.AddWithValue("$album_id", albumId);
+            command.Parameters.AddWithValue("$key", key);
+            logger.Trace("Execute query: {0}", command.CommandText);
+            logger.Trace("Parameters passed {0}, {1}", albumId, key);
+
+            try
+            {
+                SqliteDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    Img img = new Img(
+                        reader.GetString(3),
+                        reader.GetString(4),
+                        reader.GetString(5),
+                        new Album(
+                            reader.GetString(0),
+                            reader.GetString(1),
+                            reader.GetBoolean(2)
+                        )
+                    );
+                    logger.Trace("Obtained DB values: {0}", img.ToString());
+                    return img;
+                }
+                reader.Close();
+                return null;
+            }
+            catch (SqliteException e)
+            {
+                logger.Error(e, "DB action couldn't be executed");
+                return null;
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+
+        public static bool UploadedImageExists(string url)
+        {
+            logger.Debug("SQL method UploadedImageExists called");
+            var con = CreateConnection();
+            if (con == null) return false;
+
+            var command = con.CreateCommand();
+            command.CommandText = "SELECT * FROM uploaded_images WHERE orig_url = $orig_url";
+            command.Parameters.AddWithValue("$orig_url", url);
+            logger.Trace("Execute query: {0}", command.CommandText);
+            logger.Trace("Parameters passed {0}, {1}", url);
+
+            try
+            {
+                SqliteDataReader reader = command.ExecuteReader();
+                if (reader.Read())
+                {
+                    return true;
+                }
+                reader.Close();
+                return false;
+            }
+            catch (SqliteException e)
+            {
+                logger.Error(e, "DB action couldn't be executed");
+                return false;
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+
+        public static int InsertUploadedImage(string origUrl, string newUrl)
+        {
+            logger.Debug("SQL method InsertUploadedUrl called");
+            var con = CreateConnection();
+            if (con == null) return -1;
+
+            var command = con.CreateCommand();
+            command.CommandText = @"INSERT INTO uploaded_images (orig_url, new_url) VALUES($orig_url, $new_url)";
+            command.Parameters.AddWithValue("$orig_url", origUrl);
+            command.Parameters.AddWithValue("$new_url", newUrl);
+            logger.Trace("Execute query: {0}", command.CommandText);
+            logger.Trace("Parameters passed: {0}, {1}", origUrl, newUrl);
 
             try
             {

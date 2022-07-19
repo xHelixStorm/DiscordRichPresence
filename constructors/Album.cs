@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace DiscordRichPresence.constructors
@@ -12,14 +13,14 @@ namespace DiscordRichPresence.constructors
     public class Album
     {
         private string albumId;
-        private string deletehash;
         private string name;
+        private bool isDefault;
 
-        public Album(string albumId, string deletehash, string name)
+        public Album(string albumId, string name, bool isDefault)
         {
             this.albumId = albumId;
-            this.deletehash = deletehash;
             this.name = name;
+            this.isDefault = isDefault;
         }
 
         public string AlbumId
@@ -27,14 +28,14 @@ namespace DiscordRichPresence.constructors
             get { return albumId; }
         }
 
-        public string DeleteHash
-        {
-            get { return deletehash; }
-        }
-
         public string Name
         {
             get { return name; }
+        }
+
+        public bool IsDefault
+        {
+            get { return isDefault; }
         }
 
         public override string ToString()
@@ -44,7 +45,7 @@ namespace DiscordRichPresence.constructors
 
         public string ToString2()
         {
-            return "{\"AlbumId\": " + albumId + ", \"DeleteHash\": " + deletehash + ", \"Name\":" + name +"}".Normalize();
+            return JsonSerializer.Serialize(this).Normalize();
         }
 
         public void ValidateToken()
@@ -97,7 +98,6 @@ namespace DiscordRichPresence.constructors
             JObject json = JObject.Parse(task.Result);
             json = (JObject)json.GetValue("data");
             albumId = (string)json.GetValue("id");
-            deletehash = (string)json.GetValue("deletehash");
 
             if(modSQL.InsertAlbum(this) == -1)
             {
@@ -141,7 +141,6 @@ namespace DiscordRichPresence.constructors
             JObject json = JObject.Parse(task.Result);
             json = (JObject)json.GetValue("data");
             albumId = (string)json.GetValue("id");
-            deletehash = "";
             name = (string)json.GetValue("title");
             if(modSQL.InsertAlbum(this) > 0)
             {
@@ -152,7 +151,6 @@ namespace DiscordRichPresence.constructors
             {
                 throw new Exception("Album couldn't be created.");
             }
-            return new JArray();
         }
     }
 }

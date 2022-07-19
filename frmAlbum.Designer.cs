@@ -39,6 +39,7 @@
             this.clmKeyBind = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.clmImage = new System.Windows.Forms.DataGridViewImageColumn();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.chkDefault = new System.Windows.Forms.CheckBox();
             this.pgbProgress = new System.Windows.Forms.ProgressBar();
             this.btnDeleteImage = new System.Windows.Forms.Button();
             this.btnAddImage = new System.Windows.Forms.Button();
@@ -64,7 +65,7 @@
             // 
             this.cbxAlbums.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbxAlbums.FormattingEnabled = true;
-            this.cbxAlbums.Location = new System.Drawing.Point(96, 25);
+            this.cbxAlbums.Location = new System.Drawing.Point(80, 25);
             this.cbxAlbums.Name = "cbxAlbums";
             this.cbxAlbums.Size = new System.Drawing.Size(152, 23);
             this.cbxAlbums.TabIndex = 1;
@@ -88,7 +89,7 @@
             this.dgvImages.RowTemplate.Height = 25;
             this.dgvImages.ShowCellToolTips = false;
             this.dgvImages.Size = new System.Drawing.Size(943, 382);
-            this.dgvImages.TabIndex = 8;
+            this.dgvImages.TabIndex = 9;
             this.dgvImages.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvImages_CellEndEdit);
             this.dgvImages.CellMouseEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvImages_CellMouseEnter);
             this.dgvImages.CellMouseLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvImages_CellMouseLeave);
@@ -139,6 +140,7 @@
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.SystemColors.Window;
+            this.groupBox1.Controls.Add(this.chkDefault);
             this.groupBox1.Controls.Add(this.pgbProgress);
             this.groupBox1.Controls.Add(this.btnDeleteImage);
             this.groupBox1.Controls.Add(this.btnAddImage);
@@ -152,21 +154,34 @@
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             // 
+            // chkDefault
+            // 
+            this.chkDefault.AutoSize = true;
+            this.chkDefault.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkDefault.Enabled = false;
+            this.chkDefault.Location = new System.Drawing.Point(226, 21);
+            this.chkDefault.Name = "chkDefault";
+            this.chkDefault.Size = new System.Drawing.Size(64, 19);
+            this.chkDefault.TabIndex = 2;
+            this.chkDefault.Text = "Default";
+            this.chkDefault.UseVisualStyleBackColor = true;
+            this.chkDefault.Click += new System.EventHandler(this.chkDefault_Click);
+            // 
             // pgbProgress
             // 
             this.pgbProgress.Location = new System.Drawing.Point(6, 48);
             this.pgbProgress.Name = "pgbProgress";
-            this.pgbProgress.Size = new System.Drawing.Size(362, 23);
+            this.pgbProgress.Size = new System.Drawing.Size(402, 23);
             this.pgbProgress.Step = 1;
             this.pgbProgress.TabIndex = 7;
             this.pgbProgress.Visible = false;
             // 
             // btnDeleteImage
             // 
-            this.btnDeleteImage.Location = new System.Drawing.Point(503, 47);
+            this.btnDeleteImage.Location = new System.Drawing.Point(554, 47);
             this.btnDeleteImage.Name = "btnDeleteImage";
             this.btnDeleteImage.Size = new System.Drawing.Size(100, 23);
-            this.btnDeleteImage.TabIndex = 7;
+            this.btnDeleteImage.TabIndex = 8;
             this.btnDeleteImage.Text = "Delete Image";
             this.btnDeleteImage.UseVisualStyleBackColor = true;
             this.btnDeleteImage.Click += new System.EventHandler(this.btnDeleteImage_Click);
@@ -174,20 +189,20 @@
             // btnAddImage
             // 
             this.btnAddImage.Enabled = false;
-            this.btnAddImage.Location = new System.Drawing.Point(397, 47);
+            this.btnAddImage.Location = new System.Drawing.Point(448, 47);
             this.btnAddImage.Name = "btnAddImage";
             this.btnAddImage.Size = new System.Drawing.Size(100, 23);
-            this.btnAddImage.TabIndex = 6;
+            this.btnAddImage.TabIndex = 7;
             this.btnAddImage.Text = "Add Image";
             this.btnAddImage.UseVisualStyleBackColor = true;
             this.btnAddImage.Click += new System.EventHandler(this.btnAddImage_Click);
             // 
             // btnDownloadAlbum
             // 
-            this.btnDownloadAlbum.Location = new System.Drawing.Point(609, 18);
+            this.btnDownloadAlbum.Location = new System.Drawing.Point(660, 18);
             this.btnDownloadAlbum.Name = "btnDownloadAlbum";
             this.btnDownloadAlbum.Size = new System.Drawing.Size(100, 23);
-            this.btnDownloadAlbum.TabIndex = 5;
+            this.btnDownloadAlbum.TabIndex = 6;
             this.btnDownloadAlbum.Text = "Downl. Album";
             this.btnDownloadAlbum.UseVisualStyleBackColor = true;
             this.btnDownloadAlbum.Click += new System.EventHandler(this.btnDownloadAlbum_Click);
@@ -195,30 +210,30 @@
             // btnDeleteAlbum
             // 
             this.btnDeleteAlbum.Enabled = false;
-            this.btnDeleteAlbum.Location = new System.Drawing.Point(503, 18);
+            this.btnDeleteAlbum.Location = new System.Drawing.Point(554, 18);
             this.btnDeleteAlbum.Name = "btnDeleteAlbum";
             this.btnDeleteAlbum.Size = new System.Drawing.Size(100, 23);
-            this.btnDeleteAlbum.TabIndex = 4;
+            this.btnDeleteAlbum.TabIndex = 5;
             this.btnDeleteAlbum.Text = "Delete Album";
             this.btnDeleteAlbum.UseVisualStyleBackColor = true;
             this.btnDeleteAlbum.Click += new System.EventHandler(this.btnDeleteAlbum_Click);
             // 
             // btnAddAlbum
             // 
-            this.btnAddAlbum.Location = new System.Drawing.Point(397, 18);
+            this.btnAddAlbum.Location = new System.Drawing.Point(448, 18);
             this.btnAddAlbum.Name = "btnAddAlbum";
             this.btnAddAlbum.Size = new System.Drawing.Size(100, 23);
-            this.btnAddAlbum.TabIndex = 3;
+            this.btnAddAlbum.TabIndex = 4;
             this.btnAddAlbum.Text = "Add Album";
             this.btnAddAlbum.UseVisualStyleBackColor = true;
             this.btnAddAlbum.Click += new System.EventHandler(this.btnAddAlbum_Click);
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(242, 18);
+            this.btnSearch.Location = new System.Drawing.Point(308, 18);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(100, 23);
-            this.btnSearch.TabIndex = 2;
+            this.btnSearch.TabIndex = 3;
             this.btnSearch.Text = "Search";
             this.btnSearch.UseVisualStyleBackColor = true;
             this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
@@ -245,6 +260,7 @@
             this.Load += new System.EventHandler(this.frmAlbum_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvImages)).EndInit();
             this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -271,5 +287,6 @@
         private DataGridViewTextBoxColumn clmKeyBind;
         private DataGridViewImageColumn clmImage;
         private HelpProvider hlpProvider;
+        private CheckBox chkDefault;
     }
 }

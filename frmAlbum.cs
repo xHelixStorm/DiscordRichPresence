@@ -54,7 +54,7 @@ namespace DiscordRichPresence
         private void InitializeAlbums()
         {
             cbxAlbums.Items.Clear();
-            cbxAlbums.Items.Add(new Album("", "", "<All Albums>"));
+            cbxAlbums.Items.Add(new Album("", "<All Albums>", false));
             cbxAlbums.SelectedIndex = 0;
             var albums = modSQL.GetAllAlbums();
             if(albums != null)
@@ -74,6 +74,7 @@ namespace DiscordRichPresence
         private void InitializeHelpProvider()
         {
             hlpProvider.SetShowHelp(cbxAlbums, true);
+            hlpProvider.SetShowHelp(chkDefault, true);
             hlpProvider.SetShowHelp(btnSearch, true);
             hlpProvider.SetShowHelp(btnAddAlbum, true);
             hlpProvider.SetShowHelp(btnDeleteAlbum, true);
@@ -83,6 +84,7 @@ namespace DiscordRichPresence
             hlpProvider.SetShowHelp(dgvImages, true);
 
             hlpProvider.SetHelpString(cbxAlbums, "Display all downloaded or created Imgur albums.");
+            hlpProvider.SetHelpString(chkDefault, "Defining an album as default album will result in automatically collect new images from sites where the Discord activity is triggered.");
             hlpProvider.SetHelpString(btnSearch, "Display all images below the selected album.");
             hlpProvider.SetHelpString(btnAddAlbum, "Create a new album on Imgur and display the created album in this application.");
             hlpProvider.SetHelpString(btnDeleteAlbum, "Delete the selected Album along with the images inside from Imgur and this application.");
@@ -97,11 +99,23 @@ namespace DiscordRichPresence
             ComboBox item = sender as ComboBox;
             if(item != null)
             {
-                string value = ((Album)item.SelectedItem).AlbumId;
+                Album album = (Album)item.SelectedItem;
+                string value = album.AlbumId;
                 bool enabled = value.Length > 0;
 
                 btnDeleteAlbum.Enabled = enabled;
                 btnAddImage.Enabled = enabled;
+
+                if(album.AlbumId.Length > 0)
+                {
+                    chkDefault.Enabled = true;
+                    chkDefault.Checked = album.IsDefault;
+                }
+                else
+                {
+                    chkDefault.Checked = false;
+                    chkDefault.Enabled = false;
+                }
             }
 
             btnSearch_Click(sender, e);
@@ -167,7 +181,7 @@ namespace DiscordRichPresence
         {
             string input = Interaction.InputBox("Please insert the name of the new album.", "Album creation");
             if (input.Length == 0) return;
-            Album album = new Album("", "", input);
+            Album album = new Album("", input, false);
 
             try
             {
@@ -253,7 +267,7 @@ namespace DiscordRichPresence
             string input = Interaction.InputBox("Please insert the id of the album, which may contain images, to download.", "Album download");
             if (input.Length > 0)
             {
-                Album album = new Album(input, "", "");
+                Album album = new Album(input, "", false);
 
                 pgbProgress.Visible = true;
                 pgbProgress.Value = 0;
@@ -342,7 +356,7 @@ namespace DiscordRichPresence
 
         private async void btnDeleteImage_Click(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show("Do you really want to delete the selected Image? The image will be deleted from Imgur as well.", "Delete the image.", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            DialogResult result = MessageBox.Show("Do you really want to delete the selected image(s)? The image(s) will be deleted from Imgur as well.", "Image deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if(DialogResult.Yes == result)
             {
                 this.Cursor = Cursors.WaitCursor;
@@ -358,8 +372,8 @@ namespace DiscordRichPresence
                         "",
                         new Album(
                             cells[0].Value.ToString(),
-                            "",
-                            cells[1].Value.ToString()
+                            cells[1].Value.ToString(),
+                            false
                         )
                     );
                     try
@@ -487,6 +501,55 @@ namespace DiscordRichPresence
                     {
                         logger.Error("Key Bind for image {0} couldn't be updated", imageId);
                         modUtil.throwError("Key Bind couldn't be updated. Please try again!");
+                    }
+                }
+            }
+        }
+
+        private void chkDefault_Click(object sender, EventArgs e)
+        {
+            CheckBox checkbox = sender as CheckBox;
+            if(checkbox != null)
+            {
+                if (checkbox.Checked)
+                {
+                    Album album = modSQL.GetDefaultAlbum();
+                    Album curAlbum = (Album)cbxAlbums.SelectedItem;
+                    if (album != null && album.AlbumId != curAlbum.AlbumId)
+                    {
+                        DialogResult result = MessageBox.Show("A default album has been already defined. Do you wish to make this your default album?", "Default album", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                        if (result == DialogResult.Yes)
+                        {
+                            if(modSQL.UpdateAlbumDefault(album.AlbumId, false) > 0)
+                            {
+                                if(modSQL.UpdateAlbumDefault(curAlbum.AlbumId, true) == 0)
+                                {
+                                    logger.Error("Default album couldn't be updated");
+                                    modUtil.throwError("Default album couldn't be updated. Please try again!");
+                                }
+                            }
+                            else
+                            {
+                                logger.Error("Default album couldn't be updated");
+                                modUtil.throwError("Default album couldn't be updated. Please try again!");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (modSQL.UpdateAlbumDefault(curAlbum.AlbumId, true) == 0)
+                        {
+                            logger.Error("Default album couldn't be updated");
+                            modUtil.throwError("Default album couldn't be updated. Please try again!");
+                        }
+                    }
+                }
+                else
+                {
+                    if (modSQL.UpdateAlbumDefault(((Album)cbxAlbums.SelectedItem).AlbumId, false) == 0)
+                    {
+                        logger.Error("Default album couldn't be updated");
+                        modUtil.throwError("Default album couldn't be updated. Please try again!");
                     }
                 }
             }

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http.Headers;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.Json;
@@ -108,10 +109,23 @@ namespace DiscordRichPresence.modules
                                                     if (profile.ContainsKey("Type") && profile.ContainsKey("Name") && 
                                                     profile.ContainsKey("State") && profile.ContainsKey("Details") && 
                                                     profile.ContainsKey("LargeImage") && profile.ContainsKey("LargeText") && 
-                                                    profile.ContainsKey("SmallImage") && profile.ContainsKey("SmallText"))
+                                                    profile.ContainsKey("SmallImage") && profile.ContainsKey("SmallText") &&
+                                                    profile.ContainsKey("Key"))
                                                     {
                                                         if(appConf.DiscordClientId > 0)
                                                         {
+                                                            string key = (string)profile.GetValue("Key");
+                                                            string largeImage = (string)profile.GetValue("LargeImage");
+                                                            string smallImage = (string)profile.GetValue("SmallImage");
+
+                                                            if (Regex.IsMatch(largeImage, @"\{::album:.*::\}"))
+                                                                largeImage = resolveAlbumKey(largeImage, key);
+                                                            if (Regex.IsMatch(smallImage, @"\{::album:.*::\}"))
+                                                                smallImage = resolveAlbumKey(smallImage, key);
+
+                                                            profile["LargeImage"] = largeImage;
+                                                            profile["SmallImage"] = smallImage;
+
                                                             modDiscord.InitializeActivity(profile);
                                                             Return200(stream, "{\"message\": \"Discord activity set.\"}", true, origin);
                                                         }
@@ -180,6 +194,9 @@ namespace DiscordRichPresence.modules
                                                         (bool)json.GetValue("Audible")
                                                     );
 
+                                                    UploadImage(profile.LargeImage);
+                                                    UploadImage(profile.SmallImage);
+
                                                     if(modSQL.InsertKeyPreset(profile) > 0)
                                                     {
                                                         Return200(stream, "{\"message\": \"Success.\"}", true, origin);
@@ -245,6 +262,126 @@ namespace DiscordRichPresence.modules
             });
 
             return port;
+        }
+
+        private static string resolveAlbumKey(string field, string key)
+        {
+            field = field.Replace("{::album:", "");
+            field = Regex.Replace(field, @"::\}$", "");
+            var values = field.Split(":");
+            string albumId = "";
+            string imageId = "";
+            bool keyBind = false;
+            for (int i = 0; i < values.Length; i++)
+            {
+                if (i == 0)
+                    albumId = values[i];
+                else if (i == 1 && values[i] != "keybind")
+                    imageId = values[i];
+                else if (i == 1 && values[i] == "keybind")
+                    keyBind = true;
+                else
+                    return "";
+            }
+            if (imageId.Length > 0)
+            {
+                var image = modSQL.GetImage(albumId, imageId);
+                if (image != null)
+                {
+                    return image.Url;
+                }
+                else
+                {
+                    var images = modSQL.GetAlbumImages(albumId);
+                    if (images != null)
+                    {
+                        var index = new Random().Next(0, images.Count);
+                        return images[index].ImageId;
+                    }
+                    else
+                    {
+                        return "";
+                    }
+                }
+            }
+            else if (keyBind)
+            {
+                var image = modSQL.GetImageByKey(albumId, key);
+                if (image != null)
+                {
+                    return image.Url;
+                }
+                else
+                {
+                    var images = modSQL.GetAlbumImages(albumId);
+                    if (images != null)
+                    {
+                        var index = new Random().Next(0, images.Count);
+                        return images[index].Url;
+                    }
+                    else
+                    {
+                        return "";
+                    }
+                }
+            }
+            else
+            {
+                var images = modSQL.GetAlbumImages(albumId);
+                if (images != null)
+                {
+                    var index = new Random().Next(0, images.Count);
+                    return images[index].Url;
+                }
+                else
+                {
+                    return "";
+                }
+            }
+        }
+
+        public async static void UploadImage(string url)
+        {
+            if (!Regex.IsMatch(url, @"(http|https):\/\/.*\.(png|jpg|gif)")) return;
+            if (!modSQL.UploadedImageExists(url))
+            {
+                Album album = modSQL.GetDefaultAlbum();
+                if(album != null)
+                {
+                    album.ValidateToken();
+                    AppConf appConf = modUtil.GetAppConf();
+
+                    var request = new MultipartFormDataContent();
+
+                    request.Add(new StringContent(url), "image");
+                    request.Add(new StringContent("url"), "type");
+                    request.Add(new StringContent(album.AlbumId), "album");
+
+                    try
+                    {
+                        var client = new HttpClient();
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", appConf.Imgur.AccessToken);
+                        var response = await client.PostAsync("https://api.imgur.com/3/image", request);
+                        response.EnsureSuccessStatusCode();
+                        JObject json = JObject.Parse(await response.Content.ReadAsStringAsync());
+
+                        json = (JObject)json.GetValue("data");
+
+                        Img img = new Img(
+                            (string)json.GetValue("id"),
+                            (string)json.GetValue("link"),
+                            "",
+                            album
+                        );
+
+                        modSQL.InsertImage(img);
+                        modSQL.InsertUploadedImage(url, img.Url);
+                    } catch(Exception ex)
+                    {
+                        logger.Error(ex, "Image of url {0} couldn't be uploaded to Imgur or couldn't be saved to this application", url);
+                    }
+                }
+            }
         }
 
         public static void StopWebservice()
