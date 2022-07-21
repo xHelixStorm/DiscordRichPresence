@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -25,8 +26,9 @@ namespace DiscordRichPresence.constructors
         private string smallText;
         private string key;
         private bool audible;
+        private bool reload;
 
-        public Profile(int profileId, String profileName, string sourceUrl, string targetUrl, int type, string name, string state, string details, string largeImage, string largeText, string smallImage, string smallText, string key, bool audible)
+        public Profile(int profileId, String profileName, string sourceUrl, string targetUrl, int type, string name, string state, string details, string largeImage, string largeText, string smallImage, string smallText, string key, bool audible, bool reload)
         {
             this.profileId = profileId;
             this.profileName = profileName;
@@ -42,6 +44,7 @@ namespace DiscordRichPresence.constructors
             this.smallText = smallText;
             this.key = key;
             this.audible = audible;
+            this.reload = reload;
         }
 
         public int ProfileId
@@ -117,6 +120,11 @@ namespace DiscordRichPresence.constructors
             get { return audible; }
         }
 
+        public bool Reload
+        {
+            get { return reload; }
+        }
+
         public override string ToString()
         {
             return ProfileName;
@@ -124,7 +132,7 @@ namespace DiscordRichPresence.constructors
 
         public string ToString2()
         {
-            return "{" + profileId + ", " + profileName + ", " + sourceUrl + ", " + targetUrl + ", " + type + ", " + name + ", " + state + ", " + details + ", " + largeImage + ", " + largeText + ", " + smallImage + ", " + smallText + ", " + key + ", " + audible + "}".Normalize();
+            return JsonSerializer.Serialize(this).Normalize();
         }
 
         /// <summary>
