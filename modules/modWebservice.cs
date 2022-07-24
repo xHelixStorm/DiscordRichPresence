@@ -175,7 +175,8 @@ namespace DiscordRichPresence.modules
                                                     json.ContainsKey("State") && json.ContainsKey("Details") &&
                                                     json.ContainsKey("LargeImage") && json.ContainsKey("LargeText") &&
                                                     json.ContainsKey("SmallImage") && json.ContainsKey("SmallText") && 
-                                                    json.ContainsKey("Key") && json.ContainsKey("Audible"))
+                                                    json.ContainsKey("Key") && json.ContainsKey("Audible") && 
+                                                    json.ContainsKey("Reload"))
                                                 {
                                                     var profile = new Profile(
                                                         (int)json.GetValue("ProfileId"),
@@ -191,7 +192,8 @@ namespace DiscordRichPresence.modules
                                                         (string)json.GetValue("SmallImage"),
                                                         (string)json.GetValue("SmallText"),
                                                         (string)json.GetValue("Key"),
-                                                        (bool)json.GetValue("Audible")
+                                                        (bool)json.GetValue("Audible"),
+                                                        (bool)json.GetValue("Reload")
                                                     );
 
                                                     UploadImage(profile.LargeImage);

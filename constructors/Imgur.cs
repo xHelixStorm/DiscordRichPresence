@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace DiscordRichPresence.constructors
@@ -61,7 +62,7 @@ namespace DiscordRichPresence.constructors
 
         public override string ToString()
         {
-            return "{\"ClientId\": " + clientId + ", \"ClientSecret\": " + clientSecret + ", \"AccessToken\": " + accessToken + ", \"RefreshToken\": " + refreshToken + ", \"Expires\": " + expires + "}".Normalize();
+            return JsonSerializer.Serialize(this).Normalize();
         }
     }
 }

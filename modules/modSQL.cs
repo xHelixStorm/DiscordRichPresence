@@ -1,4 +1,5 @@
 ﻿using DiscordRichPresence.constructors;
+using DiscordRichPresence.enums;
 using Microsoft.Data.Sqlite;
 using NLog;
 using System;
@@ -14,7 +15,7 @@ namespace DiscordRichPresence.modules
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private static bool fileCheck = false;
 
-        private static readonly string SQLCONNECTION = "Data Source=" + Application.StartupPath + "DiscordRichPresence.db;";
+        private static readonly string SQLCONNECTION = "Data Source=" + modUtil.GetFolders().GetPath(Folder.CONFIG) + "DiscordRichPresence.db;";
 
         private static SqliteConnection? CreateConnection()
         {
@@ -44,7 +45,7 @@ namespace DiscordRichPresence.modules
             try
             {
                 var command = con.CreateCommand();
-                command.CommandText = "CREATE TABLE IF NOT EXISTS `profiles` (`profile_id` INTEGER not null primary key autoincrement, `profile_name` VARCHAR(255) not null, `source_url` VARCHAR(255) not null, `target_url` VARCHAR(255) null, `type` INTEGER null DEFAULT '0', `name` VARCHAR(255) null, `state` VARCHAR(255) null, `details` VARCHAR(255) null, `large_image` VARCHAR(255) null, `large_text` VARCHAR(255) null, `small_image` VARCHAR(255) null, `small_text` VARCHAR(255) null, `key` VARCHAR(255) null, `audible` BOOLEAN null, `created_at` datetime not null default CURRENT_TIMESTAMP)";
+                command.CommandText = "CREATE TABLE IF NOT EXISTS `profiles` (`profile_id` INTEGER not null primary key autoincrement, `profile_name` VARCHAR(255) not null, `source_url` VARCHAR(255) not null, `target_url` VARCHAR(255) not null, `type` INTEGER not null DEFAULT '0', `name` VARCHAR(255) not null, `state` VARCHAR(255) not null, `details` VARCHAR(255) not null, `large_image` VARCHAR(255) not null, `large_text` VARCHAR(255) not null, `small_image` VARCHAR(255) not null, `small_text` VARCHAR(255) not null, `key` VARCHAR(255) not null, `audible` BOOLEAN not null, `reload` BOOLEAN not null, `created_at` datetime not null default CURRENT_TIMESTAMP)";
                 logger.Trace("Execute query: {0}", command.CommandText);
 
                 command.ExecuteNonQuery();
@@ -56,7 +57,7 @@ namespace DiscordRichPresence.modules
                 command.ExecuteNonQuery();
 
                 command = con.CreateCommand();
-                command.CommandText = "CREATE TABLE IF NOT EXISTS `key_presets` (`key` VARCHAR(255) not null PRIMARY KEY, `profile_id` INTEGER not null, `profile_name` VARCHAR(255) not null, `source_url` VARCHAR(255) not null, `target_url` VARCHAR(255) null, `type` INTEGER null DEFAULT '0', `name` VARCHAR(255) null, `state` VARCHAR(255) null, `details` VARCHAR(255) null, `large_image` VARCHAR(255) null, `large_text` VARCHAR(255) null, `small_image` VARCHAR(255) null, `small_text` VARCHAR(255) null, `audible` BOOLEAN null)";
+                command.CommandText = "CREATE TABLE IF NOT EXISTS `key_presets` (`key` VARCHAR(255) not null PRIMARY KEY, `profile_id` INTEGER not null, `profile_name` VARCHAR(255) not null, `source_url` VARCHAR(255) not null, `target_url` VARCHAR(255) not null, `type` INTEGER not null DEFAULT '0', `name` VARCHAR(255) not null, `state` VARCHAR(255) not null, `details` VARCHAR(255) not null, `large_image` VARCHAR(255) not null, `large_text` VARCHAR(255) not null, `small_image` VARCHAR(255) not null, `small_text` VARCHAR(255) not null, `audible` BOOLEAN not null, `reload` BOOLEAN not null)";
                 logger.Trace("Execute query: {0}", command.CommandText);
 
                 command.ExecuteNonQuery();
@@ -131,7 +132,8 @@ namespace DiscordRichPresence.modules
                         reader.GetString(10),
                         reader.GetString(11),
                         reader.GetString(12),
-                        reader.GetBoolean(13)
+                        reader.GetBoolean(13),
+                        reader.GetBoolean(14)
                     );
                     logger.Trace("Obtained DB values: {0}", profile.ToString2);
                     profiles.Add(profile);
@@ -180,7 +182,8 @@ namespace DiscordRichPresence.modules
                         reader.GetString(10),
                         reader.GetString(11),
                         reader.GetString(12),
-                        reader.GetBoolean(13)
+                        reader.GetBoolean(13),
+                        reader.GetBoolean(14)
                     );
                     logger.Trace("Obtained DB values: {0}", profile.ToString2);
                     return profile;
@@ -231,7 +234,7 @@ namespace DiscordRichPresence.modules
             if (con == null) return -1;
 
             var command = con.CreateCommand();
-            command.CommandText = @"INSERT INTO profiles (profile_name, source_url, target_url, type, name, state, details, large_image, large_text, small_image, small_text, key, audible) VALUES($profile_name, $source_url, $target_url, $type, $name, $state, $details, $large_image, $large_text, $small_image, $small_text, $key, $audible)";
+            command.CommandText = @"INSERT INTO profiles (profile_name, source_url, target_url, type, name, state, details, large_image, large_text, small_image, small_text, key, audible, reload) VALUES($profile_name, $source_url, $target_url, $type, $name, $state, $details, $large_image, $large_text, $small_image, $small_text, $key, $audible, $reload)";
             command.Parameters.AddWithValue("$profile_name", profile.ProfileName);
             command.Parameters.AddWithValue("$source_url", profile.SourceUrl);
             command.Parameters.AddWithValue("$target_url", profile.TargetUrl);
@@ -245,6 +248,7 @@ namespace DiscordRichPresence.modules
             command.Parameters.AddWithValue("$small_text", profile.SmallText);
             command.Parameters.AddWithValue("$key", profile.Key);
             command.Parameters.AddWithValue("$audible", profile.Audible);
+            command.Parameters.AddWithValue("$reload", profile.Reload);
             logger.Trace("Execute query: {0}", command.CommandText);
             logger.Trace("Parameters passed: {0}", profile.ToString2());
             
@@ -268,7 +272,7 @@ namespace DiscordRichPresence.modules
             if (con == null) return -1;
 
             var command = con.CreateCommand();
-            command.CommandText = "UPDATE profiles SET profile_name = $profile_name, source_url = $source_url, target_url = $target_url, type = $type, name = $name, state = $state, details = $details, large_image = $large_image, large_text = $large_text, small_image = $small_image, small_text = $small_text, key = $key, audible = $audible WHERE profile_id = $profile_id";
+            command.CommandText = "UPDATE profiles SET profile_name = $profile_name, source_url = $source_url, target_url = $target_url, type = $type, name = $name, state = $state, details = $details, large_image = $large_image, large_text = $large_text, small_image = $small_image, small_text = $small_text, key = $key, audible = $audible, reload = $reload WHERE profile_id = $profile_id";
             command.Parameters.AddWithValue("$profile_id", profile.ProfileId);
             command.Parameters.AddWithValue("$profile_name", profile.ProfileName);
             command.Parameters.AddWithValue("$source_url", profile.SourceUrl);
@@ -283,6 +287,7 @@ namespace DiscordRichPresence.modules
             command.Parameters.AddWithValue("$small_text", profile.SmallText);
             command.Parameters.AddWithValue("$key", profile.Key);
             command.Parameters.AddWithValue("$audible", profile.Audible);
+            command.Parameters.AddWithValue("$reload", profile.Reload);
             logger.Trace("Execute query: {0}", command.CommandText);
             logger.Trace("Parameters passed: {0}", profile.ToString2());
 
@@ -362,7 +367,7 @@ namespace DiscordRichPresence.modules
             if (con == null) return -1;
 
             var command = con.CreateCommand();
-            command.CommandText = @"INSERT OR REPLACE INTO key_presets (key, profile_id, profile_name, source_url, target_url, type, name, state, details, large_image, large_text, small_image, small_text, audible) VALUES($key, $profile_id, $profile_name, $source_url, $target_url, $type, $name, $state, $details, $large_image, $large_text, $small_image, $small_text, $audible)";
+            command.CommandText = @"INSERT OR REPLACE INTO key_presets (key, profile_id, profile_name, source_url, target_url, type, name, state, details, large_image, large_text, small_image, small_text, audible, reload) VALUES($key, $profile_id, $profile_name, $source_url, $target_url, $type, $name, $state, $details, $large_image, $large_text, $small_image, $small_text, $audible, $reload)";
             command.Parameters.AddWithValue("$key", profile.Key);
             command.Parameters.AddWithValue("$profile_id", profile.ProfileId);
             command.Parameters.AddWithValue("$profile_name", profile.ProfileName);
@@ -377,6 +382,7 @@ namespace DiscordRichPresence.modules
             command.Parameters.AddWithValue("$small_image", profile.SmallImage);
             command.Parameters.AddWithValue("$small_text", profile.SmallText);
             command.Parameters.AddWithValue("$audible", profile.Audible);
+            command.Parameters.AddWithValue("$reload", profile.Reload);
             logger.Trace("Execute query: {0}", command.CommandText);
             logger.Trace("Parameters passed: {0}", profile.ToString2());
 
@@ -454,7 +460,8 @@ namespace DiscordRichPresence.modules
                         reader.GetString(11),
                         reader.GetString(12),
                         reader.GetString(0),
-                        reader.GetBoolean(13)
+                        reader.GetBoolean(13),
+                        reader.GetBoolean(14)
                     );
                     logger.Trace("Obtained DB values: {0}", profile.ToString2());
                     return profile;

@@ -122,6 +122,7 @@ namespace DiscordRichPresence
             hlpProvider.SetShowHelp(tbxSmallText, true);
             hlpProvider.SetShowHelp(chkTargetSmallText, true);
             hlpProvider.SetShowHelp(chkAudible, true);
+            hlpProvider.SetShowHelp(chkReload, true);
             hlpProvider.SetShowHelp(btnSave, true);
             hlpProvider.SetShowHelp(btnCancel, true);
             hlpProvider.SetShowHelp(tbxPort, true);
@@ -137,31 +138,32 @@ namespace DiscordRichPresence
             hlpProvider.SetHelpString(btnDelete, "Delete a selected profile. Before the deletion, a message prompt appears to confirm the choice.");
             hlpProvider.SetHelpString(btnMinimize, "Minimize application to the system tray.");
             hlpProvider.SetHelpString(btnOptions, "Open the options page.");
-            hlpProvider.SetHelpString(btnStart, "Initialize the rest api webserver to receive events from the browser extension;");
+            hlpProvider.SetHelpString(btnStart, "Initialize the internal rest server to receive events from the browser extension.");
             hlpProvider.SetHelpString(btnEnd, "Terminate the rest api webserver and stop from receiving events.");
             hlpProvider.SetHelpString(tbxProfileName, "Required field which has to contain the name of the profile that has to be created or updated.");
             hlpProvider.SetHelpString(tbxSourceUrl, "Required field which has to contain the url of the website where events have to be collected.\nThe format of the url has to contain the full domain name, while sub domains can be written directly or combined with a regex requests.\n\nExamples of valid urls:\n\n- https://google.com\n- https://discord.com/developers/docs\n- https://discord.com/{::regex:^.*$::}");
             hlpProvider.SetHelpString(tbxTargetUrl, "Optional field which has to contain the url of the website where the source url is redirected to.\nThe format of the url has to contain the full domain name, while sub domains can be written directly or combined with a regex requests.\n\nExamples of valid urls:\n\n- https://google.com\n- https://discord.com/developers/docs\n- https://discord.com/{::regex:^.*$::}");
             hlpProvider.SetHelpString(cbxTypes, "Combo box for the type of activity. The activity types are to be combined with the Name field.\n\n- Playing: 'Playing {name}'\n- Streaming: 'Streaming {name}'\n- Listening: 'Listening to {name}'\n- Watching: 'Watching {name}'\n- Custom: '{name}'\n- Competing: 'Competing in {name}'\n\nNote: Streaming is only supported with Twitch and YouTube.");
             hlpProvider.SetHelpString(tbxName, "Required field which works together with the activity types combo box for the status display on Discord. For example 'Playing {name}'.");
-            hlpProvider.SetHelpString(tbxState, "Optional field that will fill the state spot for the activity display on Discord. Content of this field can be combined with various expressions.\n\n- Regex: '{::regex:[\\d\\w]*::}'\n- Url: '{::url::}' or '{::url:{::regex:[\\d]*$::}::}'\n- HTML Location: '{::location:<div id=\"xyz\">::}' or '{::location:<img class=\"xyz\">:src::}'\n- HTML Click Location: '{::click:<a>;up;<div>;down;<img>:src::}'\n\nNote: for 'click' and 'location' the regex can be used with the parentheses to filter for attributes with specific names.");
+            hlpProvider.SetHelpString(tbxState, "Optional field that will fill the state spot for the activity display on Discord. Content of this field can be combined with various expressions.\n\n- Url: '{::url::}' or '{::url:{::regex:[\\d]*$::}::}'\n- HTML Location: '{::location:<div id=\"xyz\">::}', '{::location:<table id=\"xyz\">down<tbody>down<td [1]>down<tr>::{::regex:[\\d]{1,}::}', '{::location:<img class=\"xyz\">:src::}' or '{::location:<a id=\"episode\">:href:{::regex:[\\d]{1,}::}::}'\n- HTML Click Location: Same as HTML location only with '{::click:<content>::}'");
             hlpProvider.SetHelpString(chkTargetState, "When selected, values will be taken from the target website. Else, it will be taken from the source website.");
-            hlpProvider.SetHelpString(tbxDetails, "Optional field that will fill the details spot for the activity display on Discord. Content of this field can be combined with various expressions.\n\n- Regex: '{::regex:[\\d\\w]*::}'\n- Url: '{::url::}' or '{::url:{::regex:[\\d]*$::}::}'\n- HTML Location: '{::location:<div id=\"xyz\">::}' or '{::location:<img class=\"xyz\">:src::}'\n- HTML Click Location: '{::click:<a>;up;<div>;down;<img>:src::}'\n\nNote: for 'click' and 'location' the regex can be used with the parentheses to filter for attributes with specific names.");
+            hlpProvider.SetHelpString(tbxDetails, "Optional field that will fill the details spot for the activity display on Discord. Content of this field can be combined with various expressions.\n\n- Url: '{::url::}' or '{::url:{::regex:[\\d]*$::}::}'\n- HTML Location: '{::location:<div id=\"xyz\">::}', '{::location:<table id=\"xyz\">down<tbody>down<td [1]>down<tr>::{::regex:[\\d]{1,}::}', '{::location:<img class=\"xyz\">:src::}' or '{::location:<a id=\"episode\">:href:{::regex:[\\d]{1,}::}::}'\n- HTML Click Location: Same as HTML location only with '{::click:<content>::}'");
             hlpProvider.SetHelpString(chkTargetDetails, "When selected, values will be taken from the target website. Else, it will be taken from the source website.");
-            hlpProvider.SetHelpString(tbxLargeImage, "Optional field that will fill the large image spot for the activity display on Discord. Content of this field can be combined with various expressions.\n\n- Regex: '{::regex:[\\d\\w]*::}'\n- HTML Location: '{::location:<img class=\"xyz\">:src::}'\n- HTML Click Location: '{::click:<a>;up;<div>;down;<img>:src::}'\n- Favicon: '{::favicon::}'\n- Random Album image: '{::album:<album_id>::}'\n- Specific image from album: '{::album:<album_id>:<image_id>::}'\n- Image based on resolved key: '{::album:<album_id>:keybind::}'\n\nNote: for 'click' and 'location' the regex can be used with the parentheses to filter for attributes with specific names.");
+            hlpProvider.SetHelpString(tbxLargeImage, "Optional field that will fill the large image spot for the activity display on Discord. Content of this field can be combined with various expressions.\n\n- HTML Location: '{::location:<div id=\"xyz\">::}', '{::location:<table id=\"xyz\">down<tbody>down<td [1]>down<tr>::{::regex:[\\d]{1,}::}', '{::location:<img class=\"xyz\">:src::}' or '{::location:<a id=\"episode\">:href:{::regex:[\\d]{1,}::}::}'\n- HTML Click Location: Same as HTML location only with '{::click:<content>::}'\n- Favicon: '{::favicon::}'\n- Random Album image: '{::album:<album_id>::}'\n- Specific image from album: '{::album:<album_id>:<image_id>::}'\n- Image based on resolved key: '{::album:<album_id>:keybind::}'");
             hlpProvider.SetHelpString(chkTargetLargeImage, "When selected, values will be taken from the target website. Else, it will be taken from the source website.");
-            hlpProvider.SetHelpString(tbxLargeText, "Optional field that will fill the large text spot for the activity display on Discord. Content of this field can be combined with various expressions.\n\n- Regex: '{::regex:[\\d\\w]*::}'\n- Url: '{::url::}' or '{::url:{::regex:[\\d]*$::}::}'\n- HTML Location: '{::location:<div id=\"xyz\"::}' or '{::location:<img class=\"xyz\">:src::}'\n- HTML Click Location: '{::click:<a>;up;<div>;down;<img>:src::}'\n\nNote: for 'click' and 'location' the regex can be used with the parentheses to filter for attributes with specific names.");
+            hlpProvider.SetHelpString(tbxLargeText, "Optional field that will fill the large text spot for the activity display on Discord. Content of this field can be combined with various expressions.\n\n- Url: '{::url::}' or '{::url:{::regex:[\\d]*$::}::}'\n- HTML Location: '{::location:<div id=\"xyz\">::}', '{::location:<table id=\"xyz\">down<tbody>down<td [1]>down<tr>::{::regex:[\\d]{1,}::}', '{::location:<img class=\"xyz\">:src::}' or '{::location:<a id=\"episode\">:href:{::regex:[\\d]{1,}::}::}'\n- HTML Click Location: Same as HTML location only with '{::click:<content>::}'");
             hlpProvider.SetHelpString(chkTargetLargeText, "When selected, values will be taken from the target website. Else, it will be taken from the source website.");
-            hlpProvider.SetHelpString(tbxSmallImage, "Optional field that will fill the small image spot for the activity display on Discord. Content of this field can be combined with various expressions.\n\n- Regex: '{::regex:[\\d\\w]*::}'\n- HTML Location: '{::location:<img class=\"xyz\">:src::}'\n- HTML Click Location: '{::click:<a>;up;<div>;down;<img>:src::}'\n- Favicon: '{::favicon::}'\n- Random Album image: '{::album:<album_id>::}'\n- Specific image from album: '{::album:<album_id>:<image_id>::}'\n- Image based on resolved key: '{::album:<album_id>:keybind::}'\n\nNote: for 'click' and 'location' the regex can be used with the parentheses to filter for attributes with specific names.");
+            hlpProvider.SetHelpString(tbxSmallImage, "Optional field that will fill the small image spot for the activity display on Discord. Content of this field can be combined with various expressions.\n\n- HTML Location: '{::location:<div id=\"xyz\">::}', '{::location:<table id=\"xyz\">down<tbody>down<td [1]>down<tr>::{::regex:[\\d]{1,}::}', '{::location:<img class=\"xyz\">:src::}' or '{::location:<a id=\"episode\">:href:{::regex:[\\d]{1,}::}::}'\n- HTML Click Location: Same as HTML location only with '{::click:<content>::}'\n- Favicon: '{::favicon::}'\n- Random Album image: '{::album:<album_id>::}'\n- Specific image from album: '{::album:<album_id>:<image_id>::}'\n- Image based on resolved key: '{::album:<album_id>:keybind::}'");
             hlpProvider.SetHelpString(chkTargetSmallImage, "When selected, values will be taken from the target website. Else, it will be taken from the source website.");
-            hlpProvider.SetHelpString(tbxSmallText, "Optional field that will fill the small text spot for the activity display on Discord. Content of this field can be combined with various expressions.\n\n- Regex: '{::regex:[\\d\\w]*::}'\n- Url: '{::url::}' or '{::url:{::regex:[\\d]*$::}::}'\n- HTML Location: '{::location:<div id=\"xyz\">::}' or '{::location:<img class=\"xyz\">:src::}'\n- HTML Click Location: '{::click:<a>;up;<div>;down;<img>:src::}'\n\nNote: for 'click' and 'location' the regex can be used with the parentheses to filter for attributes with specific names.");
+            hlpProvider.SetHelpString(tbxSmallText, "Optional field that will fill the small text spot for the activity display on Discord. Content of this field can be combined with various expressions.\n\n- Url: '{::url::}' or '{::url:{::regex:[\\d]*$::}::}'\n- HTML Location: '{::location:<div id=\"xyz\">::}', '{::location:<table id=\"xyz\">down<tbody>down<td [1]>down<tr>::{::regex:[\\d]{1,}::}', '{::location:<img class=\"xyz\">:src::}' or '{::location:<a id=\"episode\">:href:{::regex:[\\d]{1,}::}::}'\n- HTML Click Location: Same as HTML location only with '{::click:<content>::}'");
             hlpProvider.SetHelpString(chkTargetSmallText, "When selected, values will be taken from the target website. Else, it will be taken from the source website.");
             hlpProvider.SetHelpString(chkAudible, "When selected, events are collected when the browser tab has an audio but works only with values to be collected from the source website. Else, values are collected when the website is visited.");
+            hlpProvider.SetHelpString(chkReload, "When selected, values for profiles will be recollected. A possible use case is for when a bookmark site has multiple pages.");
             hlpProvider.SetHelpString(btnSave, "Save all input by either creating a new profile or by updating an existing one.");
-            hlpProvider.SetHelpString(btnCancel, "Undo all not saved changes");
+            hlpProvider.SetHelpString(btnCancel, "Undo all unsaved changes");
             hlpProvider.SetHelpString(tbxPort, "Display the port that is in use from the webservice.");
             hlpProvider.SetHelpString(btnTest, "Experiment with the displayed fields to display the activity on Discord.");
-            hlpProvider.SetHelpString(tbxKey, "For cases when the target site is visited directly without the source page, it will be possible to automatically autofill values obtained from the source page. Automatically saved are values that have to be obtained from the source page. Content of this field can be combined with various expressions.\n\n- Regex: '{::regex:[\\d\\w]*::}'\n- Url: '{::url::}' or '{::url:{::regex:[\\d]*$::}::}'\n- HTML Location: '{::location:<div id=\"xyz\">::}' or '{::location:<img class=\"xyz\">:src::}'\n- HTML Click Location: '{::click:<a>;up;<div>;down;<img>:src::}'\n\nNote: for 'click' and 'location' the regex can be used with the parentheses to filter for attributes with specific names.");
+            hlpProvider.SetHelpString(tbxKey, "For cases when the target site is visited directly without the source page, it will be possible to automatically autofill values obtained from the source page. Automatically saved are values that have to be obtained from the source page. Content of this field can be combined with various expressions.\n\n- Url: '{::url::}' or '{::url:{::regex:[\\d]*$::}::}'\n- HTML Location: '{::location:<div id=\"xyz\">::}', '{::location:<table id=\"xyz\">down<tbody>down<td [1]>down<tr>::{::regex:[\\d]{1,}::}', '{::location:<img class=\"xyz\">:src::}' or '{::location:<a id=\"episode\">:href:{::regex:[\\d]{1,}::}::}'");
             hlpProvider.SetHelpString(btnCopy, "Copy an existing profile for the creation of a new profile.");
             hlpProvider.SetHelpString(btnAlbums, "Manage albums and images on Imgur.");
         }
@@ -217,6 +219,7 @@ namespace DiscordRichPresence
             bool targetSmallText = false;
             string key = "";
             bool audible = false;
+            bool reload = false;
 
             if(profile != null)
             {
@@ -294,6 +297,7 @@ namespace DiscordRichPresence
                 }
                 key = profile.Key;
                 audible = profile.Audible;
+                reload = profile.Reload;
             }
 
             tbxProfileName.Text = profileName;
@@ -315,6 +319,7 @@ namespace DiscordRichPresence
             chkTargetSmallText.Checked = targetSmallText;
             tbxKey.Text = key;
             chkAudible.Checked = audible;
+            chkReload.Checked = reload;
         }
 
         private void HandleFieldEnableMode()
@@ -347,6 +352,7 @@ namespace DiscordRichPresence
             chkTargetSmallText.Enabled = enabled;
             tbxKey.Enabled = enabled;
             chkAudible.Enabled = enabled;
+            chkReload.Enabled = enabled;
 
             btnSave.Enabled = enabled;
             btnCancel.Enabled = enabled;
@@ -418,7 +424,8 @@ namespace DiscordRichPresence
                 (chkTargetSmallImage.Checked ? target : source) + tbxSmallImage.Text,
                 (chkTargetSmallText.Checked ? target : source) + tbxSmallText.Text,
                 tbxKey.Text,
-                chkAudible.Checked
+                chkAudible.Checked,
+                chkReload.Checked
             );
 
             try
