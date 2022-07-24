@@ -45,7 +45,7 @@ namespace DiscordRichPresence.modules
             try
             {
                 var command = con.CreateCommand();
-                command.CommandText = "CREATE TABLE IF NOT EXISTS `profiles` (`profile_id` INTEGER not null primary key autoincrement, `profile_name` VARCHAR(255) not null, `source_url` VARCHAR(255) not null, `target_url` VARCHAR(255) not null, `type` INTEGER not null DEFAULT '0', `name` VARCHAR(255) not null, `state` VARCHAR(255) not null, `details` VARCHAR(255) not null, `large_image` VARCHAR(255) not null, `large_text` VARCHAR(255) not null, `small_image` VARCHAR(255) not null, `small_text` VARCHAR(255) not null, `key` VARCHAR(255) not null, `audible` BOOLEAN not null, `created_at` datetime not null default CURRENT_TIMESTAMP)";
+                command.CommandText = "CREATE TABLE IF NOT EXISTS `profiles` (`profile_id` INTEGER not null primary key autoincrement, `profile_name` VARCHAR(255) not null, `source_url` VARCHAR(255) not null, `target_url` VARCHAR(255) not null, `type` INTEGER not null DEFAULT '0', `name` VARCHAR(255) not null, `state` VARCHAR(255) not null, `details` VARCHAR(255) not null, `large_image` VARCHAR(255) not null, `large_text` VARCHAR(255) not null, `small_image` VARCHAR(255) not null, `small_text` VARCHAR(255) not null, `key` VARCHAR(255) not null, `audible` BOOLEAN not null, `reload` BOOLEAN not null, `created_at` datetime not null default CURRENT_TIMESTAMP)";
                 logger.Trace("Execute query: {0}", command.CommandText);
 
                 command.ExecuteNonQuery();
