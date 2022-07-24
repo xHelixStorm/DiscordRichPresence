@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -48,7 +49,7 @@ namespace DiscordRichPresence.constructors
 
         public override string ToString()
         {
-            return "{\"ImageId\": " + imageId + ", \"Url\": " + url + ", \"Key\": " + key + ", \"Album\": " + album + "}".Normalize();
+            return JsonSerializer.Serialize(this).Normalize();
         }
 
         public async Task ImageDelete()

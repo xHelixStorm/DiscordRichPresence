@@ -7,7 +7,8 @@ namespace DiscordRichPresence.enums
     /// </summary>
     public enum Folder
     {
-        LOG
+        LOG,
+        CONFIG
     };
 
     public class IFolder
@@ -19,9 +20,11 @@ namespace DiscordRichPresence.enums
         /// </summary>
         public IFolder()
         {
+            string directory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            directory = Path.Combine(directory, "DiscordRichPresence");
             foreach(Folder folder in Enum.GetValues(typeof(Folder)))
             {
-                folders[folder] = Application.StartupPath + folder.ToString().ToLower() + "\\";
+                folders[folder] = Path.Combine(directory, folder.ToString().ToLower()) + "\\";
             }
         }
 

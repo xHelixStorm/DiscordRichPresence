@@ -1,4 +1,5 @@
 ﻿using DiscordRichPresence.constructors;
+using DiscordRichPresence.enums;
 using Microsoft.Data.Sqlite;
 using NLog;
 using System;
@@ -14,7 +15,7 @@ namespace DiscordRichPresence.modules
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private static bool fileCheck = false;
 
-        private static readonly string SQLCONNECTION = "Data Source=" + Application.StartupPath + "DiscordRichPresence.db;";
+        private static readonly string SQLCONNECTION = "Data Source=" + modUtil.GetFolders().GetPath(Folder.CONFIG) + "DiscordRichPresence.db;";
 
         private static SqliteConnection? CreateConnection()
         {

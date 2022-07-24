@@ -1,16 +1,18 @@
-﻿using DiscordRichPresence.modules;
+﻿using DiscordRichPresence.enums;
+using DiscordRichPresence.modules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
 using System.Xml.Linq;
 
 namespace DiscordRichPresence.constructors
 {
     public class AppConf
     {
-        private static readonly string confFileName = Application.StartupPath + "conf.cfg";
+        private static readonly string confFileName = "conf.cfg";
         private static readonly string confContent = 
         @"<?xml version=""1.0"" encoding=""utf-8"" ?>
         <configuration>
@@ -99,10 +101,11 @@ namespace DiscordRichPresence.constructors
 
         public AppConf Load()
         {
-            if (File.Exists(confFileName))
+            string config = modUtil.GetFolders().GetPath(Folder.CONFIG) + confFileName;
+            if (File.Exists(config))
             {
                 Encryption encryption = Encryption();
-                string fileContent = modUtil.Decrypt(File.ReadAllBytes(confFileName), encryption.Key, encryption.IV);
+                string fileContent = modUtil.Decrypt(File.ReadAllBytes(config), encryption.Key, encryption.IV);
                 XDocument doc = XDocument.Parse(fileContent);
                 XElement configuration = doc.Element("configuration");
                 if (configuration != null)
@@ -167,13 +170,13 @@ namespace DiscordRichPresence.constructors
             xml = xml.Replace("{expiresImgur}", imgur.Expires+"");
 
             Encryption encryption = Encryption();
-            File.WriteAllBytes(confFileName, modUtil.Encrypt(xml, encryption.Key, encryption.IV));
+            File.WriteAllBytes(modUtil.GetFolders().GetPath(Folder.CONFIG) + confFileName, modUtil.Encrypt(xml, encryption.Key, encryption.IV));
             return this;
         }
 
         public override string ToString()
         {
-            return "{\"Port\": " + port + ", \"DiscordClientId\": " + discordClientId + ", \"AutoStart\": " + autoStart + ", \"AutoStartWebservice\": " + autoStartWebservice + "\"Imgur\": " + imgur.ToString() + "}".Normalize();
+            return JsonSerializer.Serialize(this).Normalize();
         }
     }
 }
