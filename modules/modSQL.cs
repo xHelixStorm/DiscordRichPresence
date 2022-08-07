@@ -879,7 +879,7 @@ namespace DiscordRichPresence.modules
             command.CommandText = "SELECT * FROM uploaded_images WHERE orig_url = $orig_url";
             command.Parameters.AddWithValue("$orig_url", url);
             logger.Trace("Execute query: {0}", command.CommandText);
-            logger.Trace("Parameters passed {0}, {1}", url);
+            logger.Trace("Parameters passed {0}", url);
 
             try
             {
