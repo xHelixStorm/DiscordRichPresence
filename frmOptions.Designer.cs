@@ -29,197 +29,188 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmOptions));
-            this.lblPort = new System.Windows.Forms.Label();
-            this.btnOK = new System.Windows.Forms.Button();
-            this.nudPort = new System.Windows.Forms.NumericUpDown();
-            this.hlpProvider = new System.Windows.Forms.HelpProvider();
-            this.nudDiscordClientId = new System.Windows.Forms.NumericUpDown();
-            this.lblDicordClientId = new System.Windows.Forms.Label();
-            this.chkAutoStart = new System.Windows.Forms.CheckBox();
-            this.chkAutoStartWebservice = new System.Windows.Forms.CheckBox();
-            this.gbxImgur = new System.Windows.Forms.GroupBox();
-            this.tbxRefreshTokenImgur = new System.Windows.Forms.TextBox();
-            this.tbxClientSecretImgur = new System.Windows.Forms.TextBox();
-            this.tbxClientIdImgur = new System.Windows.Forms.TextBox();
-            this.lblRefreshTokenImgur = new System.Windows.Forms.Label();
-            this.lblClientSecretImgur = new System.Windows.Forms.Label();
-            this.lblClientIdImgur = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.nudPort)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudDiscordClientId)).BeginInit();
-            this.gbxImgur.SuspendLayout();
-            this.SuspendLayout();
+            lblPort = new Label();
+            btnOK = new Button();
+            nudPort = new NumericUpDown();
+            hlpProvider = new HelpProvider();
+            nudDiscordClientId = new NumericUpDown();
+            lblDicordClientId = new Label();
+            chkAutoStart = new CheckBox();
+            chkAutoStartWebservice = new CheckBox();
+            gbxImgur = new GroupBox();
+            tbxRefreshTokenImgur = new TextBox();
+            tbxClientSecretImgur = new TextBox();
+            tbxClientIdImgur = new TextBox();
+            lblRefreshTokenImgur = new Label();
+            lblClientSecretImgur = new Label();
+            lblClientIdImgur = new Label();
+            ((System.ComponentModel.ISupportInitialize)nudPort).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)nudDiscordClientId).BeginInit();
+            gbxImgur.SuspendLayout();
+            SuspendLayout();
             // 
             // lblPort
             // 
-            this.lblPort.AutoSize = true;
-            this.lblPort.Location = new System.Drawing.Point(12, 22);
-            this.lblPort.Name = "lblPort";
-            this.lblPort.Size = new System.Drawing.Size(32, 15);
-            this.lblPort.TabIndex = 0;
-            this.lblPort.Text = "Port:";
+            lblPort.AutoSize = true;
+            lblPort.Location = new Point(12, 22);
+            lblPort.Name = "lblPort";
+            lblPort.Size = new Size(32, 15);
+            lblPort.TabIndex = 0;
+            lblPort.Text = "Port:";
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(12, 295);
-            this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(75, 23);
-            this.btnOK.TabIndex = 5;
-            this.btnOK.Text = "OK";
-            this.btnOK.UseVisualStyleBackColor = true;
-            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
+            btnOK.Location = new Point(12, 295);
+            btnOK.Name = "btnOK";
+            btnOK.Size = new Size(75, 23);
+            btnOK.TabIndex = 5;
+            btnOK.Text = "OK";
+            btnOK.UseVisualStyleBackColor = true;
+            btnOK.Click += btnOK_Click;
             // 
             // nudPort
             // 
-            this.nudPort.Location = new System.Drawing.Point(146, 20);
-            this.nudPort.Maximum = new decimal(new int[] {
-            99999,
-            0,
-            0,
-            0});
-            this.nudPort.Name = "nudPort";
-            this.nudPort.Size = new System.Drawing.Size(133, 23);
-            this.nudPort.TabIndex = 1;
-            this.nudPort.KeyDown += new System.Windows.Forms.KeyEventHandler(this.nudPort_KeyDown);
+            nudPort.Location = new Point(146, 20);
+            nudPort.Maximum = new decimal(new int[] { 99999, 0, 0, 0 });
+            nudPort.Name = "nudPort";
+            nudPort.Size = new Size(133, 23);
+            nudPort.TabIndex = 1;
+            nudPort.KeyDown += nudPort_KeyDown;
             // 
             // nudDiscordClientId
             // 
-            this.nudDiscordClientId.Location = new System.Drawing.Point(146, 49);
-            this.nudDiscordClientId.Maximum = new decimal(new int[] {
-            -1486618625,
-            232830643,
-            0,
-            0});
-            this.nudDiscordClientId.Name = "nudDiscordClientId";
-            this.nudDiscordClientId.Size = new System.Drawing.Size(133, 23);
-            this.nudDiscordClientId.TabIndex = 2;
-            this.nudDiscordClientId.KeyDown += new System.Windows.Forms.KeyEventHandler(this.nudDiscordClientId_KeyDown);
+            nudDiscordClientId.Location = new Point(146, 49);
+            nudDiscordClientId.Maximum = new decimal(new int[] { 1661992959, 1808227885, 5, 0 });
+            nudDiscordClientId.Name = "nudDiscordClientId";
+            nudDiscordClientId.Size = new Size(133, 23);
+            nudDiscordClientId.TabIndex = 2;
+            nudDiscordClientId.KeyDown += nudDiscordClientId_KeyDown;
             // 
             // lblDicordClientId
             // 
-            this.lblDicordClientId.AutoSize = true;
-            this.lblDicordClientId.Location = new System.Drawing.Point(12, 51);
-            this.lblDicordClientId.Name = "lblDicordClientId";
-            this.lblDicordClientId.Size = new System.Drawing.Size(98, 15);
-            this.lblDicordClientId.TabIndex = 3;
-            this.lblDicordClientId.Text = "Discord Client ID:";
+            lblDicordClientId.AutoSize = true;
+            lblDicordClientId.Location = new Point(12, 51);
+            lblDicordClientId.Name = "lblDicordClientId";
+            lblDicordClientId.Size = new Size(98, 15);
+            lblDicordClientId.TabIndex = 3;
+            lblDicordClientId.Text = "Discord Client ID:";
             // 
             // chkAutoStart
             // 
-            this.chkAutoStart.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chkAutoStart.Location = new System.Drawing.Point(12, 80);
-            this.chkAutoStart.Name = "chkAutoStart";
-            this.chkAutoStart.Size = new System.Drawing.Size(150, 24);
-            this.chkAutoStart.TabIndex = 4;
-            this.chkAutoStart.Text = "Auto Start:";
-            this.chkAutoStart.UseVisualStyleBackColor = true;
-            this.chkAutoStart.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chkAutoStart_KeyDown);
+            chkAutoStart.CheckAlign = ContentAlignment.MiddleRight;
+            chkAutoStart.Location = new Point(12, 80);
+            chkAutoStart.Name = "chkAutoStart";
+            chkAutoStart.Size = new Size(150, 24);
+            chkAutoStart.TabIndex = 4;
+            chkAutoStart.Text = "Auto Start:";
+            chkAutoStart.UseVisualStyleBackColor = true;
+            chkAutoStart.KeyDown += chkAutoStart_KeyDown;
             // 
             // chkAutoStartWebservice
             // 
-            this.chkAutoStartWebservice.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chkAutoStartWebservice.Location = new System.Drawing.Point(12, 109);
-            this.chkAutoStartWebservice.Name = "chkAutoStartWebservice";
-            this.chkAutoStartWebservice.Size = new System.Drawing.Size(150, 24);
-            this.chkAutoStartWebservice.TabIndex = 5;
-            this.chkAutoStartWebservice.Text = "Auto Start Webservice:";
-            this.chkAutoStartWebservice.UseVisualStyleBackColor = true;
-            this.chkAutoStartWebservice.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chkAutoStartWebservice_KeyDown);
+            chkAutoStartWebservice.CheckAlign = ContentAlignment.MiddleRight;
+            chkAutoStartWebservice.Location = new Point(12, 109);
+            chkAutoStartWebservice.Name = "chkAutoStartWebservice";
+            chkAutoStartWebservice.Size = new Size(150, 24);
+            chkAutoStartWebservice.TabIndex = 5;
+            chkAutoStartWebservice.Text = "Auto Start Webservice:";
+            chkAutoStartWebservice.UseVisualStyleBackColor = true;
+            chkAutoStartWebservice.KeyDown += chkAutoStartWebservice_KeyDown;
             // 
             // gbxImgur
             // 
-            this.gbxImgur.BackColor = System.Drawing.SystemColors.Window;
-            this.gbxImgur.Controls.Add(this.tbxRefreshTokenImgur);
-            this.gbxImgur.Controls.Add(this.tbxClientSecretImgur);
-            this.gbxImgur.Controls.Add(this.tbxClientIdImgur);
-            this.gbxImgur.Controls.Add(this.lblRefreshTokenImgur);
-            this.gbxImgur.Controls.Add(this.lblClientSecretImgur);
-            this.gbxImgur.Controls.Add(this.lblClientIdImgur);
-            this.gbxImgur.Location = new System.Drawing.Point(8, 139);
-            this.gbxImgur.Name = "gbxImgur";
-            this.gbxImgur.Size = new System.Drawing.Size(281, 106);
-            this.gbxImgur.TabIndex = 6;
-            this.gbxImgur.TabStop = false;
-            this.gbxImgur.Text = "Imgur";
+            gbxImgur.BackColor = SystemColors.Window;
+            gbxImgur.Controls.Add(tbxRefreshTokenImgur);
+            gbxImgur.Controls.Add(tbxClientSecretImgur);
+            gbxImgur.Controls.Add(tbxClientIdImgur);
+            gbxImgur.Controls.Add(lblRefreshTokenImgur);
+            gbxImgur.Controls.Add(lblClientSecretImgur);
+            gbxImgur.Controls.Add(lblClientIdImgur);
+            gbxImgur.Location = new Point(8, 139);
+            gbxImgur.Name = "gbxImgur";
+            gbxImgur.Size = new Size(281, 106);
+            gbxImgur.TabIndex = 6;
+            gbxImgur.TabStop = false;
+            gbxImgur.Text = "Imgur";
             // 
             // tbxRefreshTokenImgur
             // 
-            this.tbxRefreshTokenImgur.Location = new System.Drawing.Point(138, 74);
-            this.tbxRefreshTokenImgur.Name = "tbxRefreshTokenImgur";
-            this.tbxRefreshTokenImgur.Size = new System.Drawing.Size(133, 23);
-            this.tbxRefreshTokenImgur.TabIndex = 5;
-            this.tbxRefreshTokenImgur.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxRefreshTokenImgur_KeyDown);
+            tbxRefreshTokenImgur.Location = new Point(138, 74);
+            tbxRefreshTokenImgur.Name = "tbxRefreshTokenImgur";
+            tbxRefreshTokenImgur.Size = new Size(133, 23);
+            tbxRefreshTokenImgur.TabIndex = 5;
+            tbxRefreshTokenImgur.KeyDown += tbxRefreshTokenImgur_KeyDown;
             // 
             // tbxClientSecretImgur
             // 
-            this.tbxClientSecretImgur.Location = new System.Drawing.Point(138, 45);
-            this.tbxClientSecretImgur.Name = "tbxClientSecretImgur";
-            this.tbxClientSecretImgur.Size = new System.Drawing.Size(133, 23);
-            this.tbxClientSecretImgur.TabIndex = 4;
-            this.tbxClientSecretImgur.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxClientSecretImgur_KeyDown);
+            tbxClientSecretImgur.Location = new Point(138, 45);
+            tbxClientSecretImgur.Name = "tbxClientSecretImgur";
+            tbxClientSecretImgur.Size = new Size(133, 23);
+            tbxClientSecretImgur.TabIndex = 4;
+            tbxClientSecretImgur.KeyDown += tbxClientSecretImgur_KeyDown;
             // 
             // tbxClientIdImgur
             // 
-            this.tbxClientIdImgur.Location = new System.Drawing.Point(138, 16);
-            this.tbxClientIdImgur.Name = "tbxClientIdImgur";
-            this.tbxClientIdImgur.Size = new System.Drawing.Size(133, 23);
-            this.tbxClientIdImgur.TabIndex = 3;
-            this.tbxClientIdImgur.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxClientIdImgur_KeyDown);
+            tbxClientIdImgur.Location = new Point(138, 16);
+            tbxClientIdImgur.Name = "tbxClientIdImgur";
+            tbxClientIdImgur.Size = new Size(133, 23);
+            tbxClientIdImgur.TabIndex = 3;
+            tbxClientIdImgur.KeyDown += tbxClientIdImgur_KeyDown;
             // 
             // lblRefreshTokenImgur
             // 
-            this.lblRefreshTokenImgur.AutoSize = true;
-            this.lblRefreshTokenImgur.Location = new System.Drawing.Point(12, 77);
-            this.lblRefreshTokenImgur.Name = "lblRefreshTokenImgur";
-            this.lblRefreshTokenImgur.Size = new System.Drawing.Size(83, 15);
-            this.lblRefreshTokenImgur.TabIndex = 2;
-            this.lblRefreshTokenImgur.Text = "Refresh Token:";
+            lblRefreshTokenImgur.AutoSize = true;
+            lblRefreshTokenImgur.Location = new Point(12, 77);
+            lblRefreshTokenImgur.Name = "lblRefreshTokenImgur";
+            lblRefreshTokenImgur.Size = new Size(83, 15);
+            lblRefreshTokenImgur.TabIndex = 2;
+            lblRefreshTokenImgur.Text = "Refresh Token:";
             // 
             // lblClientSecretImgur
             // 
-            this.lblClientSecretImgur.AutoSize = true;
-            this.lblClientSecretImgur.Location = new System.Drawing.Point(12, 48);
-            this.lblClientSecretImgur.Name = "lblClientSecretImgur";
-            this.lblClientSecretImgur.Size = new System.Drawing.Size(76, 15);
-            this.lblClientSecretImgur.TabIndex = 1;
-            this.lblClientSecretImgur.Text = "Client Secret:";
+            lblClientSecretImgur.AutoSize = true;
+            lblClientSecretImgur.Location = new Point(12, 48);
+            lblClientSecretImgur.Name = "lblClientSecretImgur";
+            lblClientSecretImgur.Size = new Size(76, 15);
+            lblClientSecretImgur.TabIndex = 1;
+            lblClientSecretImgur.Text = "Client Secret:";
             // 
             // lblClientIdImgur
             // 
-            this.lblClientIdImgur.AutoSize = true;
-            this.lblClientIdImgur.Location = new System.Drawing.Point(12, 19);
-            this.lblClientIdImgur.Name = "lblClientIdImgur";
-            this.lblClientIdImgur.Size = new System.Drawing.Size(55, 15);
-            this.lblClientIdImgur.TabIndex = 0;
-            this.lblClientIdImgur.Text = "Client ID:";
+            lblClientIdImgur.AutoSize = true;
+            lblClientIdImgur.Location = new Point(12, 19);
+            lblClientIdImgur.Name = "lblClientIdImgur";
+            lblClientIdImgur.Size = new Size(55, 15);
+            lblClientIdImgur.TabIndex = 0;
+            lblClientIdImgur.Text = "Client ID:";
             // 
             // frmOptions
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(293, 330);
-            this.Controls.Add(this.gbxImgur);
-            this.Controls.Add(this.chkAutoStartWebservice);
-            this.Controls.Add(this.chkAutoStart);
-            this.Controls.Add(this.lblDicordClientId);
-            this.Controls.Add(this.nudDiscordClientId);
-            this.Controls.Add(this.nudPort);
-            this.Controls.Add(this.btnOK);
-            this.Controls.Add(this.lblPort);
-            this.HelpButton = true;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "frmOptions";
-            this.ShowInTaskbar = false;
-            this.Text = "Options";
-            this.Load += new System.EventHandler(this.frmOptions_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.nudPort)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudDiscordClientId)).EndInit();
-            this.gbxImgur.ResumeLayout(false);
-            this.gbxImgur.PerformLayout();
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(293, 330);
+            Controls.Add(gbxImgur);
+            Controls.Add(chkAutoStartWebservice);
+            Controls.Add(chkAutoStart);
+            Controls.Add(lblDicordClientId);
+            Controls.Add(nudDiscordClientId);
+            Controls.Add(nudPort);
+            Controls.Add(btnOK);
+            Controls.Add(lblPort);
+            HelpButton = true;
+            Icon = (Icon)resources.GetObject("$this.Icon");
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "frmOptions";
+            ShowInTaskbar = false;
+            Text = "Options";
+            Load += frmOptions_Load;
+            ((System.ComponentModel.ISupportInitialize)nudPort).EndInit();
+            ((System.ComponentModel.ISupportInitialize)nudDiscordClientId).EndInit();
+            gbxImgur.ResumeLayout(false);
+            gbxImgur.PerformLayout();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
